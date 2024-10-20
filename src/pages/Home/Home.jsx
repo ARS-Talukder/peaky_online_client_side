@@ -1,9 +1,15 @@
 import React from 'react';
+import Categories from './Categories/Categories';
+import Slider from './Slider/Slider';
+import Products from './Products/Products';
 
 const Home = () => {
     return (
         <div>
-            <h2 className='text-4xl'>Home</h2>
+            <Categories></Categories>
+            <Slider></Slider>
+            <Products></Products>
+
         </div>
     );
 };
