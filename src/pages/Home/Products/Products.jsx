@@ -6,11 +6,11 @@ const Products = () => {
     const products = [
         { _id: 1, name: "Set Menu", category: "Foods", price: 300, discount: 50, img: "https://i.ibb.co.com/G2PRMP2/set-menu.jpg" },
         { _id: 2, name: "Formal Shirt", category: "Clothes", price: 300, discount: 25, img: "https://i.ibb.co.com/TTtVhz6/formal-shirt.jpg" },
-        { _id: 3, name: "Oppo F25", category: "Mobiles", price: 300, discount: 25, img: "https://i.ibb.co.com/F5XD1KY/oppo-f25.jpg" },
+        { _id: 3, name: "Oppo F25", category: "Mobiles", price: 450, discount: 25, img: "https://i.ibb.co.com/F5XD1KY/oppo-f25.jpg" },
         { _id: 4, name: "Realme C65", category: "Mobiles", price: 300, discount: 0, img: "https://i.ibb.co.com/7tKxP2Q/realme-c65.jpg" },
         { _id: 5, name: "HP Zenbook", category: "Laptops", price: 300, discount: 15, img: "https://i.ibb.co.com/x3svWPP/hp-zenbook.jpg" },
         { _id: 6, name: "Macbook Air", category: "Laptops", price: 300, discount: 25, img: "https://i.ibb.co.com/G7FCQ17/macbook-air.jpg" },
-        { _id: 7, name: "Samsung S22 Ultra", category: "Mobiles", price: 300, discount: 0, img: "https://i.ibb.co.com/BNdsSRF/samsung-s22.jpg" },
+        { _id: 7, name: "Samsung S22 Ultra", category: "Mobiles", price: 820, discount: 10, img: "https://i.ibb.co.com/BNdsSRF/samsung-s22.jpg" },
         { _id: 8, name: "Iphone 8 Pro", category: "Mobiles", price: 300, discount: 25, img: "https://i.ibb.co.com/g9NtXdY/ipone-8pro.jpg  " },
         { _id: 9, name: "Soft Drinks", category: "Drinks", price: 300, discount: 30, img: "https://i.ibb.co.com/n0HgKtY/soft-Drinks.jpg" },
         { _id: 10, name: "Cappuccino", category: "Drinks", price: 300, discount: 25, img: "https://i.ibb.co.com/6Rk84n5/cappuccino.jpg" },

@@ -21,7 +21,7 @@ const Product = ({ product }) => {
                     <span>{discount_price}</span>
                 </p>
                 <p><small>{name}</small></p>
-                <Link to='orderPage' className='mt-3 flex justify-center items-center w-full h-10 bg-blue-500 hover:bg-blue-600 text-white'><span>অর্ডার করুন</span></Link>
+                <Link to='cart' className='mt-3 flex justify-center items-center w-full h-10 bg-blue-500 hover:bg-blue-600 text-white'><span>অর্ডার করুন</span></Link>
             </div>
             <div className='font-normal bg-blue-500 px-2 text-white rounded-xl absolute top-3 right-3'>
                 <p><small>Discount {discount} %</small></p>

@@ -45,7 +45,7 @@ const Header = () => {
                     <p className='text-2xl mx-2'><VscAccount /></p>
                     <Link className='font-bold' to='sign'><small>Sign In</small></Link>
                     <div className="register_btn w-0.5 h-4 bg-white rounded-xl mx-4"></div>
-                    <Link className='font-bold' to='register'><small>Register</small></Link>
+                    <Link className='font-bold register_btn' to='register'><small>Register</small></Link>
                 </div>
 
                 <div>
@@ -53,12 +53,14 @@ const Header = () => {
                 </div>
 
                 <div className='header_right_cart'>
-                    <div className='flex'>
-                        <div className='bg-blue-400 p-3 rounded-full relative'>
-                            <p className='text-3xl'><BsCart /></p>
-                            <p className='w-4 h-4 font-bold bg-blue-200 text-black rounded-full p-2 flex justify-center items-center absolute top-0 right-0'>0</p>
+                    <Link to='cart'>
+                        <div className='flex'>
+                            <div className='bg-blue-400 p-3 rounded-full relative'>
+                                <p className='text-3xl'><BsCart /></p>
+                                <p className='w-4 h-4 font-bold bg-blue-200 text-black rounded-full p-2 flex justify-center items-center absolute top-0 right-0'>0</p>
+                            </div>
                         </div>
-                    </div>
+                    </Link>
 
                 </div>
             </div>
