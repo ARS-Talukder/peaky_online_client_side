@@ -1,13 +1,47 @@
-import React from 'react';
-import { Link } from 'react-router-dom';
+import React, { useEffect } from 'react';
+import { useSignInWithEmailAndPassword, useSignInWithGoogle } from 'react-firebase-hooks/auth';
+import { Link, useLocation, useNavigate } from 'react-router-dom';
+import auth from '../../firebase.init';
+import Loading from '../Shared/Loading';
 
 const Sign = () => {
+    const [signInWithEmailAndPassword, user, loading, error,] = useSignInWithEmailAndPassword(auth);
+    const [signInWithGoogle, gUser, gLoading, gError] = useSignInWithGoogle(auth);
+    const navigate = useNavigate();
+    const location = useLocation();
+    let from = location.state?.from?.pathname || "/";
+
+    useEffect(() => {
+        if (user || gUser) {
+            navigate(from, { replace: true });
+        }
+    }, [user, gUser, from, navigate])
+
+    if (loading || gLoading) {
+        return <Loading></Loading>
+    }
+
+    let signInError;
+
+    if (error || gError) {
+        signInError = <p className='text-red-500 font-bold'><small>{error?.message || gError?.message}</small></p>
+    }
+
+
+    const handleSignIn = event => {
+        event.preventDefault();
+        const email = event.target.email.value;
+        const password = event.target.password.value;
+        signInWithEmailAndPassword(email, password);
+
+
+    }
     return (
-        <div className='flex justify-center items-center pt-8 pb-16 px-4'>
+        <div className='flex justify-center items-center mt-6 pt-8 pb-16 px-4'>
             <div className="card w-96 bg-base-100 shadow-2xl">
                 <div className="card-body">
                     <h2 className="text-center text-2xl text-slate-500 font-bold my-2">Hi, Welcome Back</h2>
-                    <form action="">
+                    <form onSubmit={handleSignIn} action="">
                         <div className="form-control w-full max-w-xs">
                             <label className="label">
                                 <span className="label-text text-slate-500 font-bold">Email</span>
@@ -22,6 +56,9 @@ const Sign = () => {
                             <input type="password" name="password" placeholder="Password" className="input input-bordered w-full max-w-xs" required />
 
                         </div>
+
+                        {signInError}
+
                         <input className='btn w-full max-w-xs mt-4 text-white bg-blue-500 hover:bg-blue-600' type="submit" value="Login" />
                     </form>
 
@@ -35,7 +72,7 @@ const Sign = () => {
                     <div className="divider">OR</div>
 
                     <div className='flex justify-center items-center border-2 rounded-lg py-2 border-blue-400 hover:border-blue-600 cursor-pointer'>
-                        <button className="flex justify-center items-center w-3/4 max-w-xs rounded submit-button">
+                        <button onClick={() => signInWithGoogle()} className="flex justify-center items-center w-3/4 max-w-xs rounded submit-button">
                             <img className='w-5 h-5 m-0' src="https://i.ibb.co/vcHZKPm/google-logo.png" alt="google_logo" />
                             <span className='mx-2 text-slate-500 font-bold'><small>CONTINUE WITH GOOGLE</small></span>
                         </button>

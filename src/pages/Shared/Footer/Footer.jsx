@@ -35,8 +35,8 @@ const Footer = () => {
                 <div className='footer_single_div'>
                     <div>
                         <h3 className='text-xl font-bold'>Let Us Help You</h3>
-                        <p className='mt-4'><a href="aaa">Your Account</a></p>
-                        <p><a href="aaa">Your Order</a></p>
+                        <p className='mt-4'><a href="dashboard">Your Account</a></p>
+                        <p><a href="dashboard/my_orders">Your Order</a></p>
                         <p><a href="aaa">Terms & Conditions</a></p>
                         <p><a href="aaa">FAQ</a></p>
 

@@ -7,6 +7,10 @@ import Footer from './pages/Shared/Footer/Footer'
 import Sign from './pages/Sign/Sign'
 import Register from './pages/Sign/Register'
 import Cart from './pages/Home/Products/Cart/Cart'
+import Dashboard from './pages/Dashboard/Dashboard'
+import MyProfile from './pages/Dashboard/MyProfile'
+import MyOrders from './pages/Dashboard/MyOrders'
+import CategoryItems from './pages/Home/Categories/CategoryItems'
 
 function App() {
 
@@ -20,6 +24,12 @@ function App() {
         <Route path="sign" element={<Sign />} />
         <Route path="register" element={<Register />} />
         <Route path="cart" element={<Cart />} />
+        <Route path='/:name' element={<CategoryItems></CategoryItems>}></Route>
+
+        <Route path='/dashboard' element={<Dashboard></Dashboard>}>
+          <Route index element={<MyProfile></MyProfile>}></Route>
+          <Route path='/dashboard/my_orders' element={<MyOrders></MyOrders>}></Route>
+        </Route>
       </Routes>
       <Footer></Footer>
     </div>

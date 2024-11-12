@@ -2,10 +2,35 @@ import React from 'react';
 import './Header.css'
 import { VscAccount } from "react-icons/vsc";
 import { BsCart } from "react-icons/bs";
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
+import { useAuthState } from 'react-firebase-hooks/auth';
+import auth from '../../../firebase.init';
+import Loading from '../Loading';
+import { signOut } from 'firebase/auth';
 
 
 const Header = () => {
+    const [user, loading, error] = useAuthState(auth);
+    const navigate = useNavigate();
+
+    if (loading) {
+        <Loading></Loading>
+    }
+
+    const handleSignOut = () => {
+        signOut(auth);
+    };
+    const signOutConfirmation = () => {
+        const proceed = window.confirm("Signing Out");
+        if (proceed) {
+            handleSignOut();
+            navigate('/');
+        }
+        else {
+            return;
+        }
+
+    }
     return (
         <header className='header_container'>
             <div className='header_left'>
@@ -41,12 +66,26 @@ const Header = () => {
             </div>
 
             <div className='header_right'>
-                <div className='header_right_sign'>
-                    <p className='text-2xl mx-2'><VscAccount /></p>
-                    <Link className='font-bold' to='sign'><small>Sign In</small></Link>
-                    <div className="register_btn w-0.5 h-4 bg-white rounded-xl mx-4"></div>
-                    <Link className='font-bold register_btn' to='register'><small>Register</small></Link>
-                </div>
+                {
+                    user ?
+                        <div className='header_right_sign'>
+                            <p className='text-2xl mx-2'><VscAccount /></p>
+                            <button className='font-bold' onClick={signOutConfirmation}><small>Sign Out</small></button>
+                            <div className="register_btn w-0.5 h-4 bg-white rounded-xl mx-4"></div>
+                            <Link className='font-bold register_btn' to='dashboard'><small>Dashboard</small></Link>
+                        </div>
+
+                        :
+
+                        <div className='header_right_sign'>
+                            <p className='text-2xl mx-2'><VscAccount /></p>
+                            <Link className='font-bold' to='sign'><small>Sign In</small></Link>
+                            <div className="register_btn w-0.5 h-4 bg-white rounded-xl mx-4"></div>
+                            <Link className='font-bold register_btn' to='register'><small>Register</small></Link>
+                        </div>
+
+                }
+
 
                 <div>
                     <div className="w-px h-12 bg-white rounded-xl mx-4"></div>

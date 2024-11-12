@@ -1,0 +1,198 @@
+[
+    {
+        "name": "Set Menu",
+        "category": "Foods",
+        "price": 300,
+        "discount": 50,
+        "img": "https://i.ibb.co.com/G2PRMP2/set-menu.jpg"
+    },
+    {
+        "name": "Formal Shirt",
+        "category": "Clothes",
+        "price": 300,
+        "discount": 25,
+        "img": "https://i.ibb.co.com/TTtVhz6/formal-shirt.jpg"
+    },
+    {
+        "name": "Oppo F25",
+        "category": "Mobiles",
+        "price": 450,
+        "discount": 25,
+        "img": "https://i.ibb.co.com/F5XD1KY/oppo-f25.jpg"
+    },
+    {
+        "name": "Realme C65",
+        "category": "Mobiles",
+        "price": 300,
+        "discount": 0,
+        "img": "https://i.ibb.co.com/7tKxP2Q/realme-c65.jpg"
+    },
+    {
+        "name": "HP Zenbook",
+        "category": "Laptops",
+        "price": 300,
+        "discount": 15,
+        "img": "https://i.ibb.co.com/x3svWPP/hp-zenbook.jpg"
+    },
+    {
+        "name": "Macbook Air",
+        "category": "Laptops",
+        "price": 300,
+        "discount": 25,
+        "img": "https://i.ibb.co.com/G7FCQ17/macbook-air.jpg"
+    },
+    {
+        "name": "Samsung S22 Ultra",
+        "category": "Mobiles",
+        "price": 820,
+        "discount": 10,
+        "img": "https://i.ibb.co.com/BNdsSRF/samsung-s22.jpg"
+    },
+    {
+        "name": "Iphone 8 Pro",
+        "category": "Mobiles",
+        "price": 300,
+        "discount": 25,
+        "img": "https://i.ibb.co.com/g9NtXdY/ipone-8pro.jpg  "
+    },
+    {
+        "name": "Soft Drinks",
+        "category": "Drinks",
+        "price": 300,
+        "discount": 30,
+        "img": "https://i.ibb.co.com/n0HgKtY/soft-Drinks.jpg"
+    },
+    {
+        "name": "Cappuccino",
+        "category": "Drinks",
+        "price": 300,
+        "discount": 25,
+        "img": "https://i.ibb.co.com/6Rk84n5/cappuccino.jpg"
+    },
+    {
+        "name": "Lemon Mint",
+        "category": "Drinks",
+        "price": 300,
+        "discount": 25,
+        "img": "https://i.ibb.co.com/DLgMCbG/lemon-mint.jpg"
+    },
+    {
+        "name": "Simple Bag",
+        "category": "Bags",
+        "price": 300,
+        "discount": 25,
+        "img": "https://i.ibb.co.com/X5Jbj3F/simple-bag.jpg"
+    },
+    {
+        "name": "Luggage",
+        "category": "Bags",
+        "price": 300,
+        "discount": 25,
+        "img": "https://i.ibb.co.com/N32bkVf/luggage.jpg"
+    },
+    {
+        "name": "JBL 97H",
+        "category": "Electronics",
+        "price": 300,
+        "discount": 25,
+        "img": "https://i.ibb.co.com/x67fqSg/jbl-97h.jpg"
+    },
+    {
+        "name": "Titan",
+        "category": "Watch",
+        "price": 300,
+        "discount": 25,
+        "img": "https://i.ibb.co.com/1X3mXSg/titan.jpg"
+    },
+    {
+        "name": "Burger",
+        "category": "Foods",
+        "price": 300,
+        "discount": 25,
+        "img": "https://i.ibb.co.com/XZXXf2B/burger.jpg"
+    },
+    {
+        "name": "Belt Watch",
+        "category": "Watch",
+        "price": 300,
+        "discount": 25,
+        "img": "https://i.ibb.co.com/94GchdL/belt-Watch.jpg"
+    },
+    {
+        "name": "Rolex",
+        "category": "Watch",
+        "price": 300,
+        "discount": 25,
+        "img": "https://i.ibb.co.com/DpGx2w0/polex.jpg"
+    },
+    {
+        "name": "White Shoe",
+        "category": "Shoes",
+        "price": 300,
+        "discount": 25,
+        "img": "https://i.ibb.co.com/Yd2xMgZ/white-shoe.jpg"
+    },
+    {
+        "name": "Causal Shirt",
+        "category": "Clothes",
+        "price": 300,
+        "discount": 25,
+        "img": "https://i.ibb.co.com/vwnhCbd/formal-casual-mixed.jpg"
+    },
+    {
+        "name": "JBL 3G",
+        "category": "Electronics",
+        "price": 300,
+        "discount": 25,
+        "img": "https://i.ibb.co.com/QM5mxmS/jbl-3g.jpg"
+    },
+    {
+        "name": "Travel Bag",
+        "category": "Bags",
+        "price": 300,
+        "discount": 25,
+        "img": "https://i.ibb.co.com/QcQGNcr/travel-bag.jpg"
+    },
+    {
+        "name": "Pizza",
+        "category": "Foods",
+        "price": 300,
+        "discount": 25,
+        "img": "https://i.ibb.co.com/Fww4pd4/pizza.jpg"
+    },
+    {
+        "name": "Red Shoe",
+        "category": "Shoes",
+        "price": 300,
+        "discount": 25,
+        "img": "https://i.ibb.co.com/68h1z15/red-shoe.jpg"
+    },
+    {
+        "name": "White T-Shirt",
+        "category": "Clothes",
+        "price": 300,
+        "discount": 25,
+        "img": "https://i.ibb.co.com/Sv493t8/white-tshirt.jpg"
+    },
+    {
+        "name": "Cap T-shirt Combo",
+        "category": "Clothes",
+        "price": 300,
+        "discount": 25,
+        "img": "https://i.ibb.co.com/TMy6VHF/cap-tshirt-combo.jpg"
+    },
+    {
+        "name": "Cloth Bag",
+        "category": "Bags",
+        "price": 300,
+        "discount": 25,
+        "img": "https://i.ibb.co.com/zn1Zxht/cloth-bag.jpg"
+    },
+    {
+        "name": "Raksin Bag",
+        "category": "Bags",
+        "price": 300,
+        "discount": 25,
+        "img": "https://i.ibb.co.com/R6gtjkk/Raksin-bag.jpg"
+    }
+]

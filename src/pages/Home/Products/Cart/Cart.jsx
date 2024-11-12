@@ -80,6 +80,9 @@ const Cart = () => {
                     <table className="table border">
                         <thead>
                             <tr className='bg-base-200'>
+                               <th className='text-center font-bold' colSpan={4}>আপনার অর্ডারসমূহ</th>
+                            </tr>
+                            <tr className=''>
                                 <th className='text-center'>Product</th>
                                 <th>Price</th>
                                 <th className='text-center'>Quantity</th>
