@@ -7,11 +7,13 @@ import { useAuthState } from 'react-firebase-hooks/auth';
 import auth from '../../../firebase.init';
 import Loading from '../Loading';
 import { signOut } from 'firebase/auth';
+import { useCart } from '../../ContextReducer';
 
 
 const Header = () => {
     const [user, loading, error] = useAuthState(auth);
     const navigate = useNavigate();
+    const data = useCart();
 
     if (loading) {
         <Loading></Loading>
@@ -96,7 +98,7 @@ const Header = () => {
                         <div className='flex'>
                             <div className='bg-blue-400 p-3 rounded-full relative'>
                                 <p className='text-3xl'><BsCart /></p>
-                                <p className='w-4 h-4 font-bold bg-blue-200 text-black rounded-full p-2 flex justify-center items-center absolute top-0 right-0'>0</p>
+                                <p className='w-4 h-4 font-bold bg-blue-200 text-black rounded-full p-2 flex justify-center items-center absolute top-0 right-0'>{data.length}</p>
                             </div>
                         </div>
                     </Link>

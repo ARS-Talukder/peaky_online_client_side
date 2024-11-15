@@ -1,25 +1,31 @@
 import React, { useState } from 'react';
 import { AiFillDelete } from "react-icons/ai";
 import { FaMinus, FaPlus } from "react-icons/fa6";
+import { useCart, useDispatchCart } from '../../../ContextReducer';
 
-const CartProduct = ({ product }) => {
-    const { name, price, img, discount, quantity } = product;
+const CartProduct = ({ product, index }) => {
+    const { product_id, name, price, img, discount, quantity } = product;
     const discount_price = price - ((discount * price) / 100);
     const [newQuantity, setNewQuantity] = useState(quantity);
+    let dispatch = useDispatchCart();
+    const data = useCart();
 
-    const decrementQuantity = () => {
+    const decrementQuantity = async () => {
         if (newQuantity > 1) {
             setNewQuantity(newQuantity - 1);
+            await dispatch({ type: "UPDATE", product_id: product_id, quantity: newQuantity - 1 })
+            return
         }
     }
-    const incrementQuantity = () => {
+    const incrementQuantity = async () => {
         setNewQuantity(newQuantity + 1);
+        await dispatch({ type: "UPDATE", product_id: product_id, quantity: newQuantity + 1 })
     }
-
+    console.log(data)
     return (
         <tr>
             <td className='flex items-center'>
-                <button>
+                <button onClick={() => { dispatch({ type: "REMOVE", index: index }) }}>
                     <AiFillDelete className="text-xl text-red-500"></AiFillDelete>
                 </button>
                 <img className='ml-4 mr-1' width={30} src={img} alt="product_image" />
@@ -31,7 +37,7 @@ const CartProduct = ({ product }) => {
                 <p className='mx-3 border border-black px-3'>{newQuantity}</p>
                 <button className='text-blue-500 hover:text-blue-800 text-xl' onClick={incrementQuantity}><FaPlus /></button>
             </td>
-            <td>{discount_price}</td>
+            <td>{discount_price * newQuantity}</td>
         </tr>
     );
 };

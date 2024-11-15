@@ -1,12 +1,22 @@
 import React from 'react';
 import CartProduct from './CartProduct';
+import { useCart, useDispatchCart } from '../../../ContextReducer';
 
 const Cart = () => {
-    const cartProducts = [
-        { _id: 3, name: "Oppo F25", category: "Mobiles", price: 450, discount: 25, quantity: 1, img: "https://i.ibb.co.com/F5XD1KY/oppo-f25.jpg" },
-        { _id: 4, name: "Realme C65", category: "Mobiles", price: 300, discount: 0, quantity: 1, img: "https://i.ibb.co.com/7tKxP2Q/realme-c65.jpg" },
-        { _id: 7, name: "Samsung S22 Ultra", category: "Mobiles", price: 820, discount: 10, quantity: 1, img: "https://i.ibb.co.com/BNdsSRF/samsung-s22.jpg" }
-    ]
+    let data = useCart();
+    let dispatch = useDispatchCart();
+
+    let content;
+    if (data.length === 0) {
+        return (
+            <div className='h-80 flex justify-center items-center'>
+                <h2 className='text-xl font-bold text-red-600'>The Cart is Empty!!</h2>
+            </div>
+        )
+    }
+    else {
+        content = data.map((product,index) => <CartProduct index={index} key={product.product_id} product={product}></CartProduct>)
+    }
     return (
         <div className='lg:flex md:flex px-6 py-4 lg:px-20 md:px-4 lg:py-10'>
             {/* ------Form Section------ */}
@@ -50,25 +60,6 @@ const Cart = () => {
                         <input type="email" name="email" placeholder="আপনার ইমেইল লিখুন" className="input input-sm input-bordered w-full" required />
 
                     </div>
-                    {/* <div className="form-control w-full max-w-xs">
-                    <label className="label">
-                        <span className="label-text text-slate-500 font-bold">Password</span>
-                    </label>
-                    <input type="password" name="password" placeholder="Password" className="input input-bordered w-full" required />
-
-                </div> */}
-                    {/* <div className="form-control w-full">
-                    <label className="label">
-                        <span className="label-text text-slate-500 font-bold">Confirm Password</span>
-                    </label>
-                    <input type="password" name="confirm_password" placeholder="Password" className="input input-bordered w-full" required />
-
-                </div> */}
-
-                    <div className='mt-2 flex items-center'>
-                        <input type="checkbox" className="checkbox checkbox-sm" />
-                        <span className='text-purple-600 font-bold mx-2'>Create Account?</span>
-                    </div>
 
                     <input className='btn w-full mt-4 text-white bg-blue-500 hover:bg-blue-600' type="submit" value="অর্ডার কনফার্ম করুন" />
                 </form>
@@ -80,7 +71,7 @@ const Cart = () => {
                     <table className="table border">
                         <thead>
                             <tr className='bg-base-200'>
-                               <th className='text-center font-bold' colSpan={4}>আপনার অর্ডারসমূহ</th>
+                                <th className='text-center font-bold' colSpan={4}>আপনার অর্ডারসমূহ</th>
                             </tr>
                             <tr className=''>
                                 <th className='text-center'>Product</th>
@@ -91,7 +82,7 @@ const Cart = () => {
                         </thead>
                         <tbody>
                             {
-                                cartProducts.map((product) => <CartProduct key={product._id} product={product}></CartProduct>)
+                                content
                             }
                             <tr className='font-bold'>
                                 <td className='text-right' colSpan={2}></td>
