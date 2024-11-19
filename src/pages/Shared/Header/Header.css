@@ -21,10 +21,6 @@
     order: 1;
 }
 
-/* .dropdown{
-    display: none;
-} */
-
 .header_center {
     width: 55%;
     display: flex;
@@ -63,7 +59,7 @@
     }
 
     .header_left {
-        width: 50%;
+        width: 30%;
         order: 1;
     }
 
@@ -73,7 +69,7 @@
     }
 
     .header_right {
-        width: 50%;
+        width: 70%;
         order: 2;
     }
 

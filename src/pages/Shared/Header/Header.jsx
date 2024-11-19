@@ -71,16 +71,21 @@ const Header = () => {
 
             <div className='header_right'>
                 {
-                    user ?
+                    user ? (admin ?
                         <div className='header_right_sign'>
-                            <p className='text-2xl mx-2'><VscAccount /></p>
-                            <button className='btn btn-sm btn-accent font-bold text-white' onClick={signOutConfirmation}><small>Sign Out</small></button>
+                            <button className='btn btn-active border-0 btn-xs lg:btn-sm md:btn-sm bg-red-600 hover:bg-red-800 font-bold mr-3 lg:mr-0 md:mr-0' onClick={signOutConfirmation}><small>Sign Out</small></button>
                             <div className="register_btn w-0.5 h-4 bg-white rounded-xl mx-4"></div>
-                            <Link className='font-bold register_btn' to='dashboard'><small>Dashboard</small></Link>
+                            <Link className='btn btn-xs lg:btn-sm md:btn-sm btn-accent font-bold text-white' to='admin_dashboard'><small>Admin</small></Link>
                         </div>
 
                         :
 
+                        <div className='header_right_sign'>
+                            <button className='btn btn-active border-0 btn-xs lg:btn-sm md:btn-sm bg-red-600 hover:bg-red-800 font-bold mr-3 lg:mr-0 md:mr-0' onClick={signOutConfirmation}><small>Sign Out</small></button>
+                            <div className="register_btn w-0.5 h-4 bg-white rounded-xl mx-4"></div>
+                            <Link className='btn btn-xs lg:btn-sm md:btn-sm btn-accent font-bold text-white' to='dashboard'><small>Dashboard</small></Link>
+                        </div>)
+                        :
                         <div className='header_right_sign'>
                             <p className='text-2xl mx-2'><VscAccount /></p>
                             <Link className='font-bold' to='sign'><small>Sign In</small></Link>
@@ -88,27 +93,23 @@ const Header = () => {
                             <Link className='font-bold register_btn' to='register'><small>Register</small></Link>
                         </div>
 
+
                 }
 
 
                 <div>
-                    <div className="w-px h-12 bg-white rounded-xl mx-4"></div>
+                    <div className="w-px h-12 bg-white rounded-xl mx-2"></div>
                 </div>
 
                 <div className='header_right_cart'>
-                    {
-                        user && admin ?
-                            <Link className='btn btn-accent font-bold text-white' to='admin_dashboard'><small>Admin</small></Link>
-                            :
-                            <Link to='cart'>
-                                <div className='flex'>
-                                    <div className='bg-blue-400 p-3 rounded-full relative'>
-                                        <p className='text-3xl'><BsCart /></p>
-                                        <p className='w-4 h-4 font-bold bg-blue-200 text-black rounded-full p-2 flex justify-center items-center absolute top-0 right-0'>{data.length}</p>
-                                    </div>
-                                </div>
-                            </Link>
-                    }
+                    <Link to='cart'>
+                        <div className='flex'>
+                            <div className='bg-blue-400 p-3 rounded-full relative'>
+                                <p className='text-3xl'><BsCart /></p>
+                                <p className='w-4 h-4 font-bold bg-blue-200 text-black rounded-full p-2 flex justify-center items-center absolute top-0 right-0'>{data.length}</p>
+                            </div>
+                        </div>
+                    </Link>
 
                 </div>
             </div>
