@@ -8,14 +8,16 @@ import auth from '../../../firebase.init';
 import Loading from '../Loading';
 import { signOut } from 'firebase/auth';
 import { useCart } from '../../ContextReducer';
+import useAdmin from '../../hooks/useAdmin';
 
 
 const Header = () => {
     const [user, loading, error] = useAuthState(auth);
+    const [admin, adminLoading] = useAdmin(user);
     const navigate = useNavigate();
     const data = useCart();
 
-    if (loading) {
+    if (loading || adminLoading) {
         <Loading></Loading>
     }
 
@@ -72,7 +74,7 @@ const Header = () => {
                     user ?
                         <div className='header_right_sign'>
                             <p className='text-2xl mx-2'><VscAccount /></p>
-                            <button className='font-bold' onClick={signOutConfirmation}><small>Sign Out</small></button>
+                            <button className='btn btn-sm btn-accent font-bold text-white' onClick={signOutConfirmation}><small>Sign Out</small></button>
                             <div className="register_btn w-0.5 h-4 bg-white rounded-xl mx-4"></div>
                             <Link className='font-bold register_btn' to='dashboard'><small>Dashboard</small></Link>
                         </div>
@@ -94,14 +96,19 @@ const Header = () => {
                 </div>
 
                 <div className='header_right_cart'>
-                    <Link to='cart'>
-                        <div className='flex'>
-                            <div className='bg-blue-400 p-3 rounded-full relative'>
-                                <p className='text-3xl'><BsCart /></p>
-                                <p className='w-4 h-4 font-bold bg-blue-200 text-black rounded-full p-2 flex justify-center items-center absolute top-0 right-0'>{data.length}</p>
-                            </div>
-                        </div>
-                    </Link>
+                    {
+                        user && admin ?
+                            <Link className='btn btn-accent font-bold text-white' to='admin_dashboard'><small>Admin</small></Link>
+                            :
+                            <Link to='cart'>
+                                <div className='flex'>
+                                    <div className='bg-blue-400 p-3 rounded-full relative'>
+                                        <p className='text-3xl'><BsCart /></p>
+                                        <p className='w-4 h-4 font-bold bg-blue-200 text-black rounded-full p-2 flex justify-center items-center absolute top-0 right-0'>{data.length}</p>
+                                    </div>
+                                </div>
+                            </Link>
+                    }
 
                 </div>
             </div>

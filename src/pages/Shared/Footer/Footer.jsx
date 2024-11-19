@@ -2,6 +2,7 @@ import React from 'react';
 import './Footer.css';
 import { FaInstagram } from "react-icons/fa6";
 import { AiOutlineFacebook } from "react-icons/ai";
+import { Link } from 'react-router-dom';
 
 const Footer = () => {
     const currentYear = new Date().getFullYear();
@@ -35,10 +36,9 @@ const Footer = () => {
                 <div className='footer_single_div'>
                     <div>
                         <h3 className='text-xl font-bold'>Let Us Help You</h3>
-                        <p className='mt-4'><a href="dashboard">Your Account</a></p>
-                        <p><a href="dashboard/my_orders">Your Order</a></p>
+                        <p className='mt-4'><Link to="dashboard">Your Account</Link></p>
+                        <p><Link to="dashboard/my_orders">Your Order</Link></p>
                         <p><a href="aaa">Terms & Conditions</a></p>
-                        <p><a href="aaa">FAQ</a></p>
 
                     </div>
                 </div>

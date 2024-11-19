@@ -8,7 +8,6 @@ const CartProduct = ({ product, index }) => {
     const discount_price = price - ((discount * price) / 100);
     const [newQuantity, setNewQuantity] = useState(quantity);
     let dispatch = useDispatchCart();
-    const data = useCart();
 
     const decrementQuantity = async () => {
         if (newQuantity > 1) {
@@ -21,7 +20,6 @@ const CartProduct = ({ product, index }) => {
         setNewQuantity(newQuantity + 1);
         await dispatch({ type: "UPDATE", product_id: product_id, quantity: newQuantity + 1 })
     }
-    console.log(data)
     return (
         <tr>
             <td className='flex items-center'>

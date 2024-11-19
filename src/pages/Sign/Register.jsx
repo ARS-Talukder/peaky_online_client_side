@@ -38,14 +38,46 @@ const Register = () => {
         const phone = event.target.phone.value;
         const password = event.target.password.value;
         const confirm_password = event.target.confirm_password.value;
+        const customer = { name, email, phone, address: "No Address", role: 'customer' }
         if (password === confirm_password) {
             await createUserWithEmailAndPassword(email, password);
             await updateProfile({ displayName: name });
+            //Post a customer
+            fetch(`http://localhost:5000/customers/${email}`, {
+                method: 'PUT',
+                headers: {
+                    'content-type': 'application/json'
+                },
+                body: JSON.stringify(customer)
+            })
         }
         if (password !== confirm_password) {
             error_message = <p className='text-red-500 font-bold'><small>Password does not match</small></p>
         }
 
+    }
+
+    const handleGoogleSign = () => {
+        signInWithGoogle()
+            .then(data => {
+                const email = data.user.email;
+                const name = data.user.displayName;
+                const address = "No Address";
+                const phone = "No Mobile Number";
+                const customer = { name, email, phone, address, role: 'customer' }
+                // console.log(data)
+                if (data.user) {
+                    //Post a customer
+                    fetch(`http://localhost:5000/customers/${email}`, {
+                        method: 'PUT',
+                        headers: {
+                            'content-type': 'application/json'
+                        },
+                        body: JSON.stringify(customer)
+                    })
+                }
+            })
+        // singinwithgoogle().then(data => console.log(data)).catch()
     }
     return (
         <div className='flex justify-center items-center mt-6 pt-8 pb-16 px-4'>
@@ -103,12 +135,12 @@ const Register = () => {
 
                     <div className="divider">OR</div>
 
-                    <div className='flex justify-center items-center border-2 rounded-lg py-2 border-blue-400 hover:border-blue-600 cursor-pointer'>
-                        <button onClick={() => signInWithGoogle()} className="flex justify-center items-center w-3/4 max-w-xs rounded submit-button">
+                    <button onClick={handleGoogleSign} className='flex justify-center items-center border-2 rounded-lg py-2 border-blue-400 hover:border-blue-600 cursor-pointer'>
+                        <div className="flex justify-center items-center w-3/4 max-w-xs rounded submit-button">
                             <img className='w-5 h-5 m-0' src="https://i.ibb.co/vcHZKPm/google-logo.png" alt="google_logo" />
                             <span className='mx-2 text-slate-500 font-bold'><small>CONTINUE WITH GOOGLE</small></span>
-                        </button>
-                    </div>
+                        </div>
+                    </button>
                 </div>
             </div>
         </div>
