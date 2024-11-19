@@ -11,7 +11,7 @@ const AddProduct = () => {
     const { data: categories, isLoading, isSuccess, isError, error } = useQuery({
         queryKey: ["categories"],
         queryFn: () => {
-            return axios.get("http://localhost:5000/categories")
+            return axios.get("https://peaky-online-server-side.onrender.com/categories")
         }
     })
 
@@ -40,7 +40,7 @@ const AddProduct = () => {
         const discount = e.target.discount.value;
         const img = e.target.img.value;
         const product = { name, category, price, discount, img };
-        fetch('http://localhost:5000/products', {
+        fetch('https://peaky-online-server-side.onrender.com/products', {
             method: 'POST',
             headers: {
                 'content-type': 'application/json'

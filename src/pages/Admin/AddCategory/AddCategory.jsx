@@ -11,7 +11,7 @@ const AddCategory = () => {
         const name = e.target.name.value;
         const img = e.target.img.value;
         const category = { name, img };
-        fetch('http://localhost:5000/categories', {
+        fetch('https://peaky-online-server-side.onrender.com/categories', {
             method: 'POST',
             headers: {
                 'content-type': 'application/json'

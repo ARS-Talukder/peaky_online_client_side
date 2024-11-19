@@ -18,7 +18,7 @@ const MyProfile = () => {
     const { data: customers, isLoading, isSuccess, isError, refetch } = useQuery({
         queryKey: ["customers"],
         queryFn: () => {
-            return axios.get("http://localhost:5000/customers")
+            return axios.get("https://peaky-online-server-side.onrender.com/customers")
         }
     })
 
@@ -43,7 +43,7 @@ const MyProfile = () => {
             return
         }
         else {
-            fetch(`http://localhost:5000/customer-mobile/${user.email}`, {
+            fetch(`https://peaky-online-server-side.onrender.com/customer-mobile/${user.email}`, {
                 method: 'PATCH',
                 headers: {
                     'content-type': 'application/json'
@@ -65,7 +65,7 @@ const MyProfile = () => {
             return
         }
         else {
-            fetch(`http://localhost:5000/customer-address/${user.email}`, {
+            fetch(`https://peaky-online-server-side.onrender.com/customer-address/${user.email}`, {
                 method: 'PATCH',
                 headers: {
                     'content-type': 'application/json'

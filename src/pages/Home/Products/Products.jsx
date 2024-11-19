@@ -8,7 +8,7 @@ const Products = () => {
     const { data: products, isLoading, isSuccess, isError, error } = useQuery({
         queryKey: ["products"],
         queryFn: () => {
-            return axios.get("http://localhost:5000/products")
+            return axios.get("https://peaky-online-server-side.onrender.com/products")
         }
     })
     let content;

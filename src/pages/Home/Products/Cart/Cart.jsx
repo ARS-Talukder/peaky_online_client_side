@@ -53,7 +53,7 @@ const Cart = () => {
         const shipping_cost = shipping;
         const order = { customerName: customerName, address: address, subTotal: subTotal, shipping: shipping_cost, total: subTotal + shipping, phone: phone, products: data, email: email, date: date, time: time };
         //Post an order
-        fetch('http://localhost:5000/orders', {
+        fetch('https://peaky-online-server-side.onrender.com/orders', {
             method: 'POST',
             headers: {
                 'content-type': 'application/json'
@@ -75,7 +75,7 @@ const Cart = () => {
 
         const customer = { name: customerName, address: address, phone: phone, email: email, role: 'customer' };
         //Post a customer
-        fetch(`http://localhost:5000/customers/${email}`, {
+        fetch(`https://peaky-online-server-side.onrender.com/customers/${email}`, {
             method: 'PUT',
             headers: {
                 'content-type': 'application/json'

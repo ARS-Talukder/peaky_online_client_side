@@ -9,7 +9,7 @@ const MyOrders = () => {
     const [user, loading, error] = useAuthState(auth);
     const [orders, setOrders] = useState([])
     useEffect(() => {
-        fetch(`http://localhost:5000/order/${user.email}`)
+        fetch(`https://peaky-online-server-side.onrender.com/order/${user.email}`)
             .then(res => res.json())
             .then(data => setOrders(data))
 

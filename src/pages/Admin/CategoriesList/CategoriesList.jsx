@@ -9,7 +9,7 @@ const CategoriesList = () => {
     const { data: categories, isLoading, isSuccess, isError, error, refetch } = useQuery({
         queryKey: ["categories"],
         queryFn: () => {
-            return axios.get("http://localhost:5000/categories")
+            return axios.get("https://peaky-online-server-side.onrender.com/categories")
         }
     })
     let content;

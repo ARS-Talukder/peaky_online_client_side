@@ -9,7 +9,7 @@ const AllOrders = () => {
     const { data: orders, isLoading, isSuccess, isError, error } = useQuery({
         queryKey: ["orders"],
         queryFn: () => {
-            return axios.get("http://localhost:5000/orders")
+            return axios.get("https://peaky-online-server-side.onrender.com/orders")
         }
     })
 

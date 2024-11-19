@@ -22,7 +22,7 @@ const AdminSign = () => {
         event.preventDefault();
         const email = event.target.email.value;
         const password = event.target.password.value;
-        fetch(`http://localhost:5000/admin/${email}`, {
+        fetch(`https://peaky-online-server-side.onrender.com/admin/${email}`, {
             method: 'GET',
             headers: {
                 'content-type': 'application/json'
