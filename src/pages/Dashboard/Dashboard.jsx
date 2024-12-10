@@ -22,9 +22,7 @@ const Dashboard = () => {
                     <label htmlFor="dashboard-side-drawer" className="drawer-overlay"></label>
                     <ul className="menu pb-4 pt-40 lg:pt-4 md:pt-24 px-2 overflow-y-auto w-1/2 lg:w-full md:w-1/3 h-full bg-blue-300">
                         {/* <!--------- Sidebar content here -----------> */}
-                        <li><Link to='/dashboard' className='w-full btn mb-3 bg-blue-500 hover:bg-blue-600 text-white border-0'>My Profile</Link></li>
-                        <li><Link to='/dashboard/my_orders' className='w-full btn mb-3 bg-blue-500 hover:bg-blue-600 text-white border-0'>My Orders</Link></li>
-
+                        <li><Link to='/dashboard' className='w-full btn mb-3 bg-blue-500 hover:bg-blue-600 text-white border-0'>Order Status</Link></li>
                     </ul>
 
                 </div>

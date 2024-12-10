@@ -6,10 +6,10 @@ import Loading from '../../Shared/Loading';
 import Order from './Order';
 
 const AllOrders = () => {
-    const { data: orders, isLoading, isSuccess, isError, error } = useQuery({
+    const { data: orders, isLoading, isSuccess, isError, error, refetch } = useQuery({
         queryKey: ["orders"],
         queryFn: () => {
-            return axios.get("https://peaky-online-server-side.onrender.com/orders")
+            return axios.get("http://localhost:5000/orders")
         }
     })
 
@@ -20,7 +20,7 @@ const AllOrders = () => {
     }
 
     if (isSuccess) {
-        content = orders.data.map((order, index) => <Order index={index} key={order._id} order={order}></Order>)
+        content = orders.data.map((order, index) => <Order index={index} key={order._id} order={order} refetch={refetch}></Order>)
     }
 
     return (
@@ -41,6 +41,7 @@ const AllOrders = () => {
                             <th>Total</th>
                             <th>Order Date</th>
                             <th>Information</th>
+                            <th>State</th>
                         </tr>
                     </thead>
                     <tbody>

@@ -11,7 +11,7 @@ const AddProduct = () => {
     const { data: categories, isLoading, isSuccess, isError, error } = useQuery({
         queryKey: ["categories"],
         queryFn: () => {
-            return axios.get("https://peaky-online-server-side.onrender.com/categories")
+            return axios.get("http://localhost:5000/categories")
         }
     })
 
@@ -39,8 +39,11 @@ const AddProduct = () => {
         const price = e.target.price.value;
         const discount = e.target.discount.value;
         const img = e.target.img.value;
-        const product = { name, category, price, discount, img };
-        fetch('https://peaky-online-server-side.onrender.com/products', {
+        const img_2 = e.target.img_2.value;
+        const img_3 = e.target.img_3.value;
+        const descr = e.target.descr.value;
+        const product = { name, category, price, discount, img, img_2, img_3, descr };
+        fetch('http://localhost:5000/products', {
             method: 'POST',
             headers: {
                 'content-type': 'application/json'
@@ -100,11 +103,35 @@ const AddProduct = () => {
                                 <input type="number" name="discount" placeholder="Enter Discount" className="input input-bordered input-sm w-full max-w-xs" required />
                             </div>
 
+
+                            <div className="form-control w-full max-w-xs">
+                                <label className="label">
+                                    <span className="label-text text-slate-500 font-bold">Description</span>
+                                </label>
+                                <textarea name="descr" className="textarea textarea-bordered textarea-sm w-full max-w-xs" placeholder="Enter Description here"></textarea>
+
+                            </div>
+
                             <div className="form-control w-full max-w-xs">
                                 <label className="label">
                                     <span className="label-text text-slate-500 font-bold">Product Image URL</span>
                                 </label>
                                 <input type="text" name="img" placeholder="URL" className="input input-bordered input-sm w-full max-w-xs" required />
+
+                            </div>
+
+                            <div className="form-control w-full max-w-xs">
+                                <label className="label">
+                                    <span className="label-text text-slate-500 font-bold">Product Image_2 URL</span>
+                                </label>
+                                <input type="text" name="img_2" placeholder="URL_2" className="input input-bordered input-sm w-full max-w-xs" required />
+
+                            </div>
+                            <div className="form-control w-full max-w-xs">
+                                <label className="label">
+                                    <span className="label-text text-slate-500 font-bold">Product Image_3 URL</span>
+                                </label>
+                                <input type="text" name="img_3" placeholder="URL_3" className="input input-bordered input-sm w-full max-w-xs" required />
 
                             </div>
 

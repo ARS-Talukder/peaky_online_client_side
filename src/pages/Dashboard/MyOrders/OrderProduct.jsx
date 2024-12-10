@@ -1,11 +1,24 @@
 import React from 'react';
-import { AiFillDelete } from "react-icons/ai";
+import { TbPointFilled } from "react-icons/tb";
 
-const OrderProduct = ({ order, index }) => {
-    const { date, time, shipping, total, products } = order;
+const OrderProduct = ({ order }) => {
+    const { date, time, shipping, total, products, status } = order;
+
+    let classColor;
+    if (status === 'pending') {
+        classColor = 'text-xl text-yellow-500'
+    }
+    if (status === 'shipped') {
+        classColor = 'text-xl text-blue-700'
+    }
+    if (status === 'delivered') {
+        classColor = 'text-xl text-green-600'
+    }
+    if (status === 'canceled') {
+        classColor = 'text-xl text-red-500'
+    }
     return (
         <tr className='text-center'>
-            <th>{index + 1}</th>
             <td>
                 {products.map(p => <p key={p.product_id}>{p.name}</p>)}
             </td>
@@ -23,6 +36,10 @@ const OrderProduct = ({ order, index }) => {
             <td>
                 <p>{date}</p>
                 <p>{time}</p>
+            </td>
+            <td className='flex justify-center items-center'>
+                <span className={classColor}><TbPointFilled /></span>
+                <span>{status}</span>
             </td>
         </tr>
     );

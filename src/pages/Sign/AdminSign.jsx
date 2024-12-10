@@ -1,11 +1,14 @@
 import React, { useEffect } from 'react';
 import auth from '../../firebase.init';
-import { useSignInWithEmailAndPassword } from 'react-firebase-hooks/auth';
+import { useSignInWithEmailAndPassword, useSignInWithGoogle } from 'react-firebase-hooks/auth';
 import { useLocation, useNavigate } from 'react-router-dom';
 import Loading from '../Shared/Loading';
+import { signOut } from 'firebase/auth';
+import toast from 'react-hot-toast';
 
 const AdminSign = () => {
     const [signInWithEmailAndPassword, user, loading, error,] = useSignInWithEmailAndPassword(auth);
+    const [signInWithGoogle, gUser, gLoading, gError] = useSignInWithGoogle(auth);
     const navigate = useNavigate();
 
     if (loading) {
@@ -22,7 +25,7 @@ const AdminSign = () => {
         event.preventDefault();
         const email = event.target.email.value;
         const password = event.target.password.value;
-        fetch(`https://peaky-online-server-side.onrender.com/admin/${email}`, {
+        fetch(`http://localhost:5000/admin/${email}`, {
             method: 'GET',
             headers: {
                 'content-type': 'application/json'
@@ -33,6 +36,37 @@ const AdminSign = () => {
                 if (data.admin === true) {
                     signInWithEmailAndPassword(email, password);
                     navigate("/")
+                }
+                else {
+                    signOut(auth);
+                    navigate("/")
+                    toast.error('UnAuthorized Access')
+                }
+            })
+    }
+
+    const handleGoogleSign = () => {
+        signInWithGoogle()
+            .then(data => {
+                const email = data.user.email;
+                if (data.user) {
+                    fetch(`http://localhost:5000/admin/${email}`, {
+                        method: 'GET',
+                        headers: {
+                            'content-type': 'application/json'
+                        }
+                    })
+                        .then(res => res.json())
+                        .then(data => {
+                            if (data.admin === true) {
+                                navigate("/")
+                            }
+                            else {
+                                signOut(auth);
+                                navigate("/")
+                                toast.error('UnAuthorized Access')
+                            }
+                        })
                 }
             })
     }
@@ -61,6 +95,15 @@ const AdminSign = () => {
 
                         <input className='btn w-full max-w-xs mt-4 text-white bg-blue-500 hover:bg-blue-600' type="submit" value="Login" />
                     </form>
+
+                    <div className="divider">OR</div>
+
+                    <button onClick={handleGoogleSign} className='flex justify-center items-center border-2 rounded-lg py-2 border-blue-400 hover:border-blue-600 cursor-pointer'>
+                        <div className="flex justify-center items-center w-3/4 max-w-xs rounded submit-button">
+                            <img className='w-5 h-5 m-0' src="https://i.ibb.co/vcHZKPm/google-logo.png" alt="google_logo" />
+                            <span className='mx-2 text-slate-500 font-bold'><small>CONTINUE WITH GOOGLE</small></span>
+                        </div>
+                    </button>
                 </div>
             </div>
         </div>

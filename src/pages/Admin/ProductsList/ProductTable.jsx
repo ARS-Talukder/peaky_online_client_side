@@ -15,7 +15,7 @@ const ProductTable = ({ index, product, refetch }) => {
             return
         }
         else {
-            fetch(`https://peaky-online-server-side.onrender.com/product/${id}`, {
+            fetch(`http://localhost:5000/product/${id}`, {
                 method: 'PATCH',
                 headers: {
                     'content-type': 'application/json'
@@ -33,7 +33,7 @@ const ProductTable = ({ index, product, refetch }) => {
     const handleDelete = (id) => {
         const proceed = window.confirm('Do You Want to delete this product?');
         if (proceed) {
-            fetch(`https://peaky-online-server-side.onrender.com/product-delete/${id}`, {
+            fetch(`http://localhost:5000/product-delete/${id}`, {
                 method: 'DELETE'
             })
                 .then(res => res.json())

@@ -8,12 +8,10 @@ import Sign from './pages/Sign/Sign'
 import Register from './pages/Sign/Register'
 import Cart from './pages/Home/Products/Cart/Cart'
 import Dashboard from './pages/Dashboard/Dashboard'
-import MyProfile from './pages/Dashboard/MyProfile/MyProfile'
 import MyOrders from './pages/Dashboard/MyOrders/MyOrders'
 import CategoryItems from './pages/Home/Categories/CategoryItems'
 import { CartProvider } from './pages/ContextReducer'
 import { Toaster } from 'react-hot-toast'
-import RequireAuth from './pages/Sign/RequireAuth'
 import Whatsapp from './pages/Shared/Whatsapp'
 import AdminSign from './pages/Sign/AdminSign'
 import ProductsList from './pages/Admin/ProductsList/ProductsList'
@@ -24,6 +22,7 @@ import CategoriesList from './pages/Admin/CategoriesList/CategoriesList'
 import AddCategory from './pages/Admin/AddCategory/AddCategory'
 import AllOrders from './pages/Admin/AllOrders/AllOrders'
 import AllCustomers from './pages/Admin/AllCustomers/AllCustomers'
+import ProductDetails from './pages/Home/Products/ProductDetails'
 
 function App() {
 
@@ -40,10 +39,10 @@ function App() {
           <Route path="sign/admin" element={<AdminSign />} />
           <Route path="cart" element={<Cart />} />
           <Route path='/:name' element={<CategoryItems></CategoryItems>}></Route>
+          <Route path='/product/:id' element={<ProductDetails></ProductDetails>}></Route>
 
-          <Route path='/dashboard' element={<RequireAuth><Dashboard></Dashboard></RequireAuth>}>
-            <Route index element={<MyProfile></MyProfile>}></Route>
-            <Route path='/dashboard/my_orders' element={<MyOrders></MyOrders>}></Route>
+          <Route path='/dashboard' element={<Dashboard></Dashboard>}>
+            <Route index element={<MyOrders></MyOrders>}></Route>
           </Route>
           <Route path='/admin_dashboard' element={<RequireAdmin><AdminDashboard></AdminDashboard></RequireAdmin>}>
             <Route index element={<ProductsList></ProductsList>}></Route>
