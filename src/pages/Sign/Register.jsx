@@ -43,7 +43,7 @@ const Register = () => {
             await createUserWithEmailAndPassword(email, password);
             await updateProfile({ displayName: name });
             //Post a customer
-            fetch(`http://localhost:5000/customers/${email}`, {
+            fetch(`https://api.peakyonline.com/customers/${email}`, {
                 method: 'PUT',
                 headers: {
                     'content-type': 'application/json'
@@ -64,11 +64,11 @@ const Register = () => {
                 const name = data.user.displayName;
                 const address = "No Address";
                 const phone = "No Mobile Number";
-                const customer = { name, email, phone, address, role: 'customer' }
+                const customer = { name, email, phone, address }
                 // console.log(data)
                 if (data.user) {
                     //Post a customer
-                    fetch(`http://localhost:5000/customers/${email}`, {
+                    fetch(`https://api.peakyonline.com/customers/${email}`, {
                         method: 'PUT',
                         headers: {
                             'content-type': 'application/json'

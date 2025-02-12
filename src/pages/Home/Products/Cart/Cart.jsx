@@ -47,7 +47,7 @@ const Cart = () => {
         const shipping_cost = shipping;
         const order = { customerName: customerName, address: address, shipping: shipping_cost, subTotal: discount_price * quantity, total: (discount_price * quantity) + shipping, phone: phone, products: [{ product_id: product._id, name: product.name, category: product.category, img: product.img, price: product.price, discount: product.discount, discount_price: discount_price, quantity: quantity, }], date: date, time: time, status: 'pending', status_color: 'yellow' };
         //Post an order
-        fetch('http://localhost:5000/orders', {
+        fetch('https://api.peakyonline.com/orders', {
             method: 'POST',
             headers: {
                 'content-type': 'application/json'

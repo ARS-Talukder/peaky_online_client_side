@@ -25,7 +25,7 @@ const AdminSign = () => {
         event.preventDefault();
         const email = event.target.email.value;
         const password = event.target.password.value;
-        fetch(`http://localhost:5000/admin/${email}`, {
+        fetch(`https://api.peakyonline.com/admin/${email}`, {
             method: 'GET',
             headers: {
                 'content-type': 'application/json'
@@ -50,7 +50,7 @@ const AdminSign = () => {
             .then(data => {
                 const email = data.user.email;
                 if (data.user) {
-                    fetch(`http://localhost:5000/admin/${email}`, {
+                    fetch(`https://api.peakyonline.com/admin/${email}`, {
                         method: 'GET',
                         headers: {
                             'content-type': 'application/json'
