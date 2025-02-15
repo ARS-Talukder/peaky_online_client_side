@@ -15,7 +15,7 @@ const MyOrders = () => {
     const handleMyOrder = (e) => {
         e.preventDefault();
         const phone = e.target.phone.value;
-        fetch(`https://api.peakyonline.com/order_by_phone/${phone}`, {
+        fetch(`http://localhost:5000/order_by_phone/${phone}`, {
             method: 'GET',
             headers: {
                 'content-type': 'application/json',

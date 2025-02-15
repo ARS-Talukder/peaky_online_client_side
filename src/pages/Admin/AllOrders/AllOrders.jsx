@@ -9,7 +9,7 @@ const AllOrders = () => {
     const { data: orders, isLoading, isSuccess, isError, error, refetch } = useQuery({
         queryKey: ["orders"],
         queryFn: () => {
-            return axios.get("https://api.peakyonline.com/orders")
+            return axios.get("http://localhost:5000/orders")
         }
     })
 

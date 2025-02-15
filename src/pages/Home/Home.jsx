@@ -7,8 +7,10 @@ const Home = () => {
     return (
         <div>
             <Categories></Categories>
-            <Slider></Slider>
-            <Products></Products>
+            <div className='px-5 lg:px-24 md:px-8'>
+                <Slider></Slider>
+                <Products></Products>
+            </div>
 
         </div>
     );
