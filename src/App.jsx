@@ -22,6 +22,7 @@ import AllOrders from './pages/Dashboard/Admin/AllOrders/AllOrders'
 import CategoriesList from './pages/Dashboard/Admin/CategoriesList/CategoriesList'
 import Index from './pages/Dashboard/Index'
 import OrderTrack from './pages/Dashboard/OrderTrack/OrderTrack'
+import RequireAdmin from './pages/Sign/RequireAdmin'
 
 function App() {
 
@@ -42,12 +43,12 @@ function App() {
           <Route path='/dashboard' element={<RequireAuth><Dashboard></Dashboard></RequireAuth>}>
             <Route index element={<Index></Index>}></Route>
             <Route path='/dashboard/order_track' element={<OrderTrack></OrderTrack>}></Route>
-            <Route path='/dashboard/products_list' element={<ProductsList></ProductsList>}></Route>
-            <Route path='/dashboard/add_product' element={<AddProduct></AddProduct>}></Route>
-            <Route path='/dashboard/categories_list' element={<CategoriesList></CategoriesList>}></Route>
-            <Route path='/dashboard/add_category' element={<AddCategory></AddCategory>}></Route>
-            <Route path='/dashboard/all_orders' element={<AllOrders></AllOrders>}></Route>
-            <Route path='/dashboard/all_customers' element={<AllCustomers></AllCustomers>}></Route>
+            <Route path='/dashboard/products_list' element={<RequireAdmin><ProductsList></ProductsList></RequireAdmin>}></Route>
+            <Route path='/dashboard/add_product' element={<RequireAdmin><AddProduct></AddProduct></RequireAdmin>}></Route>
+            <Route path='/dashboard/categories_list' element={<RequireAdmin><CategoriesList></CategoriesList></RequireAdmin>}></Route>
+            <Route path='/dashboard/add_category' element={<RequireAdmin><AddCategory></AddCategory></RequireAdmin>}></Route>
+            <Route path='/dashboard/all_orders' element={<RequireAdmin><AllOrders></AllOrders></RequireAdmin>}></Route>
+            <Route path='/dashboard/all_customers' element={<RequireAdmin><AllCustomers></AllCustomers></RequireAdmin>}></Route>
           </Route>
         </Routes>
         <Whatsapp></Whatsapp>
