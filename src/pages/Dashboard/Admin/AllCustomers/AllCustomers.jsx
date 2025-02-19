@@ -1,15 +1,15 @@
 import { useQuery } from '@tanstack/react-query';
 import axios from 'axios';
 import React from 'react';
-import Loading from '../../Shared/Loading';
-import AdminDashboardButton from '../AdminDashboardButton';
 import Customer from './Customer';
+import Loading from '../../../Shared/Loading';
+import DashboardButton from '../../DashboardButton';
 
 const AllCustomers = () => {
     const { data: customers, isLoading, isSuccess, isError, error } = useQuery({
         queryKey: ["customers"],
         queryFn: () => {
-            return axios.get("http://localhost:5000/customers")
+            return axios.get("https://api.peakyonline.com/customers")
         }
     })
 
@@ -24,9 +24,9 @@ const AllCustomers = () => {
     }
 
     return (
-        <div className='py-2'>
+        <div>
             {/* ---------------Dashboard Button------------- */}
-            <AdminDashboardButton></AdminDashboardButton>
+            <DashboardButton></DashboardButton>
             <div className="overflow-x-auto">
                 <table className="table table-xs">
                     <thead>

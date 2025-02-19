@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import DashboardButton from '../DashboardButton';
 import OrderProduct from './OrderProduct';
 
-const MyOrders = () => {
+const OrderTrack = () => {
     const [orders, setOrders] = useState([]);
     const [noOrder, setNoOrder] = useState("");
 
@@ -15,7 +15,7 @@ const MyOrders = () => {
     const handleMyOrder = (e) => {
         e.preventDefault();
         const phone = e.target.phone.value;
-        fetch(`http://localhost:5000/order_by_phone/${phone}`, {
+        fetch(`https://api.peakyonline.com/order_by_phone/${phone}`, {
             method: 'GET',
             headers: {
                 'content-type': 'application/json',
@@ -35,7 +35,7 @@ const MyOrders = () => {
     console.log(orders)
 
     return (
-        <div className='py-2'>
+        <div>
             {/* ---------------Dashboard Button------------- */}
             <DashboardButton></DashboardButton>
             {
@@ -84,4 +84,4 @@ const MyOrders = () => {
     );
 };
 
-export default MyOrders;
+export default OrderTrack;

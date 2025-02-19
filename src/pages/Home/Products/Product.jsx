@@ -16,7 +16,7 @@ const Product = ({ product }) => {
     const handleOrderNow = async () => {
         await dispatch({ type: "ADD", product_id: _id, name: name, category: category, img: img, price: price, discount: discount, discount_price: discount_price, quantity: 1 });
         toast.success('Added to the cart')
-        navigate('cart', { state: product })
+        navigate('/cart', { state: product })
 
     }
 
@@ -71,7 +71,7 @@ const Product = ({ product }) => {
                 </div>
             </div>
             <div className={discount == 0 ? 'hidden' : 'font-normal bg-blue-500 px-2 text-white rounded-xl absolute top-3 right-3'}>
-                <p><small>Discount {discount} %</small></p>
+                <p><small>-{discount} %</small></p>
             </div>
 
         </div>

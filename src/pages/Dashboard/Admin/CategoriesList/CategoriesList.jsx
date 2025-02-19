@@ -1,15 +1,15 @@
 import { useQuery } from '@tanstack/react-query';
 import axios from 'axios';
 import React from 'react';
-import Loading from '../../Shared/Loading';
-import AdminDashboardButton from '../AdminDashboardButton';
 import CategoryTable from './CategoryTable';
+import DashboardButton from '../../DashboardButton';
+import Loading from '../../../Shared/Loading';
 
 const CategoriesList = () => {
     const { data: categories, isLoading, isSuccess, isError, error, refetch } = useQuery({
         queryKey: ["categories"],
         queryFn: () => {
-            return axios.get("http://localhost:5000/categories")
+            return axios.get("https://api.peakyonline.com/categories")
         }
     })
     let content;
@@ -22,20 +22,23 @@ const CategoriesList = () => {
         content = categories.data.map((category, index) => <CategoryTable key={category._id} index={index} category={category} refetch={refetch}></CategoryTable>)
     }
     return (
-        <div className='py-2'>
+        <div>
             {/* ---------------Dashboard Button------------- */}
-            <AdminDashboardButton></AdminDashboardButton>
-            <div className="overflow-x-auto">
-                <table className="table table-xs">
-                    <thead>
+            <DashboardButton></DashboardButton>
+            <div className='bg-white p-5 my-4 rounded-xl shadow-xl'>
+                <h2 className='text-xl font-bold text-slate-600'>Categories List</h2>
+            </div>
+            <div className="overflow-x-auto bg-white rounded-xl shadow-xl my-6">
+                <table className="table table border">
+                    <thead className='bg-blue-700 text-white'>
                         <tr>
-                            <th></th>
-                            <th>Category Name</th>
-                            <th>Img</th>
-                            <th>Delete</th>
+                            <th className='border'>SL</th>
+                            <th className='border'>CATEGORY</th>
+                            <th className='border'>IMAGE</th>
+                            <th className='border'>ACTION</th>
                         </tr>
                     </thead>
-                    <tbody>
+                    <tbody className='border'>
                         {content}
                     </tbody>
                 </table>

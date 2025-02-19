@@ -52,7 +52,7 @@ const Cart = () => {
         const shipping_cost = shipping;
         const order = { customerName: customerName, address: address, subTotal: subTotal, shipping: shipping_cost, total: subTotal + shipping, phone: phone, products: data, date: date, time: time, status: 'pending', status_color: 'yellow' };
         //Post an order
-        fetch('http://localhost:5000/orders', {
+        fetch('https://api.peakyonline.com/orders', {
             method: 'POST',
             headers: {
                 'content-type': 'application/json'
@@ -74,7 +74,7 @@ const Cart = () => {
 
         const customer = { name: customerName, email: "No Email", address: address, phone: phone };
         //Post a customer
-        fetch(`http://localhost:5000/customers/${phone}`, {
+        fetch(`https://api.peakyonline.com/customers/${phone}`, {
             method: 'PUT',
             headers: {
                 'content-type': 'application/json'

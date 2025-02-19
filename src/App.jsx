@@ -7,22 +7,21 @@ import Footer from './pages/Shared/Footer/Footer'
 import Sign from './pages/Sign/Sign'
 import Register from './pages/Sign/Register'
 import Cart from './pages/Home/Products/Cart/Cart'
-import Dashboard from './pages/Dashboard/Dashboard'
-import MyOrders from './pages/Dashboard/MyOrders/MyOrders'
 import CategoryItems from './pages/Home/Categories/CategoryItems'
 import { CartProvider } from './pages/ContextReducer'
 import { Toaster } from 'react-hot-toast'
 import Whatsapp from './pages/Shared/Whatsapp'
-import AdminSign from './pages/Sign/AdminSign'
-import ProductsList from './pages/Admin/ProductsList/ProductsList'
-import RequireAdmin from './pages/Sign/RequireAdmin'
-import AdminDashboard from './pages/Admin/AdminDashboard'
-import AddProduct from './pages/Admin/AddProduct/AddProduct'
-import CategoriesList from './pages/Admin/CategoriesList/CategoriesList'
-import AddCategory from './pages/Admin/AddCategory/AddCategory'
-import AllOrders from './pages/Admin/AllOrders/AllOrders'
-import AllCustomers from './pages/Admin/AllCustomers/AllCustomers'
-import ProductDetails from './pages/Home/Products/ProductDetails'
+import ProductsList from './pages/Dashboard/Admin/ProductsList/ProductsList'
+import ProductDetails from './pages/Home/Products/ProductDetails/ProductDetails'
+import Dashboard from './pages/Dashboard/Dashboard'
+import RequireAuth from './pages/Sign/RequireAuth'
+import AddProduct from './pages/Dashboard/Admin/AddProduct/AddProduct'
+import AddCategory from './pages/Dashboard/Admin/AddCategory/AddCategory'
+import AllCustomers from './pages/Dashboard/Admin/AllCustomers/AllCustomers'
+import AllOrders from './pages/Dashboard/Admin/AllOrders/AllOrders'
+import CategoriesList from './pages/Dashboard/Admin/CategoriesList/CategoriesList'
+import Index from './pages/Dashboard/Index'
+import OrderTrack from './pages/Dashboard/OrderTrack/OrderTrack'
 
 function App() {
 
@@ -36,21 +35,19 @@ function App() {
           <Route path="about" element={<About />} />
           <Route path="sign" element={<Sign />} />
           <Route path="register" element={<Register />} />
-          <Route path="sign/admin" element={<AdminSign />} />
           <Route path="cart" element={<Cart />} />
           <Route path='/:name' element={<CategoryItems></CategoryItems>}></Route>
           <Route path='/product/:id' element={<ProductDetails></ProductDetails>}></Route>
 
-          <Route path='/dashboard' element={<Dashboard></Dashboard>}>
-            <Route index element={<MyOrders></MyOrders>}></Route>
-          </Route>
-          <Route path='/admin_dashboard' element={<RequireAdmin><AdminDashboard></AdminDashboard></RequireAdmin>}>
-            <Route index element={<ProductsList></ProductsList>}></Route>
-            <Route path='/admin_dashboard/add_product' element={<AddProduct></AddProduct>}></Route>
-            <Route path='/admin_dashboard/categories_list' element={<CategoriesList></CategoriesList>}></Route>
-            <Route path='/admin_dashboard/add_category' element={<AddCategory></AddCategory>}></Route>
-            <Route path='/admin_dashboard/all_orders' element={<AllOrders></AllOrders>}></Route>
-            <Route path='/admin_dashboard/all_customers' element={<AllCustomers></AllCustomers>}></Route>
+          <Route path='/dashboard' element={<RequireAuth><Dashboard></Dashboard></RequireAuth>}>
+            <Route index element={<Index></Index>}></Route>
+            <Route path='/dashboard/order_track' element={<OrderTrack></OrderTrack>}></Route>
+            <Route path='/dashboard/products_list' element={<ProductsList></ProductsList>}></Route>
+            <Route path='/dashboard/add_product' element={<AddProduct></AddProduct>}></Route>
+            <Route path='/dashboard/categories_list' element={<CategoriesList></CategoriesList>}></Route>
+            <Route path='/dashboard/add_category' element={<AddCategory></AddCategory>}></Route>
+            <Route path='/dashboard/all_orders' element={<AllOrders></AllOrders>}></Route>
+            <Route path='/dashboard/all_customers' element={<AllCustomers></AllCustomers>}></Route>
           </Route>
         </Routes>
         <Whatsapp></Whatsapp>

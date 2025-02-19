@@ -11,6 +11,10 @@ const Slider = () => {
     return (
         <div className='mb-6'>
             <Swiper
+                style={{
+                    '--swiper-navigation-color': 'black',
+                    '--swiper-navigation-size': '15px',
+                }}
                 // spaceBetween={30}
                 centeredSlides={true}
                 autoplay={{

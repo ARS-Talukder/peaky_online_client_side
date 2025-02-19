@@ -7,7 +7,7 @@ const Order = ({ order, index, refetch }) => {
     const handleOrderState = (event) => {
         const stateName = event.target.value;
         const data = { state: stateName };
-        fetch(`http://localhost:5000/order_state/${_id}`, {
+        fetch(`https://api.peakyonline.com/order_state/${_id}`, {
             method: 'PATCH',
             headers: {
                 'content-type': 'application/json'

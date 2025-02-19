@@ -1,17 +1,17 @@
 import { useQuery } from '@tanstack/react-query';
 import axios from 'axios';
 import React, { useState } from 'react';
-import Loading from '../../Shared/Loading';
+import Loading from '../../../Shared/Loading';
 import toast from 'react-hot-toast';
 import { useNavigate } from 'react-router-dom';
-import AdminDashboardButton from '../AdminDashboardButton';
+import DashboardButton from '../../DashboardButton';
 
 const AddProduct = () => {
     const [selectedCategory, setSelectedCategory] = useState('');
     const { data: categories, isLoading, isSuccess, isError, error } = useQuery({
         queryKey: ["categories"],
         queryFn: () => {
-            return axios.get("http://localhost:5000/categories")
+            return axios.get("https://api.peakyonline.com/categories")
         }
     })
 
@@ -43,7 +43,7 @@ const AddProduct = () => {
         const img_3 = e.target.img_3.value;
         const descr = e.target.descr.value;
         const product = { name, category, price, discount, img, img_2, img_3, descr };
-        fetch('http://localhost:5000/products', {
+        fetch('https://api.peakyonline.com/products', {
             method: 'POST',
             headers: {
                 'content-type': 'application/json'
@@ -59,9 +59,9 @@ const AddProduct = () => {
 
     }
     return (
-        <div className='py-2'>
+        <div>
             {/* ---------------Dashboard Button------------- */}
-            <AdminDashboardButton></AdminDashboardButton>
+            <DashboardButton></DashboardButton>
 
             <div className='flex justify-center items-center mt-6 pt-8 pb-16 px-4'>
                 <div className="card w-96 bg-base-100 shadow-2xl">

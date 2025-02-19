@@ -1,7 +1,7 @@
 import React from 'react';
 import toast from 'react-hot-toast';
 import { useNavigate } from 'react-router-dom';
-import AdminDashboardButton from '../AdminDashboardButton';
+import DashboardButton from '../../DashboardButton';
 
 const AddCategory = () => {
     const navigate = useNavigate();
@@ -11,7 +11,7 @@ const AddCategory = () => {
         const name = e.target.name.value;
         const img = e.target.img.value;
         const category = { name, img };
-        fetch('http://localhost:5000/categories', {
+        fetch('https://api.peakyonline.com/categories', {
             method: 'POST',
             headers: {
                 'content-type': 'application/json'
@@ -26,9 +26,9 @@ const AddCategory = () => {
             })
     }
     return (
-        <div className='py-2'>
+        <div>
             {/* ---------------Dashboard Button------------- */}
-            <AdminDashboardButton></AdminDashboardButton>
+            <DashboardButton></DashboardButton>
 
             <div className='flex justify-center items-center mt-6 pt-8 pb-16 px-4'>
                 <div className="card w-96 bg-base-100 shadow-2xl">
