@@ -37,30 +37,30 @@ const Order = ({ order, index, refetch }) => {
     }
 
         return (
-            <tr className='text-center'>
-                <th>{index + 1}</th>
-                <td>
+            <tr className='text-slate-600 font-bold'>
+                <th className='border'>{index + 1}</th>
+                <td className='border'>
                     {products.map(p => <p key={p.product_id}>{p.name}</p>)}
                 </td>
-                <td>
+                <td className='border'>
                     {products.map(p => <p key={p.product_id}>{p.quantity}</p>)}
                 </td>
-                <td>
+                <td className='border'>
                     {products.map(p => <p key={p.product_id}>{p.discount_price}</p>)}
                 </td>
-                <td>
+                <td className='border'>
                     {products.map(p => <p key={p.product_id}>{p.discount + "%"}</p>)}
                 </td>
-                <td>
+                <td className='border'>
                     {products.map(p => <p key={p.product_id}>{p.discount_price * p.quantity}</p>)}
                 </td>
-                <td>{shipping}</td>
-                <td className='font-bold'>{total}</td>
-                <td>
+                <td className='border'>{shipping}</td>
+                <td className='font-bold border'>{total}</td>
+                <td className='border'>
                     <p>{date}</p>
                     <p>{time}</p>
                 </td>
-                <td>
+                <td className='border'>
                     <p>{email}</p>
                     <p>{phone}</p>
                     <p>{address}</p>

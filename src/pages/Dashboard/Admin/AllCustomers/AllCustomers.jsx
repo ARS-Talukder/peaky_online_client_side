@@ -24,20 +24,23 @@ const AllCustomers = () => {
     }
 
     return (
-        <div>
+        <div className='py-2'>
             {/* ---------------Dashboard Button------------- */}
             <DashboardButton></DashboardButton>
-            <div className="overflow-x-auto">
-                <table className="table table-xs">
-                    <thead>
+            <div className='bg-white p-5 my-4 rounded-xl shadow-xl'>
+                <h2 className='text-xl font-bold text-slate-600'>All Customers</h2>
+            </div>
+            <div className="overflow-x-auto bg-white rounded-xl shadow-xl my-6">
+                <table className="table table border">
+                    <thead className='bg-blue-700 text-white'>
                         <tr className='text-center'>
-                            <th></th>
-                            <th>Name</th>
-                            <th>Email</th>
-                            <th>Phone</th>
+                            <th className='border'>SL</th>
+                            <th className='border'>Name</th>
+                            <th className='border'>Email</th>
+                            <th className='border'>Phone</th>
                         </tr>
                     </thead>
-                    <tbody>
+                    <tbody className='border'>
                         {content}
                     </tbody>
                 </table>

@@ -5,18 +5,41 @@ import toast from 'react-hot-toast';
 import { Link, useNavigate } from 'react-router-dom';
 
 const Product = ({ product }) => {
-    const { _id, name, category, img, price, discount } = product;
+    const { _id, name, category, images, price, discount } = product;
     const discount_price = price - ((discount * price) / 100);
     const navigate = useNavigate();
+    const img = images[0]?.url;
 
     const navigateToProductsDetails = () => {
-        navigate(`product/${_id}`, { state: product })
+        navigate(`/product/${_id}`, { state: product })
+
+         // Pushing Data to the Data Layer for Google data manager(GTM)
+         window.dataLayer.push({
+            event: 'product_details',
+            ecommerce: {
+                items: [{ product_id: _id, name: name, category: category, img: img, price: price, discount: discount, discount_price: discount_price }]
+            },
+            buttonText: 'Product Details',
+            buttonClick: 'Clicked',
+            pagePath: window.location.pathname,
+        });
     }
 
     const handleOrderNow = async () => {
         await dispatch({ type: "ADD", product_id: _id, name: name, category: category, img: img, price: price, discount: discount, discount_price: discount_price, quantity: 1 });
         toast.success('Added to the cart')
         navigate('/cart', { state: product })
+
+        // Pushing Data to the Data Layer for Google data manager(GTM)
+        window.dataLayer.push({
+            event: 'order_now',
+            ecommerce: {
+                items: [{ product_id: _id, name: name, category: category, img: img, price: price, discount: discount, discount_price: discount_price, quantity: 1 }]
+            },
+            buttonText: 'Order Now',
+            buttonClick: 'Clicked',
+            pagePath: window.location.pathname,
+        });
 
     }
 
@@ -27,7 +50,18 @@ const Product = ({ product }) => {
 
     const handleAddToCart = async () => {
         await dispatch({ type: "ADD", product_id: _id, name: name, category: category, img: img, price: price, discount: discount, discount_price: discount_price, quantity: 1 });
-        toast.success('Added to the cart')
+        toast.success('Added to the cart');
+
+        // Pushing Data to the Data Layer for Google data manager(GTM)
+        window.dataLayer.push({
+            event: 'add_to_cart',
+            ecommerce: {
+                items: [{ product_id: _id, name: name, category: category, img: img, price: price, discount: discount, discount_price: discount_price, quantity: 1 }]
+            },
+            buttonText: 'Add To Cart',
+            buttonClick: 'Clicked',
+            pagePath: window.location.pathname,
+        });
 
     }
 

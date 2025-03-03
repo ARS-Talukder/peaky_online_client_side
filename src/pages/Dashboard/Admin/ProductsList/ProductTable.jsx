@@ -8,8 +8,9 @@ import { GrView } from "react-icons/gr";
 
 
 const ProductTable = ({ index, product, refetch }) => {
-    const { _id, name, category, img, price, discount } = product;
+    const { _id, name, category, images, price, discount } = product;
     const discount_price = price - ((discount * price) / 100);
+    const img = images[0]?.url;
 
     const handleEdit = (promptText, query, id) => {
         let proceed = window.prompt(promptText);
@@ -89,14 +90,14 @@ const ProductTable = ({ index, product, refetch }) => {
                 </div>
             </td>
             <td className='border'>
-                <button className='p-1 bg-purple-200 rounded' title="View">
+                <button className='p-1 bg-purple-200 rounded hover:bg-purple-300' title="View">
                     <GrView className="text-2xl text-purple-600"></GrView>
                 </button>
-                <button className='p-1 bg-green-100 rounded mx-2' title="Edit">
+                <button className='p-1 bg-green-100 rounded hover:bg-green-200 mx-2' title="Edit">
                     <MdEdit className="text-2xl text-green-500"></MdEdit>
                 </button>
 
-                <button onClick={() => handleDelete(_id)} className='p-1 bg-red-100 rounded' title="Delete">
+                <button onClick={() => handleDelete(_id)} className='p-1 bg-red-100 rounded hover:bg-red-200' title="Delete">
                     <AiFillDelete className="text-2xl text-red-500"></AiFillDelete>
                 </button>
             </td>

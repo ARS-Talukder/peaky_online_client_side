@@ -1,18 +1,15 @@
 import React, { useRef, useState } from 'react';
-// Import Swiper React components
 import { Swiper, SwiperSlide } from 'swiper/react';
 
-// Import Swiper styles
 import 'swiper/css';
 import 'swiper/css/free-mode';
 import 'swiper/css/navigation';
 import 'swiper/css/thumbs';
 
-// import required modules
 import { FreeMode, Navigation, Thumbs } from 'swiper/modules';
 import ReactImageMagnify from 'react-image-magnify';
 
-const ProductSlider = () => {
+const ProductSlider = ({ images }) => {
     const [thumbsSwiper, setThumbsSwiper] = useState(null);
     return (
         <div className='w-1/2 mr-4'>
@@ -32,35 +29,25 @@ const ProductSlider = () => {
                 modules={[FreeMode, Navigation, Thumbs]}
                 className="mySwiper2"
             >
-                <SwiperSlide>
-                    <ReactImageMagnify
-                        {...{
-                            smallImage: {
-                                alt: "Product",
-                                isFluidWidth: true,
-                                src: "https://i.ibb.co/G2PRMP2/set-menu.jpg",
-                            },
-                            largeImage: {
-                                src: "https://i.ibb.co/G2PRMP2/set-menu.jpg",
-                                width: 1200, // Large image width for zoomed-in effect
-                                height: 800, // Large image height
-                            },
-                            enlargedImageContainerStyle: { zIndex: 9 },
-                        }}
-                    />
-                </SwiperSlide>
-                <SwiperSlide>
-                    <img src="https://i.ibb.co.com/TTtVhz6/formal-shirt.jpg" />
-                </SwiperSlide>
-                <SwiperSlide>
-                    <img src="https://i.ibb.co.com/G2PRMP2/set-menu.jpg" />
-                </SwiperSlide>
-                <SwiperSlide>
-                    <img src="https://i.ibb.co.com/TTtVhz6/formal-shirt.jpg" />
-                </SwiperSlide>
-                <SwiperSlide>
-                    <img src="https://i.ibb.co.com/TTtVhz6/formal-shirt.jpg" />
-                </SwiperSlide>
+                {
+                    images?.map(i => <SwiperSlide key={i._id} i={i}>
+                        <ReactImageMagnify
+                            {...{
+                                smallImage: {
+                                    alt: "Product",
+                                    isFluidWidth: true,
+                                    src: i.url,
+                                },
+                                largeImage: {
+                                    src: i.url,
+                                    width: 1200, // Large image width for zoomed-in effect
+                                    height: 800, // Large image height
+                                },
+                                enlargedImageContainerStyle: { zIndex: 9 },
+                            }}
+                        />
+                    </SwiperSlide>)
+                }
             </Swiper>
             <Swiper
                 style={{
@@ -79,21 +66,11 @@ const ProductSlider = () => {
                 modules={[FreeMode, Navigation, Thumbs]}
                 className="mySwiper"
             >
-                <SwiperSlide>
-                    <img src="https://i.ibb.co.com/G2PRMP2/set-menu.jpg" />
-                </SwiperSlide>
-                <SwiperSlide>
-                    <img src="https://i.ibb.co.com/TTtVhz6/formal-shirt.jpg" />
-                </SwiperSlide>
-                <SwiperSlide>
-                    <img src="https://i.ibb.co.com/G2PRMP2/set-menu.jpg" />
-                </SwiperSlide>
-                <SwiperSlide>
-                    <img src="https://i.ibb.co.com/TTtVhz6/formal-shirt.jpg" />
-                </SwiperSlide>
-                <SwiperSlide>
-                    <img src="https://i.ibb.co.com/TTtVhz6/formal-shirt.jpg" />
-                </SwiperSlide>
+                {
+                    images?.map(i => <SwiperSlide key={i._id} i={i}>
+                        <img src={i.url} />
+                    </SwiperSlide>)
+                }
             </Swiper>
         </div>
     );

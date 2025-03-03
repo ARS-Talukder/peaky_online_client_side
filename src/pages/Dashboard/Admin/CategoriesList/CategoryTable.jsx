@@ -40,11 +40,11 @@ const CategoryTable = ({ index, category, refetch }) => {
             </td>
 
             <td className='border'>
-                <button className='p-1 bg-green-100 rounded mx-2' title="Edit">
+                <button className='p-1 bg-green-100 rounded hover:bg-green-200 mx-2' title="Edit">
                     <MdEdit className="text-2xl text-green-500"></MdEdit>
                 </button>
 
-                <button onClick={() => handleDelete(_id)} className='p-1 bg-red-100 rounded' title="Delete">
+                <button onClick={() => handleDelete(_id)} className='p-1 bg-red-100 rounded hover:bg-red-200' title="Delete">
                     <AiFillDelete className="text-2xl text-red-500"></AiFillDelete>
                 </button>
             </td>

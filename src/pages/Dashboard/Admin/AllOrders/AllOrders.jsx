@@ -24,27 +24,30 @@ const AllOrders = () => {
     }
 
     return (
-        <div>
+        <div className='py-2'>
             {/* ---------------Dashboard Button------------- */}
             <DashboardButton></DashboardButton>
-            <div className="overflow-x-auto">
-                <table className="table table-xs">
-                    <thead>
+            <div className='bg-white p-5 my-4 rounded-xl shadow-xl'>
+                <h2 className='text-xl font-bold text-slate-600'>All Orders</h2>
+            </div>
+            <div className="overflow-x-auto bg-white rounded-xl shadow-xl my-6">
+                <table className="table table border">
+                    <thead className='bg-blue-700 text-white'>
                         <tr className='text-center'>
-                            <th></th>
-                            <th>Product</th>
-                            <th>Qty</th>
-                            <th>Price</th>
-                            <th>With Discount</th>
-                            <th>Sub Total</th>
-                            <th>Shipping</th>
-                            <th>Total</th>
-                            <th>Order Date</th>
-                            <th>Information</th>
-                            <th>State</th>
+                            <th className='border'>SL</th>
+                            <th className='border'>Product</th>
+                            <th className='border'>Qty</th>
+                            <th className='border'>Price</th>
+                            <th className='border'>With Discount</th>
+                            <th className='border'>Sub Total</th>
+                            <th className='border'>Shipping</th>
+                            <th className='border'>Total</th>
+                            <th className='border'>Order Date</th>
+                            <th className='border'>Information</th>
+                            <th className='border'>State</th>
                         </tr>
                     </thead>
-                    <tbody>
+                    <tbody className='border'>
                         {content}
                     </tbody>
                 </table>

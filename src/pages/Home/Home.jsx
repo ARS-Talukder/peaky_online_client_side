@@ -1,9 +1,20 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import Categories from './Categories/Categories';
 import Slider from './Slider/Slider';
 import Products from './Products/Products';
 
 const Home = () => {
+    useEffect(() => {
+        window.dataLayer = window.dataLayer || [];
+        window.dataLayer.push({
+            event: "homepage_view",
+            ecommerce: {
+                pageType: "homepage",
+            },
+            pagePath: window.location.pathname,
+        });
+    }, []);
+    
     return (
         <div>
             <Categories></Categories>
