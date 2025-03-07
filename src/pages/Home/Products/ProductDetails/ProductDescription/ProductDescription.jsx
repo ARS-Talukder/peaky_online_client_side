@@ -60,7 +60,7 @@ const ProductDescription = ({ product }) => {
         }
     }
     return (
-        <div className='w-1/2'>
+        <div className='lg:w-1/2 md:w-1/2'>
             <h2 className='text-3xl font-bold'>{name}</h2>
             <div className='flex text-2xl font-bold my-2'>
                 <p className='flex items-center justify-center font-normal line-through decoration-2 mr-2 text-slate-400'>

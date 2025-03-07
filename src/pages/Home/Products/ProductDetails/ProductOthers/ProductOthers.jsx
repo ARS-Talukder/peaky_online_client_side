@@ -5,7 +5,7 @@ const ProductOthers = ({ product }) => {
     console.log(description)
     const { description_title, description_details, specificDescription } = description;
     return (
-        <div className='w-2/3 mx-auto py-10'>
+        <div className='lg:w-2/3 md:w-3/4 mx-auto py-10 px-4 lg:px-0'>
             <h2 className='text-xl font-bold'>Description</h2>
             <h3 className='text-xl font-bold my-2'>{description_title}</h3>
             <h3 className='text-slate-500 font-bold my-4'>{description_details}</h3>

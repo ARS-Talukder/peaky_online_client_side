@@ -11,8 +11,8 @@ const ProductDetails = () => {
     console.log(product)
     const { name, price, discount, category, images, description, productColor, size, whyBest } = product;
     return (
-        <div className='px-48'>
-            <section className='flex bg-gray-50 p-4'>
+        <div className='lg:px-48'>
+            <section className='lg:flex md:flex bg-gray-50 p-4'>
                 <ProductSlider images={images}></ProductSlider>
                 <ProductDescription product={product}></ProductDescription>
             </section>

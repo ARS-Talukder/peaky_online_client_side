@@ -12,7 +12,7 @@ import ReactImageMagnify from 'react-image-magnify';
 const ProductSlider = ({ images }) => {
     const [thumbsSwiper, setThumbsSwiper] = useState(null);
     return (
-        <div className='w-1/2 mr-4'>
+        <div className='lg:w-1/2 md:w-1/2 lg:mr-4 md:mr-4'>
             <Swiper
                 style={{
                     '--swiper-navigation-color': 'black',

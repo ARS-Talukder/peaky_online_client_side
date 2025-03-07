@@ -23,6 +23,7 @@ import CategoriesList from './pages/Dashboard/Admin/CategoriesList/CategoriesLis
 import Index from './pages/Dashboard/Index'
 import OrderTrack from './pages/Dashboard/OrderTrack/OrderTrack'
 import RequireAdmin from './pages/Sign/RequireAdmin'
+import EditProduct from './pages/Dashboard/Admin/EditProduct/EditProduct'
 
 function App() {
 
@@ -45,6 +46,7 @@ function App() {
             <Route path='/dashboard/order_track' element={<OrderTrack></OrderTrack>}></Route>
             <Route path='/dashboard/products_list' element={<RequireAdmin><ProductsList></ProductsList></RequireAdmin>}></Route>
             <Route path='/dashboard/add_product' element={<RequireAdmin><AddProduct></AddProduct></RequireAdmin>}></Route>
+            <Route path='/dashboard/edit_product' element={<RequireAdmin><EditProduct></EditProduct></RequireAdmin>}></Route>
             <Route path='/dashboard/categories_list' element={<RequireAdmin><CategoriesList></CategoriesList></RequireAdmin>}></Route>
             <Route path='/dashboard/add_category' element={<RequireAdmin><AddCategory></AddCategory></RequireAdmin>}></Route>
             <Route path='/dashboard/all_orders' element={<RequireAdmin><AllOrders></AllOrders></RequireAdmin>}></Route>
