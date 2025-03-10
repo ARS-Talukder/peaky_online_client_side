@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import Product from './Product';
 import { useQuery } from '@tanstack/react-query';
 import Loading from '../../Shared/Loading';
@@ -11,6 +11,23 @@ const Products = () => {
             return axios.get("https://api.peakyonline.com/products")
         }
     })
+    useEffect(() => {
+        if (isSuccess && products?.data) {
+            // Clear previous ecommerce data before pushing the new product
+            window.dataLayer.push({ ecommerce: null });
+
+            // Pushing Data to the Data Layer for Google Tag Manager (GTM)
+            window.dataLayer.push({
+                event: "view_item_list",
+                ecommerce: {
+                    currency: 'BDT',
+                    items: products.data
+                },
+                pagePath: window.location.pathname,
+            });
+        }
+    }, [isSuccess, products]);
+
     let content;
 
     if (isLoading) {
@@ -20,6 +37,7 @@ const Products = () => {
     if (isSuccess) {
         content = products.data.map(product => <Product key={product._id} product={product}></Product>)
     }
+
 
     return (
         <div className='mb-6'>
