@@ -34,6 +34,27 @@ const Cart = () => {
             const multiplication = discountPrice * quantity;
             subTotal = subTotal + multiplication;
         }
+
+        // Clear previous ecommerce data before pushing the new product
+        window.dataLayer.push({ ecommerce: null });
+
+        // Pushing Data to the Data Layer for Google data manager(GTM)
+        window.dataLayer.push({
+            event: 'view_cart',
+            gtm: {
+                uniqueEventId: new Date().getTime(), // Ensure unique event ID
+                historyChangeSource: "pushState",
+                oldHistoryState: null, // Reset old history state
+                newHistoryState: { usr: null, key: "new_key", idx: 2 }, // Keep new state
+            },
+            ecommerce: {
+                currency: 'BDT',
+                items: data
+            },
+            pagePath: window.location.pathname,
+        });
+
+
     }
     const handleShipping = (e) => {
         if (e.target.value === 'outside_dhaka') {
@@ -81,6 +102,30 @@ const Cart = () => {
             },
             body: JSON.stringify(customer)
         })
+
+
+        // Clear previous ecommerce data before pushing the new product
+        window.dataLayer.push({ ecommerce: null });
+
+        // Pushing Data to the Data Layer for Google data manager(GTM)
+        window.dataLayer.push({
+            event: 'purchase',
+            gtm: {
+                uniqueEventId: new Date().getTime(), // Ensure unique event ID
+                historyChangeSource: "pushState",
+                oldHistoryState: null, // Reset old history state
+                newHistoryState: { usr: null, key: "new_key", idx: 2 }, // Keep new state
+            },
+            ecommerce: {
+                currency: 'BDT',
+                value: parseFloat(subTotal),
+                shipping: parseFloat(shipping_cost),
+                items: [order]
+            },
+            buttonText: 'Confirm Order',
+            buttonClick: 'Clicked',
+            pagePath: window.location.pathname,
+        });
     }
 
     return (

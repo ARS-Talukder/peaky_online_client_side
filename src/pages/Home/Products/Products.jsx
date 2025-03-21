@@ -19,6 +19,12 @@ const Products = () => {
             // Pushing Data to the Data Layer for Google Tag Manager (GTM)
             window.dataLayer.push({
                 event: "view_item_list",
+                gtm: {
+                    uniqueEventId: new Date().getTime(), // Ensure unique event ID
+                    historyChangeSource: "pushState",
+                    oldHistoryState: null, // Reset old history state
+                    newHistoryState: { usr: null, key: "new_key", idx: 2 }, // Keep new state
+                },
                 ecommerce: {
                     currency: 'BDT',
                     items: products.data

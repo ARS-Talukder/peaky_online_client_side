@@ -21,7 +21,13 @@ const ProductDescription = ({ product }) => {
 
         // Pushing Data to the Data Layer for Google data manager(GTM)
         window.dataLayer.push({
-            event: 'order_now',
+            event: 'begin_checkout',
+            gtm: {
+                uniqueEventId: new Date().getTime(), // Ensure unique event ID
+                historyChangeSource: "pushState",
+                oldHistoryState: null, // Reset old history state
+                newHistoryState: { usr: null, key: "new_key", idx: 2 }, // Keep new state
+            },
             ecommerce: {
                 currency: 'BDT',
                 value: parseFloat(price),
@@ -49,6 +55,12 @@ const ProductDescription = ({ product }) => {
         // Pushing Data to the Data Layer for Google data manager(GTM)
         window.dataLayer.push({
             event: 'add_to_cart',
+            gtm: {
+                uniqueEventId: new Date().getTime(), // Ensure unique event ID
+                historyChangeSource: "pushState",
+                oldHistoryState: null, // Reset old history state
+                newHistoryState: { usr: null, key: "new_key", idx: 2 }, // Keep new state
+            },
             ecommerce: {
                 currency: 'BDT',
                 value: parseFloat(price),
