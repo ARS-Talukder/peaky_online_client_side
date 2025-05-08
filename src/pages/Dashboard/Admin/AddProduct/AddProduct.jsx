@@ -25,14 +25,6 @@ const AddProduct = () => {
     const [sizeText, setSizeText] = useState('');
     const [size, setSize] = useState([]);
 
-    // Handling Why our products are best state?
-    const [whyBestText, setWhyBestText] = useState('');
-    const [whyBest, setWhyBest] = useState([]);
-
-    // Handling Specific Description state
-    const [specificDescriptionText, setSpecificDescriptionText] = useState('');
-    const [specificDescription, setSpecificDescription] = useState([]);
-
     const { data: categories, isLoading, isSuccess, isError } = useQuery({
         queryKey: ["categories"],
         queryFn: () => {
@@ -54,20 +46,6 @@ const AddProduct = () => {
             setSelectedCategory(event.target.value);
         }
     }
-
-    // Handling Why our products are best?
-    const handleWhyBest = () => {
-        if (whyBestText.trim() === '') return;
-        const newItem = {
-            _id: Date.now(),
-            text: whyBestText
-        };
-        setWhyBest(prev => [...prev, newItem]);
-        setWhyBestText('');
-    }
-    const handleDeleteWhyBest = (id) => {
-        setWhyBest(prev => prev.filter(item => item._id !== id));
-    };
 
     // Handling product color
     const handleProductColor = () => {
@@ -97,20 +75,6 @@ const AddProduct = () => {
         setSize(prev => prev.filter(item => item._id !== id));
     };
 
-
-    // Handling Specific Description
-    const handleSpecificDescription = () => {
-        if (specificDescriptionText.trim() === '') return;
-        const newItem = {
-            _id: Date.now(),
-            text: specificDescriptionText
-        };
-        setSpecificDescription(prev => [...prev, newItem]);
-        setSpecificDescriptionText('');
-    }
-    const handleDeleteSpecificDescription = (id) => {
-        setSpecificDescription(prev => prev.filter(item => item._id !== id));
-    };
 
 
     // Handling image upload and delete from hosting
@@ -160,12 +124,24 @@ const AddProduct = () => {
             return toast.error("You must select a Category")
         }
         const price = e.target.price.value;
-        const discount = e.target.discount.value;
+
+        const discount_price = e.target.discount_price.value;
+        let discount;
+        if (discount_price == "") {
+            discount = 0;
+        }
+        else {
+            discount = ((price - discount_price) * 100) / price;
+        }
+
         const subtitle = e.target.subtitle.value;
+        const whyBest = e.target.whyBest.value;
         const description_title = e.target.description_title.value;
         const description_details = e.target.description_details.value;
+        const specificDescription = e.target.specificDescription.value;
         const description = { description_title, description_details, specificDescription };
         const product = { name, category, price, discount, subtitle, whyBest, productColor, size, images: images, description };
+
         fetch('https://api.peakyonline.com/products', {
             method: 'POST',
             headers: {
@@ -211,9 +187,9 @@ const AddProduct = () => {
                             </div>
                             <div className="form-control w-full my-2">
                                 <label className="label">
-                                    <span className="label-text text-slate-500 font-bold">DISCOUNT (%)</span>
+                                    <span className="label-text text-slate-500 font-bold">DISCOUNT (price)</span>
                                 </label>
-                                <input type="number" name="discount" className="input input-bordered input-sm w-full h-14 bg-slate-50" required />
+                                <input type="number" name="discount_price" className="input input-bordered input-sm w-full h-14 bg-slate-50" />
                             </div>
                         </div>
                         {/* Subtitle & Category */}
@@ -222,7 +198,7 @@ const AddProduct = () => {
                                 <label className="label">
                                     <span className="label-text text-slate-500 font-bold">SUBTITLE</span>
                                 </label>
-                                <input type="text" name="subtitle" className="input input-bordered input-sm w-full h-14 bg-slate-50" required />
+                                <input type="text" name="subtitle" className="input input-bordered input-sm w-full h-14 bg-slate-50" />
                             </div>
                             <div className="form-control w-full my-2">
                                 <label className="label">
@@ -305,33 +281,12 @@ const AddProduct = () => {
 
                     {/* Why our products are the best */}
                     <section className='bg-white p-5 rounded-xl my-4'>
-                        <h2 className='text-slate-500 font-bold mb-2'>Why our products are the best ?</h2>
-                        <ul>
-                            {
-                                whyBest.map((w) =>
-                                    <li key={w._id} className='px-2 my-2 flex items-center'>
-                                        <span>✅</span>
-                                        <span className='mx-2'>{w.text}</span>
-                                        <button className='bg-red-100' title="Delete" onClick={() => handleDeleteWhyBest(w._id)}>
-                                            <AiFillDelete className="text-xl text-red-500"></AiFillDelete>
-                                        </button>
-                                    </li>)
-                            }
-                        </ul>
-                        <div className='flex justify-between my-2'>
-                            <div className="w-5/6 my-2 mr-2">
-                                <input type="text" className="input input-bordered input-sm w-full h-14 bg-slate-50" value={whyBestText}
-                                    onChange={(e) => setWhyBestText(e.target.value)}
-                                    onKeyDown={(e) => {
-                                        if (e.key === "Enter") {
-                                            e.preventDefault();
-                                            handleWhyBest();
-                                        }
-                                    }} />
-                            </div>
-                            <div className="w-1/6 my-2">
-                                <button type="button" onClick={handleWhyBest} className='w-full btn btn-success h-14 text-white'>Add</button>
-                            </div>
+                        <div className="form-control w-full">
+                            <label className="label">
+                                <span className="label-text text-slate-500 font-bold">Why our products are the best?</span>
+                            </label>
+                            <textarea name="whyBest" className="textarea textarea-bordered textarea-sm w-full h-24 bg-slate-50"></textarea>
+
                         </div>
                     </section>
 
@@ -343,7 +298,7 @@ const AddProduct = () => {
                             <label className="label">
                                 <span className="label-text text-slate-500 font-bold">Description Title</span>
                             </label>
-                            <input type="text" name="description_title" className="input input-bordered input-sm w-full h-14 bg-slate-50" required />
+                            <input type="text" name="description_title" className="input input-bordered input-sm w-full h-14 bg-slate-50" />
                         </div>
 
                         <div className="form-control w-full">
@@ -354,37 +309,13 @@ const AddProduct = () => {
 
                         </div>
 
-                        <section className='bg-white rounded-xl my-4'>
-                            <h2 className='text-slate-500 font-bold mb-2'>Specific Description (Optional)</h2>
-                            <ul className="list-disc list-inside">
-                                {
-                                    specificDescription.map((s) =>
-                                        <li key={s._id} className='px-2 my-2 flex items-center'>
-                                            <span>👉</span>
-                                            <span className='mx-2'>{s.text}</span>
-                                            <button className='bg-red-100' title="Delete" onClick={() => handleDeleteSpecificDescription(s._id)}>
-                                                <AiFillDelete className="text-xl text-red-500"></AiFillDelete>
-                                            </button>
-                                        </li>)
-                                }
-                            </ul>
-                            <div className='flex justify-between my-2'>
-                                <div className="w-5/6 my-2 mr-2">
-                                    <input type="text" className="input input-bordered input-sm w-full h-14 bg-slate-50"
-                                        value={specificDescriptionText}
-                                        onChange={(e) => setSpecificDescriptionText(e.target.value)}
-                                        onKeyDown={(e) => {
-                                            if (e.key === "Enter") {
-                                                e.preventDefault();
-                                                handleSpecificDescription();
-                                            }
-                                        }} />
-                                </div>
-                                <div className="w-1/6 my-2">
-                                    <button type="button" onClick={handleSpecificDescription} className='w-full btn btn-success h-14 text-white'>Add</button>
-                                </div>
-                            </div>
-                        </section>
+                        <div className="form-control w-full">
+                            <label className="label">
+                                <span className="label-text text-slate-500 font-bold">Specific Description</span>
+                            </label>
+                            <textarea name="specificDescription" className="textarea textarea-bordered textarea-sm w-full h-24 bg-slate-50"></textarea>
+
+                        </div>
                     </section>
 
 

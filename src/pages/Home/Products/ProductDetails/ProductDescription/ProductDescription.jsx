@@ -7,9 +7,10 @@ import { useCart, useDispatchCart } from '../../../../ContextReducer';
 import toast from 'react-hot-toast';
 
 const ProductDescription = ({ product }) => {
-    const { _id, name, price, discount, category, images, description, productColor, size, whyBest } = product;
+    const { _id, name, price, discount, category, images, description, productColor, subtitle, size, whyBest } = product;
     const discount_price = price - ((discount * price) / 100);
     const img = images[0]?.url;
+    console.log(product)
 
     const handleOrderNow = async () => {
         await dispatch({ type: "ADD", product_id: _id, name: name, category: category, img: img, price: price, discount: discount, discount_price: discount_price, quantity: 1 });
@@ -85,30 +86,27 @@ const ProductDescription = ({ product }) => {
         <div className='lg:w-1/2 md:w-1/2'>
             <h2 className='text-3xl font-bold'>{name}</h2>
             <div className='flex text-2xl font-bold my-2'>
-                <p className='flex items-center justify-center font-normal line-through decoration-2 mr-2 text-slate-400'>
+                <p className={price == discount_price ? 'flex items-center justify-center decoration-2 mr-2 text-blue-700' : 'flex items-center justify-center font-normal line-through decoration-2 mr-2 text-slate-400'}>
                     <span className='text-xs'><small><FaBangladeshiTakaSign /></small></span>
                     <span>{price}</span>
                 </p>
-                <p className='flex justify-center items-center text-blue-700'>
+                <p className={price == discount_price ? 'hidden' : 'flex justify-center items-center text-blue-700'}>
                     <span className='text-xs'><small><FaBangladeshiTakaSign /></small></span>
                     <span>{discount_price}</span>
                 </p>
             </div>
 
-            <div className=''>
-                <h3 className='text-xl font-bold my-1'><small>Why our products are the best?</small></h3>
+            <h2 className='font-bold'>{subtitle}</h2>
 
-                <ul className='text-slate-500 font-bold px-1'>
-                    {
-                        whyBest.map(w => <li key={w._id}><small><span className='mr-1'>✅</span>{w.text}</small></li>)
-                    }
-                </ul>
+            <div className={whyBest.length == '' ? 'hidden' : ''}>
+                <h3 className='text-xl font-bold my-1'><small>Why our products are the best?</small></h3>
+                <pre>{whyBest}</pre>
             </div>
 
             <div className='flex mt-6 font-bold'>
                 {
                     productAdded === false ?
-                        <button onClick={handleAddToCart} className='flex justify-center items-center w-full h-9 bg-sky-200 hover:bg-blue-100 text-blue-500 rounded'><span>Add To Cart</span></button>
+                        <button onClick={handleAddToCart} className='flex justify-center items-center w-full h-9 bg-red-500 hover:bg-red-600 text-white rounded'><span>Add To Cart</span></button>
                         :
                         <button className='flex justify-center items-center w-full h-9 bg-sky-200 text-blue-300 rounded' disabled><span>Added</span></button>
                 }

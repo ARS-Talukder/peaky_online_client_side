@@ -24,6 +24,7 @@ import Index from './pages/Dashboard/Index'
 import OrderTrack from './pages/Dashboard/OrderTrack/OrderTrack'
 import RequireAdmin from './pages/Sign/RequireAdmin'
 import EditProduct from './pages/Dashboard/Admin/EditProduct/EditProduct'
+import Confirmed from './pages/Home/Products/Cart/Confirmed'
 
 function App() {
 
@@ -38,6 +39,7 @@ function App() {
           <Route path="sign" element={<Sign />} />
           <Route path="register" element={<Register />} />
           <Route path="cart" element={<Cart />} />
+          <Route path="confirmed" element={<Confirmed />} />
           <Route path='/:name' element={<CategoryItems></CategoryItems>}></Route>
           <Route path='/product/:id' element={<ProductDetails></ProductDetails>}></Route>
 

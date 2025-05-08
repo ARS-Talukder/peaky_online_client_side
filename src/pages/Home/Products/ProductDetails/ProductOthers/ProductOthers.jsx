@@ -10,25 +10,16 @@ const ProductOthers = ({ product }) => {
             <h3 className='text-xl font-bold my-2'>{description_title}</h3>
             <h3 className='text-slate-500 font-bold my-4'>{description_details}</h3>
 
-            <h4 className='font-bold'>Specification:</h4>
+            <h4 className={specificDescription.length == '' ? 'hidden' : 'font-bold'}>Specification:</h4>
             <div className='text-slate-600 px-3 my-4'>
-                <small>
-                    <ul>
-                        {
-                            specificDescription.map(s => <li key={s._id} className='my-3'>
-                                <span className='mr-2'>👉</span>
-                                <span>{s.text}</span>
-                            </li>)
-                        }
-                    </ul>
-                </small>
+                <pre><small>{specificDescription}</small></pre>
             </div>
             <div className='my-8'>
                 {
                     images.map(i => <img key={i._id} src={i.url} alt="product" />)
                 }
             </div>
-        </div>
+        </div >
     );
 };
 

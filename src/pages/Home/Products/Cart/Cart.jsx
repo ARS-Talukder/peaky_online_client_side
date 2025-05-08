@@ -85,7 +85,7 @@ const Cart = () => {
                 if (data.acknowledged === true) {
                     toast.success("Congratulations! Your order's completed");
                     dispatch({ type: "CLEAR" })
-                    navigate('/')
+                    navigate('/confirmed')
                 }
                 else {
                     toast.error('Sorry! Try again')

@@ -96,11 +96,11 @@ const Product = ({ product }) => {
                     </div>
                     <p><small>{name}</small></p>
                     <div className='flex justify-center'>
-                        <p className='flex items-center justify-center font-normal line-through decoration-2 mr-2'>
+                        <p className={price == discount_price ? 'flex items-center justify-center decoration-2 mr-2' : 'flex items-center justify-center font-normal line-through decoration-2 mr-2'}>
                             <span className='text-xs'><small><FaBangladeshiTakaSign /></small></span>
                             <span>{price}</span>
                         </p>
-                        <p className='flex justify-center items-center'>
+                        <p className={price == discount_price ? 'hidden' : 'flex justify-center items-center'}>
                             <span className='text-xs'><small><FaBangladeshiTakaSign /></small></span>
                             <span>{discount_price}</span>
                         </p>
@@ -110,7 +110,7 @@ const Product = ({ product }) => {
                     <button onClick={handleOrderNow} className='mt-1 flex justify-center items-center w-full h-9 bg-blue-500 hover:bg-blue-600 text-white'><span>ORDER NOW</span></button>
                     {
                         productAdded === false ?
-                            <button onClick={handleAddToCart} className='my-1 flex justify-center items-center w-full h-9 bg-sky-100 hover:bg-blue-100 text-blue-500 rounded'><span>Add To Cart</span></button>
+                            <button onClick={handleAddToCart} className='my-1 flex justify-center items-center w-full h-9 bg-red-500 hover:bg-red-600 text-white rounded'><span>Add To Cart</span></button>
                             :
                             <button className='my-1 flex justify-center items-center w-full h-9 bg-sky-100 text-blue-300 rounded' disabled><span>Added</span></button>
                     }

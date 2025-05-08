@@ -26,8 +26,9 @@ const CartProduct = ({ product, index }) => {
     return (
         <tr>
             <td className='flex items-center'>
-                <button onClick={() => { dispatch({ type: "REMOVE", index: index }) }}>
-                    <AiFillDelete className="text-xl text-red-500"></AiFillDelete>
+                <button className='btn btn-error btn-xs text-white font-bold' onClick={() => { dispatch({ type: "REMOVE", index: index }) }}>
+                    {/* <AiFillDelete className="text-xl text-red-500"></AiFillDelete> */}
+                   <small>Delete</small>
                 </button>
                 <img className='ml-4 mr-1' width={30} src={img} alt="product_image" />
                 <span>{name}</span>
