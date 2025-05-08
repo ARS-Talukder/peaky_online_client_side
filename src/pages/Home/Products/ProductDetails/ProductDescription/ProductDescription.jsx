@@ -108,7 +108,7 @@ const ProductDescription = ({ product }) => {
                     productAdded === false ?
                         <button onClick={handleAddToCart} className='flex justify-center items-center w-full h-9 bg-red-500 hover:bg-red-600 text-white rounded'><span>Add To Cart</span></button>
                         :
-                        <button className='flex justify-center items-center w-full h-9 bg-sky-200 text-blue-300 rounded' disabled><span>Added</span></button>
+                        <button className='flex justify-center items-center w-full h-9 bg-red-200 text-white rounded' disabled><span>Added</span></button>
                 }
                 <button onClick={handleOrderNow} className='flex justify-center items-center w-full h-9 bg-blue-500 hover:bg-blue-600 text-white ml-4 rounded'><span>ORDER NOW</span></button>
             </div>

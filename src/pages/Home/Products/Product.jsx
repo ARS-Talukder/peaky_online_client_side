@@ -112,7 +112,7 @@ const Product = ({ product }) => {
                         productAdded === false ?
                             <button onClick={handleAddToCart} className='my-1 flex justify-center items-center w-full h-9 bg-red-500 hover:bg-red-600 text-white rounded'><span>Add To Cart</span></button>
                             :
-                            <button className='my-1 flex justify-center items-center w-full h-9 bg-sky-100 text-blue-300 rounded' disabled><span>Added</span></button>
+                            <button className='my-1 flex justify-center items-center w-full h-9 bg-red-300 text-white rounded' disabled><span>Added</span></button>
                     }
                 </div>
             </div>
