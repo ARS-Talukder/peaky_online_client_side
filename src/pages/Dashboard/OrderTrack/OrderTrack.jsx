@@ -15,7 +15,7 @@ const OrderTrack = () => {
     const handleMyOrder = (e) => {
         e.preventDefault();
         const phone = e.target.phone.value;
-        fetch(`https://api.peakyonline.com/order_by_phone/${phone}`, {
+        fetch(`http://localhost:5000/order_by_phone/${phone}`, {
             method: 'GET',
             headers: {
                 'content-type': 'application/json',
@@ -59,18 +59,19 @@ const OrderTrack = () => {
                         </div>
                     )
                     :
-                    <div className="overflow-x-auto">
-                        <table className="table table-xs">
-                            <thead>
+                    <div className="overflow-x-auto bg-white rounded-xl shadow-xl my-6">
+                        <table className="table table border">
+                            <thead className='bg-blue-700 text-white'>
                                 <tr className='text-center'>
-                                    <th>Product</th>
-                                    <th>Qty</th>
-                                    <th>Price</th>
-                                    <th>Sub Total</th>
-                                    <th>Shipping</th>
-                                    <th>Total</th>
-                                    <th>Order Date</th>
-                                    <th>Status</th>
+                                    <th className='border'>OrderID</th>
+                                    <th className='border'>Product</th>
+                                    <th className='border'>Qty</th>
+                                    <th className='border'>Price</th>
+                                    <th className='border'>Sub Total</th>
+                                    <th className='border'>Shipping</th>
+                                    <th className='border'>Total</th>
+                                    <th className='border'>Order Date</th>
+                                    <th className='border'>Status</th>
                                 </tr>
                             </thead>
                             <tbody>

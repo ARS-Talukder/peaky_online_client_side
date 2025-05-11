@@ -2,7 +2,7 @@ import React from 'react';
 import { TbPointFilled } from "react-icons/tb";
 
 const OrderProduct = ({ order }) => {
-    const { date, time, shipping, total, products, status } = order;
+    const { orderID, date, time, shipping, total, products, status } = order;
 
     let classColor;
     if (status === 'pending') {
@@ -18,22 +18,25 @@ const OrderProduct = ({ order }) => {
         classColor = 'text-xl text-red-500'
     }
     return (
-        <tr className='text-center'>
-            <td>
+        <tr className='text-slate-600 font-bold'>
+            <td className='border'>
+                {orderID}
+            </td>
+            <td className='border'>
                 {products.map(p => <p key={p.product_id}>{p.name}</p>)}
             </td>
-            <td>
+            <td className='border'>
                 {products.map(p => <p key={p.product_id}>{p.quantity}</p>)}
             </td>
-            <td>
+            <td className='border'>
                 {products.map(p => <p key={p.product_id}>{p.discount_price}</p>)}
             </td>
-            <td>
+            <td className='border'>
                 {products.map(p => <p key={p.product_id}>{p.discount_price * p.quantity}</p>)}
             </td>
-            <td>{shipping}</td>
-            <td className='font-bold'>{total}</td>
-            <td>
+            <td className='border'>{shipping}</td>
+            <td className='border'>{total}</td>
+            <td className='border'>
                 <p>{date}</p>
                 <p>{time}</p>
             </td>

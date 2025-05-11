@@ -9,7 +9,7 @@ const AllOrders = () => {
     const { data: orders, isLoading, isSuccess, isError, error, refetch } = useQuery({
         queryKey: ["orders"],
         queryFn: () => {
-            return axios.get("https://api.peakyonline.com/orders")
+            return axios.get("http://localhost:5000/orders")
         }
     })
 
@@ -20,7 +20,7 @@ const AllOrders = () => {
     }
 
     if (isSuccess) {
-        content = orders.data.map((order, index) => <Order index={index} key={order._id} order={order} refetch={refetch}></Order>)
+        content = orders.data.map((order,index) => <Order index={index} key={order._id} order={order} refetch={refetch}></Order>)
     }
 
     return (
@@ -35,6 +35,7 @@ const AllOrders = () => {
                     <thead className='bg-blue-700 text-white'>
                         <tr className='text-center'>
                             <th className='border'>SL</th>
+                            <th className='border'>OrderID</th>
                             <th className='border'>Product</th>
                             <th className='border'>Qty</th>
                             <th className='border'>Price</th>
@@ -45,6 +46,7 @@ const AllOrders = () => {
                             <th className='border'>Order Date</th>
                             <th className='border'>Information</th>
                             <th className='border'>State</th>
+                            <th className='border'>ACTION</th>
                         </tr>
                     </thead>
                     <tbody className='border'>

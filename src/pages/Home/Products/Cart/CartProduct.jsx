@@ -28,17 +28,21 @@ const CartProduct = ({ product, index }) => {
             <td className='flex items-center'>
                 <button className='btn btn-error btn-xs text-white font-bold' onClick={() => { dispatch({ type: "REMOVE", index: index }) }}>
                     {/* <AiFillDelete className="text-xl text-red-500"></AiFillDelete> */}
-                   <small>Delete</small>
+                    <small>Delete</small>
                 </button>
                 <img className='ml-4 mr-1' width={30} src={img} alt="product_image" />
-                <span>{name}</span>
+                <div>
+                    <p>{name}</p>
+                    <div className='flex justify-start items-center'>
+                        <button className='text-blue-500 hover:text-blue-800 border-2' onClick={decrementQuantity}><FaMinus /></button>
+                        <p className='mx-1 border-2 px-1'>{newQuantity}</p>
+                        <button className='text-blue-500 hover:text-blue-800 border-2' onClick={incrementQuantity}><FaPlus /></button>
+                    </div>
+                </div>
+
             </td>
             <td>{discount_price}</td>
-            <td className='flex justify-center items-center'>
-                <button className='text-blue-500 hover:text-blue-800 text-xl' onClick={decrementQuantity}><FaMinus /></button>
-                <p className='mx-3 border border-black px-3'>{newQuantity}</p>
-                <button className='text-blue-500 hover:text-blue-800 text-xl' onClick={incrementQuantity}><FaPlus /></button>
-            </td>
+
             <td>{discount_price * newQuantity}</td>
         </tr>
     );
