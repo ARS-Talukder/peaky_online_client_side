@@ -11,6 +11,10 @@ const Checkout = () => {
     let dispatch = useDispatchCart();
     const navigate = useNavigate();
     const [shipping, setShipping] = useState(130);
+
+    const [paymentMethod, setPaymentMethod] = useState('');
+    const [transactionID, setTransactionID] = useState('');
+
     let subTotal = 0;
 
 
@@ -70,6 +74,22 @@ const Checkout = () => {
     const handleConfirmOrder = (e) => {
         e.preventDefault();
 
+        if (!paymentMethod) {
+            toast.error('Please select a payment method.');
+            return;
+        }
+
+        if (paymentMethod === 'bKash') {
+            if (!transactionID.trim()) {
+                toast.error('Please enter a bKash Transaction ID.');
+                return;
+            }
+            if (transactionID.trim().length < 8) {
+                toast.error('Transaction ID must be at least 8 characters.');
+                return;
+            }
+        }
+
         const orderID = Math.floor(10000000 + Math.random() * 90000000);
 
         const customerName = e.target.name.value;
@@ -78,10 +98,10 @@ const Checkout = () => {
         const district = e.target.district.value;
         const phone = e.target.phone.value;
         const shipping_cost = shipping;
-        const order = { customerName: customerName, orderID, address: { street, thana, district }, subTotal: subTotal, shipping: shipping_cost, total: subTotal + shipping, phone: phone, products: data, date: date, time: time, status: 'pending', status_color: 'yellow' };
+        const order = { customerName: customerName, orderID, address: { street, thana, district }, subTotal: subTotal, shipping: shipping_cost, total: subTotal + shipping, phone: phone, products: data, date: date, time: time, paymentMethod, transactionID: paymentMethod === 'bKash' ? transactionID : null, status: 'pending', status_color: 'yellow' };
 
         //Post an order
-        fetch('http://localhost:5000/orders', {
+        fetch('https://api.peakyonline.com/orders', {
             method: 'POST',
             headers: {
                 'content-type': 'application/json'
@@ -103,7 +123,7 @@ const Checkout = () => {
 
         const customer = { name: customerName, email: "No Email", address: { street, thana, district }, phone: phone };
         //Post a customer
-        fetch(`http://localhost:5000/customers/${phone}`, {
+        fetch(`https://api.peakyonline.com/customers/${phone}`, {
             method: 'PUT',
             headers: {
                 'content-type': 'application/json'
@@ -192,7 +212,7 @@ const Checkout = () => {
                 </form>
             </div>
 
-            {/* ------Products Section------ */}
+            {/* ------Amount Section------ */}
             <div className='w-full lg:w-1/4'>
                 <div className='border py-1 px-8 my-4'>
                     <div className='flex justify-between my-4'>
@@ -218,6 +238,68 @@ const Checkout = () => {
                             <span>{subTotal + shipping}</span>
                         </p>
 
+                    </div>
+
+                    <div className='mt-8'>
+                        <h2 className='text-xl font-bold'>Payment Information</h2>
+
+                        <div>
+                            <div className="flex items-center space-x-2 my-4">
+                                <input
+                                    type="radio"
+                                    id="cod"
+                                    name="paymentMethod"
+                                    value="COD"
+                                    className="radio radio-sm"
+                                    required
+                                    onChange={() => setPaymentMethod('COD')}
+                                />
+                                <label htmlFor="cod" className="text-slate-500 text-sm font-bold">COD (ক্যাশ অন ডেলিভারি)</label>
+                            </div>
+
+                            <div className="flex items-center space-x-2 my-4">
+                                <input
+                                    type="radio"
+                                    id="bkash"
+                                    name="paymentMethod"
+                                    value="bKash"
+                                    className="radio radio-sm"
+                                    onChange={() => setPaymentMethod('bKash')}
+                                />
+                                <label htmlFor="bkash" className="text-slate-500 font-bold text-sm flex items-center">
+                                    bKash (বিকাশ)
+                                    <img src="https://i.ibb.co.com/DPbM1wtB/BKash-Logo-wine.png" alt="bKash" className="h-16 ml-1" />
+                                </label>
+                            </div>
+
+                            {/* Conditional Message Display */}
+                            {paymentMethod === 'COD' && (
+                                <p className="text-xs text-gray-600 my-4 rounded-lg bg-slate-100 border p-2">
+                                    পণ্যের মূল্য, স্টক, অবস্থান বা পরিস্থিতির উপর নির্ভর করে আংশিক অগ্রিম অর্থপ্রদানের প্রয়োজন হতে পারে।
+                                </p>
+                            )}
+
+                            {paymentMethod === 'bKash' && (
+                                <div className="mt-2">
+                                    <p className="text-xs text-gray-600 my-4 rounded-lg bg-slate-100 border p-2">
+                                        বিকাশ এপ থেকে অথবা *247# ডায়াল করে <span className='font-bold text-red-500'>01814728277</span> এই নাম্বারে সেন্ড মানি করে নিচের বক্সে <span className='font-bold text-red-500'>Transaction ID</span> অথবা <span className='font-bold text-red-500'>শেষ ৪ ডিজিট</span> লিখে অর্ডারটি কনফার্ম করুন।
+                                    </p>
+                                    <input
+                                        type="text"
+                                        name="transactionId"
+                                        placeholder="Transaction ID বা শেষ ৪ ডিজিট"
+                                        className={`input input-sm input-bordered w-full mb-1 ${transactionID && transactionID.length < 8 ? 'border-red-500' : ''
+                                            }`}
+                                        value={transactionID}
+                                        onChange={(e) => setTransactionID(e.target.value)}
+                                        required={paymentMethod === 'bKash'}
+                                    />
+                                    {transactionID && transactionID.length < 8 && (
+                                        <p className="text-xs text-red-500">Transaction ID must be at least 8 characters.</p>
+                                    )}
+                                </div>
+                            )}
+                        </div>
                     </div>
                 </div>
             </div>

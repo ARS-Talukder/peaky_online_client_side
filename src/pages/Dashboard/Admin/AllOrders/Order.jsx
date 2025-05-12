@@ -4,11 +4,11 @@ import { TbPointFilled } from "react-icons/tb";
 import { AiFillDelete } from "react-icons/ai";
 
 const Order = ({ order, index, refetch }) => {
-    const { _id, date, orderID, time, shipping, total, products, customerName, email, phone, address, status } = order;
+    const { _id, date, orderID, time, shipping, total, products, customerName, email, phone, address, status,paymentMethod,transactionID } = order;
     const handleOrderState = (event) => {
         const stateName = event.target.value;
         const data = { state: stateName };
-        fetch(`http://localhost:5000/order_state/${_id}`, {
+        fetch(`https://api.peakyonline.com/order_state/${_id}`, {
             method: 'PATCH',
             headers: {
                 'content-type': 'application/json'
@@ -40,7 +40,7 @@ const Order = ({ order, index, refetch }) => {
     const handleDelete = (id) => {
         const proceed = window.confirm('Do You Want to remove this order information from database?');
         if (proceed) {
-            fetch(`http://localhost:5000/order-delete/${id}`, {
+            fetch(`https://api.peakyonline.com/order-delete/${id}`, {
                 method: 'DELETE'
             })
                 .then(res => res.json())
@@ -80,10 +80,14 @@ const Order = ({ order, index, refetch }) => {
                 <p>{time}</p>
             </td>
             <td className='border'>
-                <p>{customerName}</p>
+                <p className='text-blue-600'>{customerName}</p>
                 <p>{email}</p>
-                <p>{phone}</p>
+                <p className='text-red-600'>{phone}</p>
                 <p>{address.street}, {address.thana}, {address.district}</p>
+            </td>
+            <td className='border'>
+                <p>{paymentMethod}</p>
+                <p className='text-red-600'>{transactionID}</p>
             </td>
             <td className='flex justify-center items-center'>
                 <p className='flex justify-center items-center'>

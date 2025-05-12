@@ -9,7 +9,7 @@ const ProductsList = () => {
     const { data: products, isLoading, isSuccess, isError, error, refetch } = useQuery({
         queryKey: ["products"],
         queryFn: () => {
-            return axios.get("http://localhost:5000/products")
+            return axios.get("https://api.peakyonline.com/products")
         }
     })
     let content;
@@ -37,6 +37,7 @@ const ProductsList = () => {
                             <th className='border'>CATEGORY</th>
                             <th className='border'>PRICE</th>
                             <th className='border'>DISCOUNT</th>
+                            <th className='border'>Shipping</th>
                             <th className='border'>ACTION</th>
                         </tr>
                     </thead>

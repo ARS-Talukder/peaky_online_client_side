@@ -14,6 +14,8 @@ import { FaCloudUploadAlt } from "react-icons/fa";
 const AddProduct = () => {
     const [selectedCategory, setSelectedCategory] = useState('');
 
+    const [shippingCharge, setShippingCharge] = useState('normal');
+
     // Handling images upload state
     const [images, setImages] = useState([]);
 
@@ -28,13 +30,23 @@ const AddProduct = () => {
     const { data: categories, isLoading, isSuccess, isError } = useQuery({
         queryKey: ["categories"],
         queryFn: () => {
-            return axios.get("http://localhost:5000/categories")
+            return axios.get("https://api.peakyonline.com/categories")
         }
     })
 
     const navigate = useNavigate();
     if (isLoading) {
         return <Loading></Loading>
+    }
+
+    // Handling Shipping Charge
+    const handleShippingCharge = (event) => {
+        if (event.target.value === 'Default') {
+            setShippingCharge('normal')
+        }
+        else {
+            setShippingCharge(event.target.value);
+        }
     }
 
     // Handling Categories Selection
@@ -88,11 +100,11 @@ const AddProduct = () => {
         const formData = new FormData();
         formData.append("image", file);
         try {
-            const response = await axios.post("http://localhost:5000/upload", formData, {
+            const response = await axios.post("https://api.peakyonline.com/upload", formData, {
                 headers: { "Content-Type": "multipart/form-data" },
             });
 
-            setImages([...images, { _id: Date.now(), url: `http://localhost:5000/${response.data.filePath}` }]);
+            setImages([...images, { _id: Date.now(), url: `https://api.peakyonline.com/${response.data.filePath}` }]);
             toast.success("Uploaded");
         } catch (err) {
             console.error("Error uploading image:", err);
@@ -101,7 +113,7 @@ const AddProduct = () => {
     };
     const handleDeleteImage = async (id, imageUrl) => {
         try {
-            await axios.delete("http://localhost:5000/delete", {
+            await axios.delete("https://api.peakyonline.com/delete", {
                 data: { imageUrl }
             });
 
@@ -140,9 +152,9 @@ const AddProduct = () => {
         const description_details = e.target.description_details.value;
         const specificDescription = e.target.specificDescription.value;
         const description = { description_title, description_details, specificDescription };
-        const product = { name, category, price, discount, subtitle, whyBest, productColor, size, images: images, description };
+        const product = { name, category, shippingCharge, price, discount, subtitle, whyBest, productColor, size, images: images, description };
 
-        fetch('http://localhost:5000/products', {
+        fetch('https://api.peakyonline.com/products', {
             method: 'POST',
             headers: {
                 'content-type': 'application/json'
@@ -178,7 +190,7 @@ const AddProduct = () => {
                             <input type="text" name="name" className="input input-bordered input-sm w-full h-14 bg-slate-50" required />
                         </div>
                         {/* Price & Discount */}
-                        <div className='grid grid-cols-1 lg:grid-cols-2 md:grid-cols-2 lg:gap-10 md:gap-4'>
+                        <div className='grid grid-cols-1 lg:grid-cols-3 md:grid-cols-3 lg:gap-10 md:gap-4'>
                             <div className="form-control w-full my-2">
                                 <label className="label">
                                     <span className="label-text text-slate-500 font-bold">PRICE</span>
@@ -190,6 +202,16 @@ const AddProduct = () => {
                                     <span className="label-text text-slate-500 font-bold">DISCOUNT (price)</span>
                                 </label>
                                 <input type="number" name="discount_price" className="input input-bordered input-sm w-full h-14 bg-slate-50" />
+                            </div>
+                            <div className="form-control w-full my-2">
+                                <label className="label">
+                                    <span className="label-text text-slate-500 font-bold">Shipping Charge</span>
+                                </label>
+                                <select defaultValue={'Default'} onChange={handleShippingCharge} name='shipping_charge' className="input input-bordered input-sm w-full h-14 bg-slate-50">
+                                    <option value="Default" disabled>SELECT SHIPPING</option>
+                                    <option value='normal' >Normal</option>
+                                    <option value='free' >Free</option>
+                                </select>
                             </div>
                         </div>
                         {/* Subtitle & Category */}

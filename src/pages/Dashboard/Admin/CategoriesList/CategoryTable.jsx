@@ -11,7 +11,7 @@ const CategoryTable = ({ index, category, refetch }) => {
     const handleDelete = (id) => {
         const proceed = window.confirm('Do You Want to delete this category?');
         if (proceed) {
-            fetch(`http://localhost:5000/category-delete/${id}`, {
+            fetch(`https://api.peakyonline.com/category-delete/${id}`, {
                 method: 'DELETE'
             })
                 .then(res => res.json())

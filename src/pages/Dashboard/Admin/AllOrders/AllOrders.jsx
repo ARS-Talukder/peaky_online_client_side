@@ -9,7 +9,7 @@ const AllOrders = () => {
     const { data: orders, isLoading, isSuccess, isError, error, refetch } = useQuery({
         queryKey: ["orders"],
         queryFn: () => {
-            return axios.get("http://localhost:5000/orders")
+            return axios.get("https://api.peakyonline.com/orders")
         }
     })
 
@@ -39,12 +39,13 @@ const AllOrders = () => {
                             <th className='border'>Product</th>
                             <th className='border'>Qty</th>
                             <th className='border'>Price</th>
-                            <th className='border'>With Discount</th>
+                            <th className='border'>Disc</th>
                             <th className='border'>Sub Total</th>
                             <th className='border'>Shipping</th>
                             <th className='border'>Total</th>
                             <th className='border'>Order Date</th>
                             <th className='border'>Information</th>
+                            <th className='border'>Payment</th>
                             <th className='border'>State</th>
                             <th className='border'>ACTION</th>
                         </tr>

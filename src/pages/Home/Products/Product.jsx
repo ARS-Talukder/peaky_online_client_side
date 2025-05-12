@@ -6,7 +6,7 @@ import { Link, useNavigate } from 'react-router-dom';
 import { dataLayer } from 'react-gtm-module';
 
 const Product = ({ product }) => {
-    const { _id, name, category, images, price, discount } = product;
+    const { _id, name, category, images, price, discount,shippingCharge } = product;
     const discount_price = price - ((discount * price) / 100);
     const navigate = useNavigate();
     const img = images[0]?.url;
@@ -118,6 +118,9 @@ const Product = ({ product }) => {
             </div>
             <div className={discount == 0 ? 'hidden' : 'font-normal bg-blue-500 px-2 text-white rounded-xl absolute top-3 right-3'}>
                 <p><small>-{discount} %</small></p>
+            </div>
+            <div className={shippingCharge == 'normal' ? 'hidden' : 'font-normal bg-blue-500 px-2 text-white rounded-xl absolute top-3 right-3'}>
+                <p><small>Free</small></p>
             </div>
 
         </div>

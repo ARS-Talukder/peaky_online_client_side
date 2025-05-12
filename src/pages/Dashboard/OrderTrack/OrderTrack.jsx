@@ -15,7 +15,7 @@ const OrderTrack = () => {
     const handleMyOrder = (e) => {
         e.preventDefault();
         const phone = e.target.phone.value;
-        fetch(`http://localhost:5000/order_by_phone/${phone}`, {
+        fetch(`https://api.peakyonline.com/order_by_phone/${phone}`, {
             method: 'GET',
             headers: {
                 'content-type': 'application/json',
@@ -61,7 +61,7 @@ const OrderTrack = () => {
                     :
                     <div className="overflow-x-auto bg-white rounded-xl shadow-xl my-6">
                         <table className="table table border">
-                            <thead className='bg-blue-700 text-white'>
+                        <thead className='bg-blue-700 text-white'>
                                 <tr className='text-center'>
                                     <th className='border'>OrderID</th>
                                     <th className='border'>Product</th>
