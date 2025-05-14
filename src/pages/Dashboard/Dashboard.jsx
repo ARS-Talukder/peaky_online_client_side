@@ -7,6 +7,7 @@ import { FaListOl } from "react-icons/fa";
 import { IoMdAddCircle } from "react-icons/io";
 import { TbCategoryFilled } from "react-icons/tb";
 import { FaCartArrowDown } from "react-icons/fa";
+import { FaRegImages } from "react-icons/fa";
 import { FaPeopleGroup } from "react-icons/fa6";
 import { useAuthState } from 'react-firebase-hooks/auth';
 import useAdmin from '../hooks/useAdmin';
@@ -133,6 +134,22 @@ const Dashboard = () => {
                                 </details>
                             </li>
                         }
+
+                        {/* Banner button */}
+
+                        {
+                            admin &&
+                            <li>
+                                <Link
+                                    to="/dashboard/banner"
+                                    className={`w-full btn mb-3 border-0 flex justify-start text-slate-600 ${location.pathname === "/dashboard/banner" ? "bg-gray-200" : "bg-white"}`}>
+                                    <span className='text-xl text-blue-600'><FaRegImages /></span>
+                                    <span>Banner</span>
+                                </Link>
+                            </li>
+                        }
+
+
                         {/* Orders button */}
                         {
                             admin &&

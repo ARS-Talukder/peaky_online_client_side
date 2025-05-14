@@ -26,6 +26,7 @@ import RequireAdmin from './pages/Sign/RequireAdmin'
 import EditProduct from './pages/Dashboard/Admin/EditProduct/EditProduct'
 import Confirmed from './pages/Home/Products/Cart/Confirmed'
 import Checkout from './pages/Home/Products/Cart/Checkout'
+import Banner from './pages/Dashboard/Admin/Banner/Banner'
 
 function App() {
 
@@ -53,6 +54,7 @@ function App() {
             <Route path='/dashboard/add_product' element={<RequireAdmin><AddProduct></AddProduct></RequireAdmin>}></Route>
             <Route path='/dashboard/edit_product' element={<RequireAdmin><EditProduct></EditProduct></RequireAdmin>}></Route>
             <Route path='/dashboard/categories_list' element={<RequireAdmin><CategoriesList></CategoriesList></RequireAdmin>}></Route>
+            <Route path='/dashboard/banner' element={<RequireAdmin><Banner></Banner></RequireAdmin>}></Route>
             <Route path='/dashboard/add_category' element={<RequireAdmin><AddCategory></AddCategory></RequireAdmin>}></Route>
             <Route path='/dashboard/all_orders' element={<RequireAdmin><AllOrders></AllOrders></RequireAdmin>}></Route>
             <Route path='/dashboard/all_customers' element={<RequireAdmin><AllCustomers></AllCustomers></RequireAdmin>}></Route>

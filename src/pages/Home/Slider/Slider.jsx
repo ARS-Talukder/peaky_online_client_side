@@ -5,9 +5,34 @@ import 'swiper/css/pagination';
 import 'swiper/css/navigation';
 import './Slider.css';
 import { Autoplay, Pagination, Navigation } from 'swiper/modules';
+import { useQuery } from '@tanstack/react-query';
+import axios from 'axios';
+import Loading from '../../Shared/Loading';
 
 
 const Slider = () => {
+    const { data: banner, isLoading, isSuccess, isError, error } = useQuery({
+        queryKey: ["banner"],
+        queryFn: () => {
+            return axios.get("https://api.peakyonline.com/banner")
+        }
+    })
+
+    let content;
+
+    if (isLoading) {
+        return <Loading></Loading>
+    }
+
+    if (isSuccess) {
+        content = banner.data.map(b => <SwiperSlide key={b._id} b={b}>
+            <img
+                src={b.url}
+                loading="lazy"
+            />
+            <div className="swiper-lazy-preloader swiper-lazy-preloader-white"></div>
+        </SwiperSlide>)
+    }
     return (
         <div className='mb-6'>
             <Swiper
@@ -26,26 +51,9 @@ const Slider = () => {
                 modules={[Autoplay, Navigation]}
                 className="mySwiper"
             >
-                <SwiperSlide>
-                    <img
-                        src="https://i.ibb.co.com/hfxCS5D/Slider-1.jpg"
-                        loading="lazy"
-                    />
-                    <div className="swiper-lazy-preloader swiper-lazy-preloader-white"></div>
-                </SwiperSlide>
-                <SwiperSlide>
-                    <img
-                        src="https://i.ibb.co.com/cLHnNhm/Slider-2.jpg"
-                        loading="lazy"
-                    />
-                    <div className="swiper-lazy-preloader swiper-lazy-preloader-white"></div>
-                </SwiperSlide>
-                <SwiperSlide>
-                    <img
-                        src="https://i.ibb.co.com/52mrLnm/Slider-3.jpg"
-                        loading="lazy"
-                    />
-                </SwiperSlide>
+
+                {content}
+
             </Swiper>
 
         </div>
