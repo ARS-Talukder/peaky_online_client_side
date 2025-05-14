@@ -5,6 +5,7 @@ import { TiEdit } from "react-icons/ti";
 import { FaBangladeshiTakaSign } from "react-icons/fa6";
 import { MdEdit } from "react-icons/md";
 import { GrView } from "react-icons/gr";
+import { useNavigate } from 'react-router-dom';
 
 
 const ProductTable = ({ index, product, refetch }) => {
@@ -12,28 +13,7 @@ const ProductTable = ({ index, product, refetch }) => {
     const discount_price = price - ((discount * price) / 100);
     const img = images[0]?.url;
 
-    const handleEdit = (promptText, query, id) => {
-        let proceed = window.prompt(promptText);
-        const inputValue = proceed;
-        const data = { query, inputValue }
-        if (proceed === null || proceed === "") {
-            return
-        }
-        else {
-            fetch(`https://api.peakyonline.com/product/${id}`, {
-                method: 'PATCH',
-                headers: {
-                    'content-type': 'application/json'
-                },
-                body: JSON.stringify(data)
-            }).then(res => {
-                return res.json()
-            }).then(data => {
-                refetch();
-
-            })
-        }
-    }
+    const navigate = useNavigate();
 
     const handleDelete = (id) => {
         const proceed = window.confirm('Do You Want to delete this product?');
@@ -50,6 +30,9 @@ const ProductTable = ({ index, product, refetch }) => {
         else {
             return;
         }
+    }
+    const handleEdit = (id) => {
+        navigate(`/dashboard/edit_product/${id}`)
     }
     return (
         <tr className='text-slate-600 font-bold'>
@@ -98,11 +81,8 @@ const ProductTable = ({ index, product, refetch }) => {
                     </button> */}
                 </div>
             </td>
-            <td className='border'>
-                <button className='p-1 bg-purple-200 rounded hover:bg-purple-300' title="View">
-                    <GrView className="text-2xl text-purple-600"></GrView>
-                </button>
-                <button className='p-1 bg-green-100 rounded hover:bg-green-200 mx-2' title="Edit">
+            <td className='flex'>
+                <button onClick={() => handleEdit(_id)} className='p-1 bg-green-100 rounded hover:bg-green-200 mx-2' title="Edit">
                     <MdEdit className="text-2xl text-green-500"></MdEdit>
                 </button>
 

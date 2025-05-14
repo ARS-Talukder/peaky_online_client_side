@@ -16,6 +16,9 @@ const AddProduct = () => {
 
     const [shippingCharge, setShippingCharge] = useState('normal');
 
+    // handling loading at the time of add product
+    const [loading, setLoading] = useState(false);
+
     // Handling images upload state
     const [images, setImages] = useState([]);
 
@@ -35,7 +38,7 @@ const AddProduct = () => {
     })
 
     const navigate = useNavigate();
-    if (isLoading) {
+    if (isLoading || loading) {
         return <Loading></Loading>
     }
 
@@ -130,6 +133,10 @@ const AddProduct = () => {
     // Handling Add Product to database
     const handleAddProduct = (e) => {
         e.preventDefault();
+
+        // start loading
+        setLoading(true);
+
         const name = e.target.name.value;
         const category = selectedCategory;
         if (category === "") {
@@ -167,6 +174,13 @@ const AddProduct = () => {
                 navigate('/dashboard/products_list')
 
             })
+            .catch(err => {
+                toast.error("Failed to add product");
+                console.error(err);
+            })
+            .finally(() => {
+                setLoading(false); // Stop loading
+            });
 
     }
     return (

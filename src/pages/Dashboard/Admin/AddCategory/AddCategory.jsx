@@ -11,6 +11,9 @@ const AddCategory = () => {
     // Handling images upload state
     const [images, setImages] = useState([]);
 
+    // handling loading at the time of add product
+    const [loading, setLoading] = useState(false);
+
     const navigate = useNavigate();
 
     // Handling image upload and delete from hosting
@@ -51,6 +54,10 @@ const AddCategory = () => {
     };
     const handleAddCategory = (e) => {
         e.preventDefault();
+
+        // start loading
+        setLoading(true);
+
         const name = e.target.name.value;
         const img = images[0]?.url;
         const category = { name, img };
@@ -69,6 +76,13 @@ const AddCategory = () => {
                     navigate('/dashboard/categories_list')
 
                 })
+                .catch(err => {
+                    toast.error("Failed to add category");
+                    console.error(err);
+                })
+                .finally(() => {
+                    setLoading(false); // Stop loading
+                });
         }
         else {
             toast.error(`Upload image`);

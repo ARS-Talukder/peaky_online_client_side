@@ -6,7 +6,7 @@ import { Link, useNavigate } from 'react-router-dom';
 import { dataLayer } from 'react-gtm-module';
 
 const Product = ({ product }) => {
-    const { _id, name, category, images, price, discount,shippingCharge } = product;
+    const { _id, name, category, images, price, discount, shippingCharge } = product;
     const discount_price = price - ((discount * price) / 100);
     const navigate = useNavigate();
     const img = images[0]?.url;
@@ -17,7 +17,7 @@ const Product = ({ product }) => {
     }
 
     const handleOrderNow = async () => {
-        await dispatch({ type: "ADD", product_id: _id, name: name, category: category, img: img, price: price, discount: discount, discount_price: discount_price, quantity: 1 });
+        await dispatch({ type: "ADD", product_id: _id, name: name, category: category, img: img, price: price, discount: discount, discount_price: discount_price, shippingCharge: shippingCharge, quantity: 1 });
         toast.success('Added to the cart')
         navigate('/cart', { state: product })
 
@@ -36,7 +36,7 @@ const Product = ({ product }) => {
             ecommerce: {
                 currency: 'BDT',
                 value: parseFloat(price),
-                items: [{ product_id: _id, name: name, category: category, img: img, price: price, discount: discount, discount_price: discount_price, quantity: 1 }]
+                items: [{ product_id: _id, name: name, category: category, img: img, price: price, discount: discount, discount_price: discount_price, shippingCharge: shippingCharge, quantity: 1 }]
             },
             buttonText: 'Order Now',
             buttonClick: 'Clicked',
@@ -51,7 +51,7 @@ const Product = ({ product }) => {
     let data = useCart();
 
     const handleAddToCart = async () => {
-        await dispatch({ type: "ADD", product_id: _id, name: name, category: category, img: img, price: price, discount: discount, discount_price: discount_price, quantity: 1 });
+        await dispatch({ type: "ADD", product_id: _id, name: name, category: category, img: img, price: price, discount: discount, discount_price: discount_price, shippingCharge: shippingCharge, quantity: 1 });
         toast.success('Added to the cart');
 
         // Clear previous ecommerce data before pushing the new product
@@ -69,7 +69,7 @@ const Product = ({ product }) => {
             ecommerce: {
                 currency: 'BDT',
                 value: parseFloat(price),
-                items: [{ product_id: _id, name: name, category: category, img: img, price: price, discount: discount, discount_price: discount_price, quantity: 1 }]
+                items: [{ product_id: _id, name: name, category: category, img: img, price: price, discount: discount, discount_price: discount_price, shippingCharge: shippingCharge, quantity: 1 }]
             },
             buttonText: 'Add To Cart',
             buttonClick: 'Clicked',
@@ -116,13 +116,26 @@ const Product = ({ product }) => {
                     }
                 </div>
             </div>
-            <div className={discount == 0 ? 'hidden' : 'font-normal bg-blue-500 px-2 text-white rounded-xl absolute top-3 right-3'}>
-                <p><small>-{discount} %</small></p>
-            </div>
-            <div className={shippingCharge == 'normal' ? 'hidden' : 'font-normal bg-blue-500 px-2 text-white rounded-xl absolute top-3 right-3'}>
-                <p><small>Free</small></p>
-            </div>
+            {
+                discount != 0 &&
+                <div className='font-normal bg-blue-500 px-2 text-white rounded-xl absolute top-3 right-3'>
+                    <p><small>-{discount} %</small></p>
+                </div>
+            }
 
+            {/* Free Shipping Badge */}
+            {
+                shippingCharge !== 'normal' && discount != 0 &&
+                <div className='font-normal bg-green-500 px-2 text-white rounded-xl absolute top-10 right-3'>
+                    <p><small>Free</small></p>
+                </div>
+            }
+            {
+                shippingCharge !== 'normal' && discount == 0 &&
+                <div className='font-normal bg-green-500 px-2 text-white rounded-xl absolute top-3 right-3'>
+                    <p><small>Free</small></p>
+                </div>
+            }
         </div>
     );
 };

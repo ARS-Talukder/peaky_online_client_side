@@ -1,7 +1,25 @@
 import React from 'react';
+import toast from 'react-hot-toast';
+import { AiFillDelete } from "react-icons/ai";
 
-const Customer = ({ customer, index }) => {
-    const { name, email, phone } = customer;
+const Customer = ({ customer, index, refetch }) => {
+    const { _id, name, email, phone, role } = customer;
+    const handleDelete = (id) => {
+        const proceed = window.confirm('Do You Want to remove this order information from database?');
+        if (proceed) {
+            fetch(`https://api.peakyonline.com/customer-delete/${_id}`, {
+                method: 'DELETE'
+            })
+                .then(res => res.json())
+                .then(data => {
+                    toast.success("Customer has been removed");
+                    refetch();
+                })
+        }
+        else {
+            return;
+        }
+    }
     return (
         <tr className='text-slate-600 font-bold'>
             <th className='border'>{index + 1}</th>
@@ -15,6 +33,15 @@ const Customer = ({ customer, index }) => {
             </td>
             <td className='border'>{email === 'No Email' ? <span className='text-red-500'>N/A</span> : <span>{email}</span>}</td>
             <td className='border'>{phone === 'No Mobile Number' ? <span className='text-red-500'>N/A</span> : <span>{phone}</span>}</td>
+            <td className='border'>
+                {
+                    role == 'admin' ?
+                        <p className='font-bold text-green-600'>ADMIN</p> :
+                        <button onClick={() => handleDelete(_id)} className='p-1 bg-red-100 rounded hover:bg-red-200' title="Delete">
+                            <AiFillDelete className="text-2xl text-red-500"></AiFillDelete>
+                        </button>
+                }
+            </td>
         </tr>
     );
 };

@@ -6,7 +6,7 @@ import Loading from '../../../Shared/Loading';
 import DashboardButton from '../../DashboardButton';
 
 const AllCustomers = () => {
-    const { data: customers, isLoading, isSuccess, isError, error } = useQuery({
+    const { data: customers, isLoading, isSuccess, isError, error, refetch } = useQuery({
         queryKey: ["customers"],
         queryFn: () => {
             return axios.get("https://api.peakyonline.com/customers")
@@ -20,7 +20,7 @@ const AllCustomers = () => {
     }
 
     if (isSuccess) {
-        content = customers.data.map((customer, index) => <Customer index={index} key={customer._id} customer={customer}></Customer>)
+        content = customers.data.map((customer, index) => <Customer index={index} key={customer._id} customer={customer} refetch={refetch}></Customer>)
     }
 
     return (
@@ -38,6 +38,7 @@ const AllCustomers = () => {
                             <th className='border'>Name</th>
                             <th className='border'>Email</th>
                             <th className='border'>Phone</th>
+                            <th className='border'>Action</th>
                         </tr>
                     </thead>
                     <tbody className='border'>

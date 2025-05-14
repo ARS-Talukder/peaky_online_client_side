@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import toast from 'react-hot-toast';
 import { useCart, useDispatchCart } from '../../../ContextReducer';
 import { Link, useNavigate } from 'react-router-dom';
@@ -10,10 +10,25 @@ const Checkout = () => {
     let data = useCart();
     let dispatch = useDispatchCart();
     const navigate = useNavigate();
+
+    const [freeShipping, setFreeShipping] = useState(false);
+
     const [shipping, setShipping] = useState(130);
 
     const [paymentMethod, setPaymentMethod] = useState('');
     const [transactionID, setTransactionID] = useState('');
+
+    // Handling the free shipping
+    useEffect(() => {
+        const allFreeShipping = data.every(product => product.shippingCharge === 'free');
+        if (allFreeShipping) {
+            setShipping(0);
+            setFreeShipping(true)
+        }
+
+    }, [data]);
+    console.log(freeShipping)
+    // console.log(freeShipping)
 
     let subTotal = 0;
 
@@ -63,6 +78,10 @@ const Checkout = () => {
 
     }
     const handleShipping = (e) => {
+        if (freeShipping) {
+            setShipping(0);
+            return
+        }
         if (e.target.value === 'outside_dhaka') {
             setShipping(130)
         }
@@ -191,15 +210,27 @@ const Checkout = () => {
                         <input type="text" name="district" placeholder="Enter your address" className="input input-sm input-bordered w-full" required />
 
                     </div>
-                    <div className="form-control w-full mt-2">
-                        <label className="label">
-                            <span className="label-text text-slate-500 font-bold">Select Your Area (এরিয়া সিলেক্ট করুন)</span>
-                        </label>
-                        <select defaultValue={'outside_dhaka'} onChange={handleShipping} name='area' className="select select-bordered select-sm w-full">
-                            <option value="outside_dhaka">Outside Dhaka (ঢাকার বাইরে)</option>
-                            <option value="inside_dhaka">Inside Dhaka (ঢাকার ভিতরে)</option>
-                        </select>
-                    </div>
+
+                    {
+                        freeShipping ?
+                            <div className="form-control w-full mt-2">
+                                <label className="label">
+                                    <span className="label-text text-slate-500 font-bold">Shipping Charge</span>
+                                </label>
+                                <input type="text" className="input input-sm input-bordered w-full disabled:text-green-600 disabled:font-bold" value='Free' disabled/>
+                            </div>
+                            :
+                            <div className="form-control w-full mt-2">
+                                <label className="label">
+                                    <span className="label-text text-slate-500 font-bold">Select Your Area (এরিয়া সিলেক্ট করুন)</span>
+                                </label>
+                                <select defaultValue={'outside_dhaka'} onChange={handleShipping} name='area' className="select select-bordered select-sm w-full">
+                                    <option value="outside_dhaka">Outside Dhaka (ঢাকার বাইরে ১৩০ টাকা)</option>
+                                    <option value="inside_dhaka">Inside Dhaka (ঢাকার ভিতরে ৬০ টাকা)</option>
+                                </select>
+                            </div>
+                    }
+
                     <div className="form-control w-full mt-2">
                         <label className="label">
                             <span className="label-text text-slate-500 font-bold">Mobile (মোবাইল নাম্বার)</span>
