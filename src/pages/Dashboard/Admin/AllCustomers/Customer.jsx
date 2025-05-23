@@ -12,7 +12,7 @@ const Customer = ({ customer, index, refetch }) => {
             })
                 .then(res => res.json())
                 .then(data => {
-                    toast.success("Customer has been removed");
+                    toast.success("Removed");
                     refetch();
                 })
         }

@@ -2,7 +2,6 @@ import React from 'react';
 
 const ProductOthers = ({ product }) => {
     const { images, description } = product;
-    console.log(description)
     const { description_title, description_details, specificDescription } = description;
     return (
         <div className='lg:w-2/3 md:w-3/4 mx-auto py-10 px-4 lg:px-0'>

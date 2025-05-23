@@ -23,7 +23,7 @@ const ProductTable = ({ index, product, refetch }) => {
             })
                 .then(res => res.json())
                 .then(data => {
-                    toast.success("Product's been deleted");
+                    toast.success("Deleted");
                     refetch();
                 })
         }

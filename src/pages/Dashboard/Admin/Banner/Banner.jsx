@@ -18,8 +18,6 @@ const Banner = () => {
             .then(data => setImages(data))
     }, [])
 
-    console.log(images)
-
     const navigate = useNavigate();
 
     // Handling image upload and delete from hosting
@@ -56,7 +54,7 @@ const Banner = () => {
 
         } catch (err) {
             console.error("Error uploading or publishing image:", err);
-            toast.error("Failed to upload and publish image");
+            toast.error("Failed");
         }
     };
     const handleDeleteImage = async (id, imageUrl) => {
@@ -86,12 +84,12 @@ const Banner = () => {
                 })
                 .catch(error => {
                     console.error('Error updating banner:', error);
-                    toast.error("Error updating banner");
+                    toast.error("Error");
                 });
 
         } catch (err) {
             console.error("Error deleting image:", err);
-            toast.error("Failed to delete image");
+            toast.error("Failed");
         }
     };
     

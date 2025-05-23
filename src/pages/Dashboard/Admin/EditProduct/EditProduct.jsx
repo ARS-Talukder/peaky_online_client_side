@@ -1,10 +1,13 @@
 import React, { useEffect, useState } from 'react';
-import { useParams } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 import Loading from '../../../Shared/Loading';
 import DashboardButton from '../../DashboardButton';
 import { useQuery } from '@tanstack/react-query';
 import axios from 'axios';
 import { FaCloudUploadAlt } from "react-icons/fa";
+import toast from 'react-hot-toast';
+import { FaRegImages } from "react-icons/fa";
+import { RxCross2 } from "react-icons/rx";
 
 const EditProduct = () => {
     const param = useParams();
@@ -16,7 +19,18 @@ const EditProduct = () => {
             .then(data => setProduct(data))
 
     }, [id])
-    const { _id, name, category, images, price, discount, shippingCharge, subtitle, description, whyBest } = product;
+    const { name, category, images, price, discount, shippingCharge, subtitle, description, whyBest } = product;
+
+    // handling loading at the time of add product
+    const [loading, setLoading] = useState(false);
+
+    // Handling images upload state
+    const [editImages, setEditImages] = useState([]);
+    useEffect(() => {
+        fetch(`https://api.peakyonline.com/product/${id}`)
+            .then(res => res.json())
+            .then(data => setEditImages(data?.images))
+    }, [id])
 
     const [editShippingCharge, setEditShippingCharge] = useState(shippingCharge);
 
@@ -28,8 +42,14 @@ const EditProduct = () => {
         }
     })
 
+    const navigate = useNavigate();
+
     if (Object.keys(product).length === 0) {
         return <Loading />;
+    }
+
+    if (loading || isLoading) {
+        return <Loading></Loading>
     }
 
     const discount_price = price - ((discount * price) / 100);
@@ -53,10 +73,130 @@ const EditProduct = () => {
         }
     }
 
-    const handleEditProduct = () => {
+    // Handling image upload and delete from hosting
+    const handleImageChange = (e) => {
+        const file = e.target.files[0];
+        if (file) {
+            handleUpload(file);
+        }
+    };
+    const handleUpload = async (file) => {
+        const formData = new FormData();
+        formData.append("image", file);
+        try {
+            const response = await axios.post("https://api.peakyonline.com/upload", formData, {
+                headers: { "Content-Type": "multipart/form-data" },
+            });
 
-    }
+            const imageUrl = `https://api.peakyonline.com/${response.data.filePath}`;
+            const newImage = { _id: Date.now(), url: imageUrl };
 
+            // Add new image to the local state
+            const updatedImages = [...editImages, newImage];
+            setEditImages(updatedImages);
+            toast.success("Uploaded");
+
+            //Add image to the database
+            fetch(`https://api.peakyonline.com/product_image/${id}`, {
+                method: 'PATCH',
+                headers: {
+                    'content-type': 'application/json'
+                },
+                body: JSON.stringify(updatedImages)
+            })
+        } catch (err) {
+            console.error("Error uploading or publishing image:", err);
+            toast.error("Failed");
+        }
+    };
+    const handleDeleteImage = async (imageId, imageUrl) => {
+        try {
+            await axios.delete("https://api.peakyonline.com/delete", {
+                data: { imageUrl }
+            });
+
+            // Prepare new array after deletion
+            const updatedImages = editImages.filter(img => img._id !== imageId);
+
+            // Update state immediately
+            setEditImages(updatedImages);
+            toast.success("Deleted!");
+
+            //Remove image from the database
+            fetch(`https://api.peakyonline.com/product_image/${id}`, {
+                method: 'PATCH',
+                headers: {
+                    'content-type': 'application/json'
+                },
+                body: JSON.stringify(updatedImages)
+            })
+        } catch (err) {
+            console.error("Error removing or deleting image:", err);
+            toast.error("Failed");
+        }
+    };
+
+    const handleEditProduct = (e) => {
+        e.preventDefault();
+        setLoading(true);
+
+        const form = e.target;
+
+        const name = form.name.value || product.name;
+        const category = selectedCategory || product.category;
+        const price = parseFloat(form.price.value) || product.price;
+
+        // Discount handling
+        const discount_price_input = form.discount_price.value;
+        let discount;
+        if (discount_price_input === "") {
+            discount = product.discount;
+        } else {
+            const discount_price = parseFloat(discount_price_input);
+            discount = ((price - discount_price) * 100) / price;
+        }
+
+        // Shipping charge handling
+        const shippingCharge = editShippingCharge || product.shippingCharge;
+
+        const subtitle = form.subtitle.value || product.subtitle;
+        const whyBest = form.whyBest.value || product.whyBest;
+        const description_title = form.description_title.value || product.description?.description_title;
+        const description_details = form.description_details.value || product.description?.description_details;
+        const specificDescription = form.specificDescription.value || product.description?.specificDescription;
+
+        const description = {
+            description_title,
+            description_details,
+            specificDescription
+        };
+
+        const updatedProduct = {
+            name,
+            category,
+            price,
+            discount,
+            shippingCharge,
+            subtitle,
+            whyBest,
+            images: editImages,
+            description
+        };
+        fetch(`https://api.peakyonline.com/edit_product/${id}`, {
+            method: 'PATCH',
+            headers: {
+                'content-type': 'application/json'
+            },
+            body: JSON.stringify(updatedProduct)
+        })
+            .then(res => res.json())
+            .then(data => {
+                toast.success(`Done`);
+                navigate('/dashboard/products_list')
+                setLoading(false)
+
+            })
+    };
     return (
         <div className='py-2'>
             {/* ---------------Dashboard Button------------- */}
@@ -230,13 +370,13 @@ const EditProduct = () => {
 
 
                     {/* Product images */}
-                    {/* <section className='bg-white p-5 rounded-xl my-4'>
+                    <section className='bg-white p-5 rounded-xl my-4'>
                         <h2 className='text-slate-500 font-bold mb-4'>Product Images</h2>
                         <div className='flex justify-center items-center'>
                             <div className='grid grid-cols-2 lg:grid-cols-6 md:grid-cols-4 gap-4'>
                                 {
-                                    images.map(i =>
-                                        <div key={i._id} className='relative w-32 h-32 lg:w-40 lg:h-40 md:w-40 md:h-40 rounded-xl'>
+                                    editImages.map(i =>
+                                        <div key={i._id} className='relative w-32 h-32 lg:w-40 lg:h-40 md:w-40 md:h-40 rounded-xl border'>
                                             <img className="w-full h-full object-cover rounded-xl" src={i.url} alt="Uploaded" style={{ width: '200px' }} />
                                             <button type='button' onClick={() => handleDeleteImage(i._id, i.url)} className="bg-red-600 p-0.5 text-white absolute -right-1 -top-1 rounded-full">
                                                 <span className=''><RxCross2 /></span>
@@ -244,15 +384,19 @@ const EditProduct = () => {
                                         </div>
                                     )
                                 }
-                                <div className='w-32 h-32 lg:w-40 lg:h-40 border border-slate-400 border-dashed rounded-xl flex justify-center items-center'>
-                                    <span className='text-6xl text-slate-300'><FaRegImages />
-                                    </span>
+                                <div className='w-full h-auto border border-slate-400 border-dashed rounded-xl flex justify-center items-center'>
+                                    <div>
+                                        <span className='text-6xl text-slate-300'><FaRegImages />
+                                        </span>
+                                        <p className='text-slate-300'>1200x800</p>
+                                    </div>
                                     <input type="file" onChange={handleImageChange} className="absolute w-40 h-40 opacity-0 cursor-pointer" accept="image/*" />
                                 </div>
 
                             </div>
                         </div>
-                    </section> */}
+                    </section>
+
 
                     {/* Submit button */}
                     <button className='btn w-full mt-4 text-white bg-blue-600 hover:bg-blue-700 flex items-center justify-center gap-2' type="submit">

@@ -30,9 +30,7 @@ const OrderTrack = () => {
                     setOrders(data)
                 }
             })
-        // console.log(phone)
     }
-    console.log(orders)
 
     return (
         <div>

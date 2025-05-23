@@ -18,7 +18,7 @@ const Product = ({ product }) => {
 
     const handleOrderNow = async () => {
         await dispatch({ type: "ADD", product_id: _id, name: name, category: category, img: img, price: price, discount: discount, discount_price: discount_price, shippingCharge: shippingCharge, quantity: 1 });
-        toast.success('Added to the cart')
+        toast.success('Added')
         navigate('/cart', { state: product })
 
         // Clear previous ecommerce data before pushing the new product
@@ -52,7 +52,7 @@ const Product = ({ product }) => {
 
     const handleAddToCart = async () => {
         await dispatch({ type: "ADD", product_id: _id, name: name, category: category, img: img, price: price, discount: discount, discount_price: discount_price, shippingCharge: shippingCharge, quantity: 1 });
-        toast.success('Added to the cart');
+        toast.success('Added');
 
         // Clear previous ecommerce data before pushing the new product
         window.dataLayer.push({ ecommerce: null });
@@ -126,14 +126,8 @@ const Product = ({ product }) => {
             {/* Free Shipping Badge */}
             {
                 shippingCharge !== 'normal' && discount != 0 &&
-                <div className='font-normal bg-green-500 px-2 text-white rounded-xl absolute top-10 right-3'>
-                    <p><small>Free</small></p>
-                </div>
-            }
-            {
-                shippingCharge !== 'normal' && discount == 0 &&
-                <div className='font-normal bg-green-500 px-2 text-white rounded-xl absolute top-3 right-3'>
-                    <p><small>Free</small></p>
+                <div className='font-bold bg-green-700 px-2 text-white rounded py-1 absolute top-10 right-3'>
+                    <p><small>FREE DELIVERY</small></p>
                 </div>
             }
         </div>

@@ -10,7 +10,6 @@ const ProductDescription = ({ product }) => {
     const { _id, name, price, discount, category, images, description, productColor, subtitle, size, whyBest } = product;
     const discount_price = price - ((discount * price) / 100);
     const img = images[0]?.url;
-    console.log(product)
 
     const handleOrderNow = async () => {
         await dispatch({ type: "ADD", product_id: _id, name: name, category: category, img: img, price: price, discount: discount, discount_price: discount_price, quantity: 1 });

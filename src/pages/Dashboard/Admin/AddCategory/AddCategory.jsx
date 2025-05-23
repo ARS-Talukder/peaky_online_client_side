@@ -32,10 +32,10 @@ const AddCategory = () => {
             });
 
             setImages([...images, { _id: Date.now(), url: `https://api.peakyonline.com/${response.data.filePath}` }]);
-            toast.success("Uploaded");
+            toast.success("Done");
         } catch (err) {
             console.error("Error uploading image:", err);
-            toast.error("Failed to upload image");
+            toast.error("Failed");
         }
     };
     const handleDeleteImage = async (id, imageUrl) => {
@@ -49,7 +49,7 @@ const AddCategory = () => {
             toast.success("Deleted!");
         } catch (err) {
             console.error("Error deleting image:", err);
-            toast.error("Failed to delete image");
+            toast.error("Failed");
         }
     };
     const handleAddCategory = (e) => {
@@ -72,12 +72,12 @@ const AddCategory = () => {
             })
                 .then(res => res.json())
                 .then(data => {
-                    toast.success(`Category added successfully`);
+                    toast.success(`Done`);
                     navigate('/dashboard/categories_list')
 
                 })
                 .catch(err => {
-                    toast.error("Failed to add category");
+                    toast.error("Failed");
                     console.error(err);
                 })
                 .finally(() => {
@@ -85,7 +85,7 @@ const AddCategory = () => {
                 });
         }
         else {
-            toast.error(`Upload image`);
+            toast.error(`Done`);
         }
     }
     return (

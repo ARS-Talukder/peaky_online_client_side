@@ -111,7 +111,7 @@ const AddProduct = () => {
             toast.success("Uploaded");
         } catch (err) {
             console.error("Error uploading image:", err);
-            toast.error("Failed to upload image");
+            toast.error("Failed");
         }
     };
     const handleDeleteImage = async (id, imageUrl) => {
@@ -125,7 +125,7 @@ const AddProduct = () => {
             toast.success("Deleted!");
         } catch (err) {
             console.error("Error deleting image:", err);
-            toast.error("Failed to delete image");
+            toast.error("Failed");
         }
     };
 
@@ -170,12 +170,12 @@ const AddProduct = () => {
         })
             .then(res => res.json())
             .then(data => {
-                toast.success(`Product added successfully`);
+                toast.success(`Product added`);
                 navigate('/dashboard/products_list')
 
             })
             .catch(err => {
-                toast.error("Failed to add product");
+                toast.error("Failed");
                 console.error(err);
             })
             .finally(() => {
@@ -362,7 +362,7 @@ const AddProduct = () => {
                             <div className='grid grid-cols-2 lg:grid-cols-6 md:grid-cols-4 gap-4'>
                                 {
                                     images.map(i =>
-                                        <div key={i._id} className='relative w-32 h-32 lg:w-40 lg:h-40 md:w-40 md:h-40 rounded-xl'>
+                                        <div key={i._id} className='relative w-32 h-32 lg:w-40 lg:h-40 md:w-40 md:h-40 rounded-xl border'>
                                             <img className="w-full h-full object-cover rounded-xl" src={i.url} alt="Uploaded" style={{ width: '200px' }} />
                                             <button type='button' onClick={() => handleDeleteImage(i._id, i.url)} className="bg-red-600 p-0.5 text-white absolute -right-1 -top-1 rounded-full">
                                                 <span className=''><RxCross2 /></span>

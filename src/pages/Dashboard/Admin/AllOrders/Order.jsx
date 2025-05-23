@@ -45,7 +45,7 @@ const Order = ({ order, index, refetch }) => {
             })
                 .then(res => res.json())
                 .then(data => {
-                    toast.success("Order has been removed");
+                    toast.success("Removed");
                     refetch();
                 })
         }

@@ -27,8 +27,6 @@ const Checkout = () => {
         }
 
     }, [data]);
-    console.log(freeShipping)
-    // console.log(freeShipping)
 
     let subTotal = 0;
 
@@ -136,7 +134,6 @@ const Checkout = () => {
                 }
                 else {
                     toast.error('Sorry! Try again')
-                    console.log(data)
                 }
             })
 

@@ -65,7 +65,6 @@ const Register = () => {
                 const address = "No Address";
                 const phone = "No Mobile Number";
                 const customer = { name, email, phone, address }
-                // console.log(data)
                 if (data.user) {
                     //Post a customer
                     fetch(`https://api.peakyonline.com/customers/${email}`, {
