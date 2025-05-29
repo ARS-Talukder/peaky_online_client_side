@@ -50,7 +50,7 @@ const Cart = () => {
 
     }
 
-
+    console.log(data)
     return (
         <div className='lg:flex md:flex justify-center px-6 py-4 lg:px-20 md:px-4 lg:py-10'>
             {/* ------Products Section------ */}

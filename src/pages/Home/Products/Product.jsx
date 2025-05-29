@@ -4,12 +4,17 @@ import { useCart, useDispatchCart } from '../../ContextReducer';
 import toast from 'react-hot-toast';
 import { Link, useNavigate } from 'react-router-dom';
 import { dataLayer } from 'react-gtm-module';
+import CartDrawer from './Cart/CartDrawer/CartDrawer';
 
 const Product = ({ product }) => {
-    const { _id, name, category, images, price, discount, shippingCharge } = product;
+    const { _id, name, category, images, price, discount, shippingCharge, size, productColor } = product;
     const discount_price = price - ((discount * price) / 100);
     const navigate = useNavigate();
     const img = images[0]?.url;
+
+    // Cart Drawer open and close handling
+    const [isDrawerOpen, setIsDrawerOpen] = useState(false);
+
 
     const navigateToProductsDetails = () => {
         navigate(`/product/${_id}`, { state: product })
@@ -17,7 +22,12 @@ const Product = ({ product }) => {
     }
 
     const handleOrderNow = async () => {
-        await dispatch({ type: "ADD", product_id: _id, name: name, category: category, img: img, price: price, discount: discount, discount_price: discount_price, shippingCharge: shippingCharge, quantity: 1 });
+        if (size.length > 0 || productColor.length > 0) {
+            navigate(`/product/${_id}`, { state: product })
+            return
+
+        }
+        await dispatch({ type: "ADD", product_id: _id, name: name, category: category, img: img, price: price, discount: discount, discount_price: discount_price, size: size, productColor: productColor, shippingCharge: shippingCharge, quantity: 1 });
         toast.success('Added')
         navigate('/cart', { state: product })
 
@@ -36,7 +46,7 @@ const Product = ({ product }) => {
             ecommerce: {
                 currency: 'BDT',
                 value: parseFloat(price),
-                items: [{ product_id: _id, name: name, category: category, img: img, price: price, discount: discount, discount_price: discount_price, shippingCharge: shippingCharge, quantity: 1 }]
+                items: [{ product_id: _id, name: name, category: category, img: img, price: price, discount: discount, discount_price: discount_price, size: size, productColor: productColor, shippingCharge: shippingCharge, quantity: 1 }]
             },
             buttonText: 'Order Now',
             buttonClick: 'Clicked',
@@ -51,8 +61,13 @@ const Product = ({ product }) => {
     let data = useCart();
 
     const handleAddToCart = async () => {
+        if (size.length > 0 || productColor.length > 0) {
+            navigate(`/product/${_id}`, { state: product })
+            return
+
+        }
         await dispatch({ type: "ADD", product_id: _id, name: name, category: category, img: img, price: price, discount: discount, discount_price: discount_price, shippingCharge: shippingCharge, quantity: 1 });
-        toast.success('Added');
+        setIsDrawerOpen(true);
 
         // Clear previous ecommerce data before pushing the new product
         window.dataLayer.push({ ecommerce: null });
@@ -89,6 +104,13 @@ const Product = ({ product }) => {
 
     return (
         <div className='text-slate-500 font-bold text-center border-2 rounded hover:border-blue-500 pt-1 relative'>
+            {/* Overlay. It creates darker the page when drawer opens */}
+            {isDrawerOpen && (
+                <div
+                    className="fixed inset-0 bg-black bg-opacity-40 z-40 transition-opacity duration-300"
+                    onClick={() => setIsDrawerOpen(false)} 
+                ></div>
+            )}
             <div>
                 <div onClick={navigateToProductsDetails}>
                     <div className='h-48 px-1'>
@@ -126,10 +148,13 @@ const Product = ({ product }) => {
             {/* Free Shipping Badge */}
             {
                 shippingCharge !== 'normal' && discount != 0 &&
-                <div className='font-bold bg-green-700 px-2 text-white rounded py-1 absolute top-10 right-3'>
+                <div className='font-bold bg-green-700 px-2 flex items-center text-white rounded py-0.5 absolute top-10 right-3'>
                     <p><small>FREE DELIVERY</small></p>
                 </div>
             }
+
+
+            <CartDrawer isOpen={isDrawerOpen} setIsOpen={setIsDrawerOpen} />
         </div>
     );
 };

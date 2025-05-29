@@ -25,5 +25,8 @@ export default {
       addUtilities(newUtilities);
     }
   ],
+  daisyui: {
+    themes: ["light"], // force light theme even in dark mode
+  },
 }
 

@@ -6,7 +6,7 @@ const CartDispatchContext = createContext();
 const reducer = (state, action) => {
     switch (action.type) {
         case "ADD":
-            var data = [...state, { product_id: action.product_id, name: action.name, category: action.category, img: action.img, price: action.price, discount: action.discount, discount_price: action.discount_price, shippingCharge: action.shippingCharge, quantity: action.quantity }]
+            var data = [...state, { product_id: action.product_id, name: action.name, category: action.category, img: action.img, price: action.price, discount: action.discount, discount_price: action.discount_price, size: action.size, color: action.color, shippingCharge: action.shippingCharge, quantity: action.quantity }]
             localStorage.setItem("orders", JSON.stringify(data))
             return data
 

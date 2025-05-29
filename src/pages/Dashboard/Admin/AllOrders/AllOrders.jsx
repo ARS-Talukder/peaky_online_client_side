@@ -37,10 +37,7 @@ const AllOrders = () => {
                             <th className='border'>SL</th>
                             <th className='border'>OrderID</th>
                             <th className='border'>Product</th>
-                            <th className='border'>Qty</th>
                             <th className='border'>Price</th>
-                            <th className='border'>Disc</th>
-                            <th className='border'>Sub Total</th>
                             <th className='border'>Shipping</th>
                             <th className='border'>Total</th>
                             <th className='border'>Order Date</th>

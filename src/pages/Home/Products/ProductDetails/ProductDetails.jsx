@@ -8,7 +8,6 @@ import MoreProducts from './MoreProducts/MoreProducts';
 const ProductDetails = () => {
     const { state } = useLocation();
     const product = state;
-    // console.log(product)
     const { name, price, discount, category, images, description, productColor, size, whyBest } = product;
     useEffect(() => {
         if (product) {

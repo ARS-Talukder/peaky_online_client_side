@@ -221,7 +221,7 @@ const AddProduct = () => {
                                 <label className="label">
                                     <span className="label-text text-slate-500 font-bold">Shipping Charge</span>
                                 </label>
-                                <select defaultValue={'Default'} onChange={handleShippingCharge} name='shipping_charge' className="input input-bordered input-sm w-full h-14 bg-slate-50">
+                                <select defaultValue={'Default'} onChange={handleShippingCharge} name='shipping_charge' className="input input-bordered input-sm w-full h-14 bg-slate-50" required>
                                     <option value="Default" disabled>SELECT SHIPPING</option>
                                     <option value='normal' >Normal</option>
                                     <option value='free' >Free</option>

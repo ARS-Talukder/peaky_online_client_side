@@ -4,7 +4,7 @@ import { TbPointFilled } from "react-icons/tb";
 import { AiFillDelete } from "react-icons/ai";
 
 const Order = ({ order, index, refetch }) => {
-    const { _id, date, orderID, time, shipping, total, products, customerName, email, phone, address, status,paymentMethod,transactionID } = order;
+    const { _id, date, orderID, time, shipping, total, products, customerName, email, phone, address, status, paymentMethod, transactionID } = order;
     const handleOrderState = (event) => {
         const stateName = event.target.value;
         const data = { state: stateName };
@@ -59,19 +59,25 @@ const Order = ({ order, index, refetch }) => {
             <th className='border'>{index + 1}</th>
             <th className='border'>{orderID}</th>
             <td className='border'>
-                {products.map(p => <p key={p.product_id}>{p.name}</p>)}
+                {products.map(p => <p key={p.product_id}>
+                    <p>{p.name}</p>
+                    {p.size && <p className='mt-1'><span className='border border-blue-500 px-2'>{p.size}</span></p>
+                    }
+                    {p.color && <p className='mt-1'><span className='border border-blue-500 px-2'>{p.color}</span></p>}
+
+                </p>)}
             </td>
-            <td className='border'>
-                {products.map(p => <p key={p.product_id}>{p.quantity}</p>)}
-            </td>
-            <td className='border'>
-                {products.map(p => <p key={p.product_id}>{p.discount_price}</p>)}
-            </td>
-            <td className='border'>
-                {products.map(p => <p key={p.product_id}>{p.discount + "%"}</p>)}
-            </td>
-            <td className='border'>
-                {products.map(p => <p key={p.product_id}>{p.discount_price * p.quantity}</p>)}
+            <td className="border">
+                {products.map(p => (
+                    <div key={p.product_id} className="flex justify-center items-center gap-1">
+                        <span>{p.quantity}</span>
+                        <span>x</span>
+                        <span>{p.discount_price}</span>
+                        <span className='text-red-600'>(-{p.discount}%)</span>
+                        <span className='text-black'>={p.discount_price * p.quantity}</span>
+                        
+                    </div>
+                ))}
             </td>
             <td className='border'>{shipping}</td>
             <td className='font-bold border'>{total}</td>

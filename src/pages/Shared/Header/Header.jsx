@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import './Header.css'
 import { VscAccount } from "react-icons/vsc";
 import { Link, useNavigate } from 'react-router-dom';
@@ -9,11 +9,16 @@ import { BsCart } from "react-icons/bs";
 import { signOut } from 'firebase/auth';
 import { useCart } from '../../ContextReducer';
 import useAdmin from '../../hooks/useAdmin';
+import CartDrawer from '../../Home/Products/Cart/CartDrawer/CartDrawer';
 
 
 const Header = () => {
     const [user, loading, error] = useAuthState(auth);
     const [admin, adminLoading] = useAdmin(user);
+
+    // Cart Drawer open and close handling
+    const [isDrawerOpen, setIsDrawerOpen] = useState(false);
+
     const navigate = useNavigate();
     const data = useCart();
 
@@ -37,6 +42,13 @@ const Header = () => {
     }
     return (
         <header className='header_container'>
+            {/* Overlay. It creates darker the page when drawer opens */}
+            {isDrawerOpen && (
+                <div
+                    className="fixed inset-0 bg-black bg-opacity-40 z-40 transition-opacity duration-300"
+                    onClick={() => setIsDrawerOpen(false)}
+                ></div>
+            )}
             <div className='header_left'>
                 <Link to='/'><img src="https://i.ibb.co.com/hKqYrrP/Peaky-online-logo.png" alt="logo" width={80} /></Link>
             </div>
@@ -84,17 +96,19 @@ const Header = () => {
                 </div>
 
                 <div className='header_right_cart'>
-                    <Link to='cart'>
+                    <button onClick={() => setIsDrawerOpen(true)}>
                         <div className='flex'>
                             <div className='bg-blue-400 p-3 rounded-full relative'>
                                 <p className='text-3xl'><BsCart /></p>
                                 <p className='w-4 h-4 font-bold bg-blue-200 text-black rounded-full p-2 flex justify-center items-center absolute top-0 right-0'>{data.length}</p>
                             </div>
                         </div>
-                    </Link>
+                    </button>
 
                 </div>
             </div>
+
+            <CartDrawer isOpen={isDrawerOpen} setIsOpen={setIsDrawerOpen} />
 
         </header>
     );
