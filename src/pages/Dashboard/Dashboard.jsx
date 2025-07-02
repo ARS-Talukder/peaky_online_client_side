@@ -9,9 +9,12 @@ import { TbCategoryFilled } from "react-icons/tb";
 import { FaCartArrowDown } from "react-icons/fa";
 import { FaRegImages } from "react-icons/fa";
 import { FaPeopleGroup } from "react-icons/fa6";
+import { ImProfile } from "react-icons/im";
+import { BsBorderStyle } from "react-icons/bs";
 import { useAuthState } from 'react-firebase-hooks/auth';
 import useAdmin from '../hooks/useAdmin';
 import auth from '../../firebase.init';
+import Loading from '../Shared/Loading';
 
 
 
@@ -19,6 +22,10 @@ const Dashboard = () => {
     const [user, loading, error] = useAuthState(auth);
     const [admin, adminLoading] = useAdmin(user);
     const location = useLocation();
+
+    if (loading || adminLoading) {
+        return <Loading></Loading>
+    }
 
     return (
         <div className='bg-white'>
@@ -48,6 +55,20 @@ const Dashboard = () => {
                                 <span>Dashboard</span>
                             </Link>
                         </li>
+                        {/* My Profile button */}
+                        {
+                            admin ||
+                            <li>
+                                <Link
+                                    to="/dashboard/my_profile"
+                                    className={`w-full btn mb-3 border-0 flex justify-start text-slate-600 ${location.pathname === "/dashboard/my_profile" ? "bg-gray-200" : "bg-white"
+                                        }`}
+                                >
+                                    <span className='text-xl text-green-500'><ImProfile /></span>
+                                    <span>My Profile</span>
+                                </Link>
+                            </li>
+                        }
                         {/* Order Track button */}
                         <li>
                             <Link

@@ -31,8 +31,16 @@ const Checkout = () => {
     let subTotal = 0;
 
 
-    let date = new Date().toLocaleDateString("de-DE");
-    const time = new Date().toLocaleTimeString();
+    let date = new Date().toLocaleDateString("en-GB", {
+        day: "numeric",
+        month: "long",
+        year: "numeric"
+    });
+    const time = new Date().toLocaleTimeString([], {
+        hour: '2-digit',
+        minute: '2-digit',
+        hour12: true
+    });
 
     let content;
     if (data.length === 0) {
@@ -115,7 +123,7 @@ const Checkout = () => {
         const district = e.target.district.value;
         const phone = e.target.phone.value;
         const shipping_cost = shipping;
-        const order = { customerName: customerName, orderID, address: { street, thana, district }, subTotal: subTotal, shipping: shipping_cost, total: subTotal + shipping, phone: phone, products: data, date: date, time: time, paymentMethod, transactionID: paymentMethod === 'bKash' ? transactionID : null, status: 'pending', status_color: 'yellow' };
+        const order = { customerName: customerName, orderID, address: { street, thana, district }, subTotal: subTotal, shipping: shipping_cost, total: subTotal + shipping, phone: phone, products: data, date: date, time: time, paymentMethod, transactionID: paymentMethod === 'bKash' ? transactionID : null, status: 'processing', status_color: 'yellow', orderSteps: [{ time: `${date}\n${time}`, title: 'Order Placed', description: `Your order is successfully placed to PeakyOnline.\nOrder id ${orderID}` }, { time: `${date}\n${time}`, title: 'Processing', description: 'We have received your order. Our team member will check and confirm shortly' }] };
 
         //Post an order
         fetch('https://api.peakyonline.com/orders', {
@@ -214,7 +222,7 @@ const Checkout = () => {
                                 <label className="label">
                                     <span className="label-text text-slate-500 font-bold">Shipping Charge</span>
                                 </label>
-                                <input type="text" className="input input-sm input-bordered w-full disabled:text-green-600 disabled:font-bold" value='Free' disabled/>
+                                <input type="text" className="input input-sm input-bordered w-full disabled:text-green-600 disabled:font-bold" value='Free' disabled />
                             </div>
                             :
                             <div className="form-control w-full mt-2">

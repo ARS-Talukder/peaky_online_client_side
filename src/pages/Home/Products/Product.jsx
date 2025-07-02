@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { FaBangladeshiTakaSign } from "react-icons/fa6";
 import { useCart, useDispatchCart } from '../../ContextReducer';
 import toast from 'react-hot-toast';
+import { FaTruckFast } from "react-icons/fa6";
 import { Link, useNavigate } from 'react-router-dom';
 import { dataLayer } from 'react-gtm-module';
 import CartDrawer from './Cart/CartDrawer/CartDrawer';
@@ -108,7 +109,7 @@ const Product = ({ product }) => {
             {isDrawerOpen && (
                 <div
                     className="fixed inset-0 bg-black bg-opacity-40 z-40 transition-opacity duration-300"
-                    onClick={() => setIsDrawerOpen(false)} 
+                    onClick={() => setIsDrawerOpen(false)}
                 ></div>
             )}
             <div>
@@ -148,8 +149,9 @@ const Product = ({ product }) => {
             {/* Free Shipping Badge */}
             {
                 shippingCharge !== 'normal' && discount != 0 &&
-                <div className='font-bold bg-green-700 px-2 flex items-center text-white rounded py-0.5 absolute top-10 right-3'>
-                    <p><small>FREE DELIVERY</small></p>
+                <div className='bg-green-700 px-2 flex items-center text-white rounded py-0.5 absolute top-10 right-3'>
+                    <p className='text-xl'><FaTruckFast /></p>
+                    <p className='mx-1'><small>FREE DELIVERY</small></p>
                 </div>
             }
 

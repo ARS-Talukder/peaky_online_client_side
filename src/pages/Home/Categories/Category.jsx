@@ -19,15 +19,17 @@ const Category = ({ category }) => {
         });
     }
     return (
-        <div className='mx-5' onClick={() => navigateToInventory(name)}>
-            <div className="avatar">
-                <div className="w-24 border border-4 border-blue-300 hover:border-blue-500 rounded-full">
-                    <img className='w-full text-center' src={img} alt='category_img' />
-                </div>
-            </div>
-
+        <div className='mx-5 flex justify-center items-center' onClick={() => navigateToInventory(name)}>
             <div>
-                <p className='text-center font-bold'><small>{name}</small></p>
+                <div className="avatar">
+                    <div className="w-16 lg:w-20 shadow-lg shadow-black hover:shadow-xl transition-shadow duration-300 rounded-3xl">
+                        <img className='w-full text-center' src={img} alt='category_img' />
+                    </div>
+                </div>
+
+                <div>
+                    <p className='text-center font-bold'><small>{name}</small></p>
+                </div>
             </div>
         </div>
     );

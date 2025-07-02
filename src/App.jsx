@@ -28,6 +28,8 @@ import Confirmed from './pages/Home/Products/Cart/Confirmed'
 import Checkout from './pages/Home/Products/Cart/Checkout'
 import Banner from './pages/Dashboard/Admin/Banner/Banner'
 import EditCategory from './pages/Dashboard/Admin/EditCategory/EditCategory'
+import AllCategories from './pages/Home/Categories/AllCategories'
+import MyProfile from './pages/Dashboard/MyProfile/MyProfile'
 
 function App() {
 
@@ -47,10 +49,12 @@ function App() {
           <Route path="checkout" element={<Checkout />} />
           <Route path='/:name' element={<CategoryItems></CategoryItems>}></Route>
           <Route path='/product/:id' element={<ProductDetails></ProductDetails>}></Route>
+          <Route path='all_categories' element={<AllCategories></AllCategories>}></Route>
 
           <Route path='/dashboard' element={<RequireAuth><Dashboard></Dashboard></RequireAuth>}>
             <Route index element={<Index></Index>}></Route>
             <Route path='/dashboard/order_track' element={<OrderTrack></OrderTrack>}></Route>
+            <Route path='/dashboard/my_profile' element={<MyProfile></MyProfile>}></Route>
             <Route path='/dashboard/products_list' element={<RequireAdmin><ProductsList></ProductsList></RequireAdmin>}></Route>
             <Route path='/dashboard/add_product' element={<RequireAdmin><AddProduct></AddProduct></RequireAdmin>}></Route>
             <Route path='/dashboard/edit_product/:id' element={<RequireAdmin><EditProduct></EditProduct></RequireAdmin>}></Route>

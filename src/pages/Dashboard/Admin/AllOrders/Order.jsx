@@ -5,9 +5,55 @@ import { AiFillDelete } from "react-icons/ai";
 
 const Order = ({ order, index, refetch }) => {
     const { _id, date, orderID, time, shipping, total, products, customerName, email, phone, address, status, paymentMethod, transactionID } = order;
+
+    const statusFlow = ["processing", "confirmed", "packed", "delivered"];
+    const currentIndex = statusFlow.includes(status) ? statusFlow.indexOf(status) : 0;
+
+    let currentDate = new Date().toLocaleDateString("en-GB", {
+        day: "numeric",
+        month: "long",
+        year: "numeric"
+    });
+    const currentTime = new Date().toLocaleTimeString([], {
+        hour: '2-digit',
+        minute: '2-digit',
+        hour12: true
+    });
+
     const handleOrderState = (event) => {
         const stateName = event.target.value;
-        const data = { state: stateName };
+        let newStep1
+        let newStep2
+
+        const now = `${currentDate}\n${currentTime}`;
+
+        if (stateName === 'confirmed') {
+            newStep1 = { time: now, title: 'Confirmed', description: 'We have confirmed your order.' }
+            newStep2 = { time: now, title: 'Packing', description: 'We are currently packing your order.' }
+        }
+        if (stateName === 'packed') {
+            newStep1 = { time: now, title: 'Packed', description: 'Your order is packed now.' }
+            newStep2 = { time: now, title: 'Delivering', description: 'Your order is now ready for delivering' }
+        }
+        if (stateName === 'delivered') {
+            newStep1 = { time: now, title: 'Delivered', description: 'You have received your order' }
+        }
+        if (stateName === 'canceled') {
+            newStep1 = { time: now, title: 'Canceled', description: 'Sorry, your order has been canceled by our team. For more details, please contact +8801814728277' }
+        }
+
+        // Build steps array safely
+        const steps = [];
+        if (newStep1) steps.push(newStep1);
+        if (newStep2) steps.push(newStep2);
+
+
+        // Send both status and steps
+        const data = {
+            state: stateName,
+            steps: steps
+        };
+
         fetch(`https://api.peakyonline.com/order_state/${_id}`, {
             method: 'PATCH',
             headers: {
@@ -23,18 +69,22 @@ const Order = ({ order, index, refetch }) => {
         toast.success(`Order is ${stateName}`)
     }
 
+
     let classColor
-    if (status === 'pending') {
+    if (status === 'processing') {
         classColor = 'text-xl text-yellow-500'
     }
-    if (status === 'shipped') {
-        classColor = 'text-xl text-blue-700'
-    }
-    if (status === 'delivered') {
-        classColor = 'text-xl text-green-600'
+    if (status === 'confirmed') {
+        classColor = 'text-xl text-black'
     }
     if (status === 'canceled') {
         classColor = 'text-xl text-red-500'
+    }
+    if (status === 'packed') {
+        classColor = 'text-xl text-blue-600'
+    }
+    if (status === 'delivered') {
+        classColor = 'text-xl text-green-500'
     }
 
     const handleDelete = (id) => {
@@ -75,7 +125,7 @@ const Order = ({ order, index, refetch }) => {
                         <span>{p.discount_price}</span>
                         <span className='text-red-600'>(-{p.discount}%)</span>
                         <span className='text-black'>={p.discount_price * p.quantity}</span>
-                        
+
                     </div>
                 ))}
             </td>
@@ -95,16 +145,45 @@ const Order = ({ order, index, refetch }) => {
                 <p>{paymentMethod}</p>
                 <p className='text-red-600'>{transactionID}</p>
             </td>
-            <td className='flex justify-center items-center'>
-                <p className='flex justify-center items-center'>
-                    <span className={classColor}><TbPointFilled /></span>
-                    <span>{status}</span>
-                </p>
-                <select className={status === 'delivered' || status === 'canceled' ? "select select-bordered select-xs w-1 border-0 hidden" : "select select-bordered select-xs w-1 border-0"} onChange={handleOrderState}>
-                    <option value="pending" selected>pending</option>
-                    <option value="shipped">shipped</option>
-                    <option value="delivered">delivered</option>
-                    <option value="canceled">canceled</option>
+            <td>
+                <select
+                    value={status}
+                    onChange={handleOrderState}
+                    className="select select-sm select-primary"
+                    disabled={status === 'delivered' || status === 'canceled' && true}
+                >
+                    {status === "canceled" ? (
+                        // Only show Canceled when canceled is selected
+                        <option value="canceled" className="text-red-500">
+                            Canceled
+                        </option>
+                    ) : (
+                        <>
+                            {/* Show the status options from current position */}
+                            {statusFlow.slice(currentIndex).map(item => (
+                                <option
+                                    key={item}
+                                    value={item}
+                                    disabled={item === status}
+                                    className={
+                                        item === "processing" ? "text-yellow-500" :
+                                            item === "confirmed" ? "text-black" :
+                                                item === "packed" ? "text-blue-600" :
+                                                    item === "delivered" ? "text-green-500" : ""
+                                    }
+                                >
+                                    {item.charAt(0).toUpperCase() + item.slice(1)}
+                                </option>
+                            ))}
+
+                            {/* Show 'Canceled' if status is not delivered or canceled */}
+                            {status !== "delivered" && (
+                                <option value="canceled" className="text-red-500">
+                                    Canceled
+                                </option>
+                            )}
+                        </>
+                    )}
                 </select>
             </td>
             <td className='border'>

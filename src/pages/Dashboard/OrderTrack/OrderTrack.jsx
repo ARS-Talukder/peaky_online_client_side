@@ -12,6 +12,8 @@ const OrderTrack = () => {
         content = orders.map((order) => <OrderProduct key={order._id} order={order} ></OrderProduct>)
     }
 
+    console.log(orders)
+
     const handleMyOrder = (e) => {
         e.preventDefault();
         const phone = e.target.phone.value;
@@ -50,32 +52,20 @@ const OrderTrack = () => {
                         < div className='flex justify-center mb-8 lg:mb-0 lg:my-4'>
                             <form action="" className='' onSubmit={handleMyOrder}>
                                 <p className='my-1 font-bold text-gray-700'><small>Enter Your Mobile Number to see the order status</small></p>
-                                <input type="number" name="phone" placeholder="Enter Mobile Number" className="input input-bordered input-md w-full max-w-xs"  onChange={()=>{setNoOrder("")}} required />
+                                <input type="number" name="phone" placeholder="Enter Mobile Number" className="input input-bordered input-md w-full max-w-xs" onChange={() => { setNoOrder("") }} required />
                                 <input className='w-full btn btn-md max-w-xs text-white bg-blue-500 hover:bg-blue-600 my-1' type="submit" value="Submit" />
                                 <p className='font-bold text-red-500'><small>Sorry!! {noOrder}</small></p>
                             </form>
                         </div>
                     )
                     :
-                    <div className="overflow-x-auto bg-white rounded-xl shadow-xl my-6">
-                        <table className="table table border">
-                        <thead className='bg-blue-700 text-white'>
-                                <tr className='text-center'>
-                                    <th className='border'>OrderID</th>
-                                    <th className='border'>Product</th>
-                                    <th className='border'>Qty</th>
-                                    <th className='border'>Price</th>
-                                    <th className='border'>Sub Total</th>
-                                    <th className='border'>Shipping</th>
-                                    <th className='border'>Total</th>
-                                    <th className='border'>Order Date</th>
-                                    <th className='border'>Status</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                {content}
-                            </tbody>
-                        </table>
+                    <div className="max-w-xl mx-auto lg:p-4">
+                        <div className='bg-white p-5 my-4 rounded-xl shadow-xl'>
+                            <h2 className='text-xl font-bold text-slate-600'>All Orders</h2>
+                        </div>
+
+                        {content}
+                        
                     </div>
             }
 

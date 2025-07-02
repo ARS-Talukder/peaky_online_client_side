@@ -7,6 +7,9 @@ import DashboardButton from './DashboardButton';
 import axios from 'axios';
 import { useQuery } from '@tanstack/react-query';
 import Loading from '../Shared/Loading';
+import useAdmin from '../hooks/useAdmin';
+import { useAuthState } from 'react-firebase-hooks/auth';
+import auth from '../../firebase.init';
 
 const fetchAllData = async () => {
     const [products, categories, orders, customers] = await Promise.all([
@@ -25,12 +28,14 @@ const fetchAllData = async () => {
 };
 
 const Index = () => {
+    const [user, loading] = useAuthState(auth);
+    const [admin, adminLoading] = useAdmin(user);
     const { data, isLoading, isError, error } = useQuery({
         queryKey: ["dashboardData"],
         queryFn: fetchAllData
     });
 
-    if (isLoading) {
+    if (isLoading || loading || adminLoading) {
         <Loading></Loading>
     }
     if (isError) return <p>Error: {error.message}</p>;
@@ -54,20 +59,28 @@ const Index = () => {
                     </div>
                     <span className='text-6xl text-purple-100'><TbCategoryFilled /></span>
                 </div>
-                <div className='h-48 bg-sky-600 rounded-xl p-8 flex justify-between'>
-                    <div>
-                        <h2 className='text-2xl font-bold text-white'>Total Orders</h2>
-                        <h3 className='text-4xl text-white font-bold my-2'>{data?.orders.length}</h3>
+
+                {
+                    admin &&
+                    <div className='h-48 bg-sky-600 rounded-xl p-8 flex justify-between'>
+                        <div>
+                            <h2 className='text-2xl font-bold text-white'>Total Orders</h2>
+                            <h3 className='text-4xl text-white font-bold my-2'>{data?.orders.length}</h3>
+                        </div>
+                        <span className='text-6xl text-sky-100'><FaCartArrowDown /></span>
                     </div>
-                    <span className='text-6xl text-sky-100'><FaCartArrowDown /></span>
-                </div>
-                <div className='h-48 bg-yellow-600 rounded-xl p-8 flex justify-between'>
-                    <div>
-                        <h2 className='text-2xl font-bold text-white'>Customers</h2>
-                        <h3 className='text-4xl text-white font-bold my-2'>{data?.customers.length}</h3>
+                }
+
+                {
+                    admin &&
+                    <div className='h-48 bg-yellow-600 rounded-xl p-8 flex justify-between'>
+                        <div>
+                            <h2 className='text-2xl font-bold text-white'>Customers</h2>
+                            <h3 className='text-4xl text-white font-bold my-2'>{data?.customers.length}</h3>
+                        </div>
+                        <span className='text-6xl text-purple-100'><FaPeopleGroup /></span>
                     </div>
-                    <span className='text-6xl text-purple-100'><FaPeopleGroup /></span>
-                </div>
+                }
             </div>
         </div>
     );
