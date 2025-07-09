@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { useQuery } from '@tanstack/react-query';
 import axios from 'axios';
 import Order from './Order';
@@ -6,6 +6,9 @@ import DashboardButton from '../../DashboardButton';
 import Loading from '../../../Shared/Loading';
 
 const AllOrders = () => {
+    const [searchText, setSearchText] = useState("");
+    const [searchResults, setSearchResults] = useState([]);
+
     const { data: orders, isLoading, isSuccess, isError, error, refetch } = useQuery({
         queryKey: ["orders"],
         queryFn: () => {
@@ -13,23 +16,52 @@ const AllOrders = () => {
         }
     })
 
+    const handleSearch = () => {
+        fetch(`https://api.peakyonline.com/order_by_phone/${searchText}`)
+            .then(res => res.json())
+            .then(data => setSearchResults(data))
+    };
+
+    console.log(searchResults)
+
     let content;
+
+    // const displayedOrders = searchText ? searchResults : (orders?.data || []);
 
     if (isLoading) {
         return <Loading></Loading>
     }
 
     if (isSuccess) {
-        content = orders.data.map((order,index) => <Order index={index} key={order._id} order={order} refetch={refetch}></Order>)
+        if (searchResults.length > 0) {
+            content = searchResults.map((order, index) => <Order index={index} key={order._id} order={order}></Order>)
+        }
+        else {
+            content = orders.data.map((order, index) => <Order index={index} key={order._id} order={order} refetch={refetch}></Order>)
+        }
+
     }
 
     return (
         <div className='py-2'>
             {/* ---------------Dashboard Button------------- */}
             <DashboardButton></DashboardButton>
-            <div className='bg-white p-5 my-4 rounded-xl shadow-xl'>
+
+            {/* ---------- Search Bar ---------- */}
+            <div className='bg-white p-5 my-4 rounded-xl shadow-xl flex flex-col md:flex-row md:items-center md:justify-between gap-2'>
                 <h2 className='text-xl font-bold text-slate-600'>All Orders</h2>
+                <div className="flex gap-2">
+                    <input
+                        type="text"
+                        placeholder="Search by Phone"
+                        value={searchText}
+                        onChange={(e) => setSearchText(e.target.value)}
+                        className="input input-bordered w-64"
+                    />
+                    <button onClick={handleSearch} className="btn btn-primary">Search</button>
+                </div>
             </div>
+
             <div className="overflow-x-auto bg-white rounded-xl shadow-xl my-6">
                 <table className="table table border">
                     <thead className='bg-blue-700 text-white'>

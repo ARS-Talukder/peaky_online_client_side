@@ -30,7 +30,7 @@ const Product = ({ product }) => {
         }
         await dispatch({ type: "ADD", product_id: _id, name: name, category: category, img: img, price: price, discount: discount, discount_price: discount_price, size: size, productColor: productColor, shippingCharge: shippingCharge, quantity: 1 });
         toast.success('Added')
-        navigate('/cart', { state: product })
+        navigate('/checkout', { state: product })
 
         // Clear previous ecommerce data before pushing the new product
         window.dataLayer.push({ ecommerce: null });

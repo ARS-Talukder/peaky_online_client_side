@@ -30,6 +30,9 @@ import Banner from './pages/Dashboard/Admin/Banner/Banner'
 import EditCategory from './pages/Dashboard/Admin/EditCategory/EditCategory'
 import AllCategories from './pages/Home/Categories/AllCategories'
 import MyProfile from './pages/Dashboard/MyProfile/MyProfile'
+import SalesChart from './pages/Dashboard/Admin/SalesChart/SalesChart'
+import SpecialCategoriesList from './pages/Dashboard/Admin/SpecialCategoriesList/SpecialCategoriesList'
+import AddSpecialCategory from './pages/Dashboard/Admin/AddSpecialCategory/AddSpecialCategory'
 
 function App() {
 
@@ -54,11 +57,14 @@ function App() {
           <Route path='/dashboard' element={<RequireAuth><Dashboard></Dashboard></RequireAuth>}>
             <Route index element={<Index></Index>}></Route>
             <Route path='/dashboard/order_track' element={<OrderTrack></OrderTrack>}></Route>
+            <Route path='/dashboard/sales' element={<SalesChart></SalesChart>}></Route>
             <Route path='/dashboard/my_profile' element={<MyProfile></MyProfile>}></Route>
             <Route path='/dashboard/products_list' element={<RequireAdmin><ProductsList></ProductsList></RequireAdmin>}></Route>
             <Route path='/dashboard/add_product' element={<RequireAdmin><AddProduct></AddProduct></RequireAdmin>}></Route>
             <Route path='/dashboard/edit_product/:id' element={<RequireAdmin><EditProduct></EditProduct></RequireAdmin>}></Route>
             <Route path='/dashboard/categories_list' element={<RequireAdmin><CategoriesList></CategoriesList></RequireAdmin>}></Route>
+            <Route path='/dashboard/special_categories_list' element={<RequireAdmin><SpecialCategoriesList></SpecialCategoriesList></RequireAdmin>}></Route>
+            <Route path='/dashboard/add_special_category' element={<RequireAdmin><AddSpecialCategory></AddSpecialCategory></RequireAdmin>}></Route>
             <Route path='/dashboard/banner' element={<RequireAdmin><Banner></Banner></RequireAdmin>}></Route>
             <Route path='/dashboard/add_category' element={<RequireAdmin><AddCategory></AddCategory></RequireAdmin>}></Route>
             <Route path='/dashboard/edit_category/:id' element={<RequireAdmin><EditCategory></EditCategory></RequireAdmin>}></Route>

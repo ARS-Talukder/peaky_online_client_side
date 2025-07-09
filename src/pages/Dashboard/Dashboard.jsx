@@ -8,8 +8,10 @@ import { IoMdAddCircle } from "react-icons/io";
 import { TbCategoryFilled } from "react-icons/tb";
 import { FaCartArrowDown } from "react-icons/fa";
 import { FaRegImages } from "react-icons/fa";
+import { FcSalesPerformance } from "react-icons/fc";
 import { FaPeopleGroup } from "react-icons/fa6";
 import { ImProfile } from "react-icons/im";
+import { MdFolderSpecial } from "react-icons/md";
 import { BsBorderStyle } from "react-icons/bs";
 import { useAuthState } from 'react-firebase-hooks/auth';
 import useAdmin from '../hooks/useAdmin';
@@ -80,6 +82,22 @@ const Dashboard = () => {
                                 <span>Order Track</span>
                             </Link>
                         </li>
+
+                        {/* Sales button */}
+                        {
+                            admin &&
+                            <li>
+                                <Link
+                                    to="/dashboard/sales"
+                                    className={`w-full btn mb-3 border-0 flex justify-start text-slate-600 ${location.pathname === "/dashboard/sales" ? "bg-gray-200" : "bg-white"
+                                        }`}
+                                >
+                                    <span className='text-xl'><FcSalesPerformance /></span>
+                                    <span>Sales Report</span>
+                                </Link>
+                            </li>
+                        }
+
                         {/* Products button */}
                         {
                             admin &&
@@ -156,8 +174,46 @@ const Dashboard = () => {
                             </li>
                         }
 
-                        {/* Banner button */}
+                        {/* Special Categories button */}
+                        {
+                            admin &&
+                            <li>
+                                <details className="dropdown">
+                                    <summary
+                                        className={`w-full btn mb-3 border-0 flex items-center justify-between text-slate-600 ${(location.pathname === '/dashboard/special_categories_list' || location.pathname === '/dashboard/special_categories_list') ? "bg-gray-200" : "bg-white"
+                                            }`}
+                                    >
+                                        <span className='flex justify-center items-center'>
+                                            <span className='text-xl text-orange-600 mr-2'><MdFolderSpecial />
+                                            </span>
+                                            <span>Special Categories</span>
+                                        </span>
+                                    </summary>
+                                    <ul className="menu dropdown-content bg-base-100 rounded-box z-[1] w-52 p-2 shadow">
+                                        <li>
+                                            <Link
+                                                to="/dashboard/special_categories_list"
+                                                className="w-full btn mb-3 border-0 bg-gray-200"
+                                            >
+                                                <span className='text-xl text-orange-700'><FaListOl /></span>
+                                                <span>Special List</span>
+                                            </Link>
+                                        </li>
+                                        <li>
+                                            <Link
+                                                to="/dashboard/add_special_category"
+                                                className="w-full btn mb-3 border-0 bg-gray-200"
+                                            >
+                                                <span className='text-xl text-orange-700'><IoMdAddCircle /></span>
+                                                <span>Add Special</span>
+                                            </Link>
+                                        </li>
+                                    </ul>
+                                </details>
+                            </li>
+                        }
 
+                        {/* Banner button */}
                         {
                             admin &&
                             <li>

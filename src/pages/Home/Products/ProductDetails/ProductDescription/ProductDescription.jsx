@@ -30,7 +30,7 @@ const ProductDescription = ({ product }) => {
     const handleOrderNow = async () => {
         await dispatch({ type: "ADD", product_id: _id, name: name, category: category, img: img, price: price, discount: discount, discount_price: discount_price, size: selectedSizeName, color: selectedColorName, quantity: 1 });
         toast.success('Added to the cart')
-        navigate('/cart', { state: product })
+        navigate('/checkout', { state: product })
 
         // Clear previous ecommerce data before pushing the new product
         window.dataLayer.push({ ecommerce: null });

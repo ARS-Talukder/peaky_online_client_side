@@ -4,6 +4,7 @@ import { useCart, useDispatchCart } from '../../../ContextReducer';
 import { Link, useNavigate } from 'react-router-dom';
 import CartProduct from './CartProduct';
 import { FaBangladeshiTakaSign } from "react-icons/fa6";
+import CheckoutProduct from './CheckoutProduct';
 
 
 const Checkout = () => {
@@ -46,13 +47,13 @@ const Checkout = () => {
     if (data.length === 0) {
         return (
             <div className='h-80 flex justify-center items-center'>
-                <h2 className='text-xl font-bold text-blue-500'>Your Cart is Empty!!</h2>
+                <h2 className='text-xl font-bold text-red-600'>No Products Here!!</h2>
             </div>
         )
     }
     else {
         content = data.map((product, index) =>
-            <CartProduct index={index} key={product.product_id} product={product}></CartProduct>
+            <CheckoutProduct index={index} key={product.product_id} product={product}></CheckoutProduct>
         )
         //This loop is for counting SubTotal of all cart products
         for (let i = 0; i < data.length; i++) {
@@ -249,8 +250,18 @@ const Checkout = () => {
             </div>
 
             {/* ------Amount Section------ */}
-            <div className='w-full lg:w-1/4'>
+            <div className='w-full lg:w-1/2'>
                 <div className='border py-1 px-8 my-4'>
+                    <div className='flex justify-between my-4'>
+                        <p className='font-bold'><small>PRODUCT</small></p>
+                        <p className='font-bold flex justify-center items-center'>
+                            <span><small>SUBTOTAL</small></span>
+                        </p>
+                    </div>
+                    <hr />
+
+                    {content}
+
                     <div className='flex justify-between my-4'>
                         <p className='font-bold'><small>Subtotal</small></p>
                         <p className='font-bold flex justify-center items-center'>
