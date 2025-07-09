@@ -9,7 +9,7 @@ const SpecialCategoriesList = () => {
     const { data: specialCategories, isLoading, isSuccess, isError, error, refetch } = useQuery({
         queryKey: ["specialCategories"],
         queryFn: () => {
-            return axios.get("http://localhost:5000/special_categories")
+            return axios.get("https://api.peakyonline.com/special_categories")
         }
     })
     let content;

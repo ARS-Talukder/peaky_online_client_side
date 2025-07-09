@@ -12,7 +12,7 @@ const AddSpecialCategory = () => {
         const name = e.target.name.value;
         const category = { name, products: [] }
 
-        fetch('http://localhost:5000/special_categories', {
+        fetch('https://api.peakyonline.com/special_categories', {
             method: 'POST',
             headers: {
                 'content-type': 'application/json'
