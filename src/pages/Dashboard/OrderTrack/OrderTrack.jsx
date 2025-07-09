@@ -9,7 +9,7 @@ const OrderTrack = () => {
     let content;
 
     if (orders.length !== 0) {
-        content = orders.map((order) => <OrderProduct key={order._id} order={order} ></OrderProduct>)
+        content = [...orders].reverse().map((order) => <OrderProduct key={order._id} order={order} ></OrderProduct>)
     }
 
     console.log(orders)
@@ -65,7 +65,7 @@ const OrderTrack = () => {
                         </div>
 
                         {content}
-                        
+
                     </div>
             }
 
