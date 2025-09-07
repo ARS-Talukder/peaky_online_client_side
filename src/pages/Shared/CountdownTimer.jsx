@@ -1,41 +1,45 @@
-import React, { useEffect, useState } from "react";
+import React, { useState, useEffect } from 'react';
 
 const CountdownTimer = ({ startTime, endTime }) => {
-    const [timeLeft, setTimeLeft] = useState({ hours: 0, minutes: 0, seconds: 0 });
+    const [timeLeft, setTimeLeft] = useState(calculateTimeLeft());
+
+    function calculateTimeLeft() {
+        const now = new Date().getTime();
+        const start = new Date(startTime).getTime();
+        const end = new Date(endTime).getTime();
+
+        if (now < start) {
+            // Offer hasn't started yet
+            return { status: 'notStarted', time: start - now };
+        } else if (now > end) {
+            // Offer ended
+            return { status: 'ended', time: 0 };
+        } else {
+            // Offer running
+            return { status: 'running', time: end - now };
+        }
+    }
 
     useEffect(() => {
-        const interval = setInterval(() => {
-            const now = new Date().getTime();
-            const start = new Date(startTime).getTime();
-            const end = new Date(endTime).getTime();
-
-            let distance;
-            if (now < start) {
-                distance = start - now; // Countdown to start
-            } else {
-                distance = end - now; // Countdown to end
-            }
-
-            if (distance <= 0) {
-                setTimeLeft({ hours: 0, minutes: 0, seconds: 0 });
-                clearInterval(interval);
-            } else {
-                setTimeLeft({
-                    hours: Math.floor((distance / (1000 * 60 * 60)) % 24),
-                    minutes: Math.floor((distance / (1000 * 60)) % 60),
-                    seconds: Math.floor((distance / 1000) % 60),
-                });
-            }
+        const timer = setInterval(() => {
+            setTimeLeft(calculateTimeLeft());
         }, 1000);
 
-        return () => clearInterval(interval);
+        return () => clearInterval(timer);
     }, [startTime, endTime]);
 
-    return (
-        <div className="text-red-600 font-bold text-lg">
-            {timeLeft.hours}h : {timeLeft.minutes}m : {timeLeft.seconds}s
-        </div>
-    );
+    const formatTime = (milliseconds) => {
+        let totalSeconds = Math.floor(milliseconds / 1000);
+        const hours = Math.floor(totalSeconds / 3600);
+        totalSeconds %= 3600;
+        const minutes = Math.floor(totalSeconds / 60);
+        const seconds = totalSeconds % 60;
+        return `${hours}h ${minutes}m ${seconds}s`;
+    };
+
+    if (timeLeft.status === 'notStarted') return <p className="text-blue-600 font-bold">Starts in: {formatTime(timeLeft.time)}</p>;
+    if (timeLeft.status === 'ended') return <p className="text-red-600 font-bold">Offer ended</p>;
+    return <p className="text-green-600 font-bold">Ends in: {formatTime(timeLeft.time)}</p>;
 };
 
 export default CountdownTimer;

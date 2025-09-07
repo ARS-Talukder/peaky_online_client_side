@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import DashboardButton from '../../DashboardButton';
 import { useQuery } from '@tanstack/react-query';
 import axios from 'axios';
@@ -13,6 +13,8 @@ const SpecialCategoriesList = () => {
         queryFn: () => axios.get("https://api.peakyonline.com/special_categories")
     });
 
+    const [deletingId, setDeletingId] = useState(null); // track deleting category
+
     if (isLoading) return <Loading />;
 
     // Delete category
@@ -21,12 +23,15 @@ const SpecialCategoriesList = () => {
         if (!confirmDelete) return;
 
         try {
+            setDeletingId(id); // start loading
             await axios.delete(`https://api.peakyonline.com/special_category_delete/${id}`);
             toast.success("Category deleted successfully!");
             refetch(); // refresh list
         } catch (error) {
             toast.error("Failed to delete category!");
             console.error(error);
+        } finally {
+            setDeletingId(null); // stop loading
         }
     };
 
@@ -48,13 +53,21 @@ const SpecialCategoriesList = () => {
                         <button
                             onClick={() => handleDelete(category._id)}
                             className="absolute top-2 right-2 text-white hover:text-red-500"
+                            disabled={deletingId === category._id} // disable button while deleting
                         >
                             <AiOutlineClose size={20} />
                         </button>
 
                         {/* Category Button */}
-                        <Link to={`/dashboard/special_categories_list/${category._id}`} className="w-full h-full flex justify-center items-center">
-                            <h2 className='font-bold text-lg'>{category.name}</h2>
+                        <Link
+                            to={`/dashboard/special_categories_list/${category._id}`}
+                            className="w-full h-full flex justify-center items-center"
+                        >
+                            {deletingId === category._id ? (
+                                <p className="font-bold text-lg animate-pulse">Deleting...</p>
+                            ) : (
+                                <h2 className='font-bold text-lg'>{category.name}</h2>
+                            )}
                         </Link>
                     </div>
                 ))}

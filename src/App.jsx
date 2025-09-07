@@ -34,6 +34,7 @@ import SalesChart from './pages/Dashboard/Admin/SalesChart/SalesChart'
 import SpecialCategoriesList from './pages/Dashboard/Admin/SpecialCategoriesList/SpecialCategoriesList'
 import AddSpecialCategory from './pages/Dashboard/Admin/AddSpecialCategory/AddSpecialCategory'
 import SpecialCategory from './pages/Dashboard/Admin/SpecialCategoriesList/SpecialCategory'
+import AllProducts from './pages/Home/Products/AllProducts'
 
 function App() {
 
@@ -53,6 +54,7 @@ function App() {
           <Route path="checkout" element={<Checkout />} />
           <Route path='/:name' element={<CategoryItems></CategoryItems>}></Route>
           <Route path='/product/:id' element={<ProductDetails></ProductDetails>}></Route>
+          <Route path='all_products' element={<AllProducts></AllProducts>}></Route>
           <Route path='all_categories' element={<AllCategories></AllCategories>}></Route>
 
           <Route path='/dashboard' element={<RequireAuth><Dashboard></Dashboard></RequireAuth>}>

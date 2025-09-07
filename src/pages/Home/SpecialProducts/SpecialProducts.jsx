@@ -38,13 +38,16 @@ const SpecialProducts = () => {
             {isSuccess && specialCategories.data.map((category) => (
                 <div key={category._id} className="">
                     {/* Category Title */}
-                    <div className="flex justify-between items-center mb-4">
-                        <div>
+                    <div className="relative mb-4">
+                        {/* Category name on the left */}
+                        <div className="absolute left-0">
                             <h2 className="text-2xl font-bold fire text-green-700">
                                 🔥 {category.name}
                             </h2>
                         </div>
-                        <div>
+
+                        {/* Countdown timer centered */}
+                        <div className="flex justify-center">
                             {category.startTime && category.endTime && (
                                 <CountdownTimer
                                     startTime={category.startTime}
@@ -52,10 +55,6 @@ const SpecialProducts = () => {
                                 />
                             )}
                         </div>
-                        <button className="btn btn-accent btn-xs flex items-center gap-1">
-                            <p>See all</p>
-                            <FaLongArrowAltRight />
-                        </button>
                     </div>
 
                     {/* Products Grid */}
