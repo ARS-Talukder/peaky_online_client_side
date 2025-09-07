@@ -33,6 +33,7 @@ import MyProfile from './pages/Dashboard/MyProfile/MyProfile'
 import SalesChart from './pages/Dashboard/Admin/SalesChart/SalesChart'
 import SpecialCategoriesList from './pages/Dashboard/Admin/SpecialCategoriesList/SpecialCategoriesList'
 import AddSpecialCategory from './pages/Dashboard/Admin/AddSpecialCategory/AddSpecialCategory'
+import SpecialCategory from './pages/Dashboard/Admin/SpecialCategoriesList/SpecialCategory'
 
 function App() {
 
@@ -64,6 +65,7 @@ function App() {
             <Route path='/dashboard/edit_product/:id' element={<RequireAdmin><EditProduct></EditProduct></RequireAdmin>}></Route>
             <Route path='/dashboard/categories_list' element={<RequireAdmin><CategoriesList></CategoriesList></RequireAdmin>}></Route>
             <Route path='/dashboard/special_categories_list' element={<RequireAdmin><SpecialCategoriesList></SpecialCategoriesList></RequireAdmin>}></Route>
+            <Route path='/dashboard/special_categories_list/:id' element={<RequireAdmin><SpecialCategory></SpecialCategory></RequireAdmin>}></Route>
             <Route path='/dashboard/add_special_category' element={<RequireAdmin><AddSpecialCategory></AddSpecialCategory></RequireAdmin>}></Route>
             <Route path='/dashboard/banner' element={<RequireAdmin><Banner></Banner></RequireAdmin>}></Route>
             <Route path='/dashboard/add_category' element={<RequireAdmin><AddCategory></AddCategory></RequireAdmin>}></Route>

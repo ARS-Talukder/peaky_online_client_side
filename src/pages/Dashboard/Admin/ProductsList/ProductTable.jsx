@@ -18,7 +18,7 @@ const ProductTable = ({ index, product, refetch }) => {
     const handleDelete = (id) => {
         const proceed = window.confirm('Do You Want to delete this product?');
         if (proceed) {
-            fetch(`https://api.peakyonline.com/product-delete/${id}`, {
+            fetch(`http://localhost:5000/product-delete/${id}`, {
                 method: 'DELETE'
             })
                 .then(res => res.json())
@@ -41,9 +41,6 @@ const ProductTable = ({ index, product, refetch }) => {
                 <div className='flex items-center'>
                     <span className='mr-4'><img src={img} width={40} alt="product_img" /></span>
                     <span>{name}</span>
-                    {/* <button className='ml-2' onClick={() => handleEdit("Enter Product Name", "name", _id)}>
-                        <span className="text-xl text-blue-600 cursor-pointer hover:text-blue-800"><TiEdit></TiEdit></span>
-                    </button> */}
                 </div>
             </td>
             <td className='border'>
@@ -59,26 +56,17 @@ const ProductTable = ({ index, product, refetch }) => {
                         <span className='text-xs'><small><FaBangladeshiTakaSign /></small></span>
                         <span className='block'>{discount_price}</span>
                     </p>
-                    {/* <button className='ml-2' onClick={() => handleEdit("Enter New Price", "price", _id)}>
-                        <span className="text-xl text-blue-600 cursor-pointer hover:text-blue-800"><TiEdit></TiEdit></span>
-                    </button> */}
                 </div>
             </td>
             <td className='border'>
                 <div className='flex items-center'>
                     <span>{discount + "%"}</span>
-                    {/* <button className='ml-2' onClick={() => handleEdit("Enter Discount (Only Number)", "discount", _id)}>
-                        <span className="text-xl text-blue-600 cursor-pointer hover:text-blue-800"><TiEdit></TiEdit></span>
-                    </button> */}
                 </div>
             </td>
             <td className='border'>
                 <div className={shippingCharge == 'free' ? 'flex items-center text-red-600 font-bold' : 'flex items-center text-blue-600'
                 }>
                     <span>{shippingCharge}</span>
-                    {/* <button className='ml-2' onClick={() => handleEdit("Enter Discount (Only Number)", "discount", _id)}>
-                        <span className="text-xl text-blue-600 cursor-pointer hover:text-blue-800"><TiEdit></TiEdit></span>
-                    </button> */}
                 </div>
             </td>
             <td className='flex'>

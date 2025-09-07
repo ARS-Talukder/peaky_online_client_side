@@ -4,39 +4,60 @@ import { useQuery } from '@tanstack/react-query';
 import axios from 'axios';
 import Loading from '../../../Shared/Loading';
 import { Link } from 'react-router-dom';
+import { AiOutlineClose } from "react-icons/ai";
+import toast from 'react-hot-toast';
 
 const SpecialCategoriesList = () => {
-    const { data: specialCategories, isLoading, isSuccess, isError, error, refetch } = useQuery({
+    const { data: specialCategories, isLoading, isSuccess, refetch } = useQuery({
         queryKey: ["specialCategories"],
-        queryFn: () => {
-            return axios.get("https://api.peakyonline.com/special_categories")
+        queryFn: () => axios.get("http://localhost:5000/special_categories")
+    });
+
+    if (isLoading) return <Loading />;
+
+    // Delete category
+    const handleDelete = async (id) => {
+        const confirmDelete = window.confirm("Are you sure you want to delete this category?");
+        if (!confirmDelete) return;
+
+        try {
+            await axios.delete(`http://localhost:5000/special_category_delete/${id}`);
+            toast.success("Category deleted successfully!");
+            refetch(); // refresh list
+        } catch (error) {
+            toast.error("Failed to delete category!");
+            console.error(error);
         }
-    })
-    let content;
+    };
 
-    if (isLoading) {
-        return <Loading></Loading>
-    }
-    console.log(specialCategories.data)
-
-    if (isSuccess) {
-        content = specialCategories.data.map((category, index) =>
-            <Link to={`/something`} key={category._id}>
-                <div className='w-1/4 btn btn-accent p-16 mx-2 rounded-lg cursor-pointer'>
-                    <h2 className='font-bold text-white'>{category.name}</h2>
-                </div>
-            </Link>
-        )
-    }
     return (
         <div>
             {/* ---------------Dashboard Button------------- */}
-            <DashboardButton></DashboardButton>
+            <DashboardButton />
             <div className='bg-white p-5 my-4 rounded-xl shadow-xl'>
                 <h2 className='text-xl font-bold text-slate-600'>Special Categories List</h2>
             </div>
-            <div className="overflow-x-auto bg-white rounded-xl shadow-xl my-6 p-4">
-                {content}
+
+            <div className="overflow-x-auto bg-white grid lg:grid-cols-5 grid-cols-2 gap-4 rounded-xl shadow-xl my-6 p-4">
+                {isSuccess && specialCategories.data.map((category) => (
+                    <div
+                        key={category._id}
+                        className="relative bg-accent text-white p-6 rounded-lg flex items-center justify-center"
+                    >
+                        {/* Delete Icon */}
+                        <button
+                            onClick={() => handleDelete(category._id)}
+                            className="absolute top-2 right-2 text-white hover:text-red-500"
+                        >
+                            <AiOutlineClose size={20} />
+                        </button>
+
+                        {/* Category Button */}
+                        <Link to={`/dashboard/special_categories_list/${category._id}`} className="w-full h-full flex justify-center items-center">
+                            <h2 className='font-bold text-lg'>{category.name}</h2>
+                        </Link>
+                    </div>
+                ))}
             </div>
         </div>
     );

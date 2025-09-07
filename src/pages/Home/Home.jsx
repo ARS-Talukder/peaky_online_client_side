@@ -2,6 +2,7 @@ import React, { useEffect } from 'react';
 import Categories from './Categories/Categories';
 import Slider from './Slider/Slider';
 import Products from './Products/Products';
+import SpecialProducts from './SpecialProducts/SpecialProducts';
 
 const Home = () => {
 
@@ -12,6 +13,7 @@ const Home = () => {
             </div>
             <Categories></Categories>
             <Products></Products>
+            <SpecialProducts></SpecialProducts>
         </div>
     );
 };

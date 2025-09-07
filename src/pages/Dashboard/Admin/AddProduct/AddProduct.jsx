@@ -33,7 +33,7 @@ const AddProduct = () => {
     const { data: categories, isLoading, isSuccess, isError } = useQuery({
         queryKey: ["categories"],
         queryFn: () => {
-            return axios.get("https://api.peakyonline.com/categories")
+            return axios.get("http://localhost:5000/categories")
         }
     })
 
@@ -103,11 +103,11 @@ const AddProduct = () => {
         const formData = new FormData();
         formData.append("image", file);
         try {
-            const response = await axios.post("https://api.peakyonline.com/upload", formData, {
+            const response = await axios.post("http://localhost:5000/upload", formData, {
                 headers: { "Content-Type": "multipart/form-data" },
             });
 
-            setImages([...images, { _id: Date.now(), url: `https://api.peakyonline.com/${response.data.filePath}` }]);
+            setImages([...images, { _id: Date.now(), url: `http://localhost:5000/${response.data.filePath}` }]);
             toast.success("Uploaded");
         } catch (err) {
             console.error("Error uploading image:", err);
@@ -116,7 +116,7 @@ const AddProduct = () => {
     };
     const handleDeleteImage = async (id, imageUrl) => {
         try {
-            await axios.delete("https://api.peakyonline.com/delete", {
+            await axios.delete("http://localhost:5000/delete", {
                 data: { imageUrl }
             });
 
@@ -161,7 +161,7 @@ const AddProduct = () => {
         const description = { description_title, description_details, specificDescription };
         const product = { name, category, shippingCharge, price, discount, subtitle, whyBest, productColor, size, images: images, description };
 
-        fetch('https://api.peakyonline.com/products', {
+        fetch('http://localhost:5000/products', {
             method: 'POST',
             headers: {
                 'content-type': 'application/json'

@@ -15,7 +15,7 @@ const MyProfile = () => {
     const { data: customers, isLoading, isSuccess, isError, refetch } = useQuery({
         queryKey: ["customers"],
         queryFn: () => {
-            return axios.get("https://api.peakyonline.com/customers")
+            return axios.get("http://localhost:5000/customers")
         }
     })
 
