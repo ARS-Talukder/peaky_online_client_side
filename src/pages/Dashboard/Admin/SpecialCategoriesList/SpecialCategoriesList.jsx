@@ -10,7 +10,7 @@ import toast from 'react-hot-toast';
 const SpecialCategoriesList = () => {
     const { data: specialCategories, isLoading, isSuccess, refetch } = useQuery({
         queryKey: ["specialCategories"],
-        queryFn: () => axios.get("http://localhost:5000/special_categories")
+        queryFn: () => axios.get("https://api.peakyonline.com/special_categories")
     });
 
     if (isLoading) return <Loading />;
@@ -21,7 +21,7 @@ const SpecialCategoriesList = () => {
         if (!confirmDelete) return;
 
         try {
-            await axios.delete(`http://localhost:5000/special_category_delete/${id}`);
+            await axios.delete(`https://api.peakyonline.com/special_category_delete/${id}`);
             toast.success("Category deleted successfully!");
             refetch(); // refresh list
         } catch (error) {

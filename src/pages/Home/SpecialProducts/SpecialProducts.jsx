@@ -10,7 +10,7 @@ import './SpecialProducts.css';
 const SpecialProducts = () => {
     const { data: specialCategories, isLoading, isSuccess } = useQuery({
         queryKey: ["specialCategories"],
-        queryFn: () => axios.get("http://localhost:5000/special_categories")
+        queryFn: () => axios.get("https://api.peakyonline.com/special_categories")
     });
     console.log(specialCategories);
 
