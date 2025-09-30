@@ -17,8 +17,15 @@ const Footer = () => {
                         <p>and quickest home delivery system.</p>
                         <div className='flex items-center'>
                             <h3 className='text-xl'>Follow Us</h3>
-                            <p className='text-2xl mx-3'><AiOutlineFacebook /></p>
-                            <p className='text-2xl'><FaInstagram /></p>
+                            <a
+                                href="https://www.facebook.com/peakyonline/"
+                                target="_blank"
+                                rel="noopener noreferrer"
+                                className="text-2xl mx-3"
+                            >
+                                <AiOutlineFacebook />
+                            </a>
+                            {/* <p className='text-2xl'><FaInstagram /></p> */}
                         </div>
                     </div>
                 </div>

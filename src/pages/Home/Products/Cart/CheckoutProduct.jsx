@@ -1,11 +1,21 @@
 import React, { useState } from 'react';
 import { FaMinus, FaPlus } from "react-icons/fa6";
 import { useDispatchCart } from '../../../ContextReducer';
+import { MdDelete } from "react-icons/md";
+import { FaBangladeshiTakaSign } from "react-icons/fa6";
+
 const CheckoutProduct = ({ product, index }) => {
-    const { product_id, name, price, img, discount, quantity, color, size } = product;
-    const discount_price = price - ((discount * price) / 100);
+    const { product_id, name, price, img, discount, discount_price, quantity, color, size } = product;
     const [newQuantity, setNewQuantity] = useState(quantity);
     let dispatch = useDispatchCart();
+
+    // Function to truncate name after 30 characters
+    const truncateName = (text, maxLength = 30) => {
+        if (text.length > maxLength) {
+            return text.substring(0, maxLength) + '...';
+        }
+        return text;
+    };
 
     const decrementQuantity = async () => {
         if (newQuantity > 1) {
@@ -20,30 +30,55 @@ const CheckoutProduct = ({ product, index }) => {
     }
 
     return (
-        <tr className='flex justify-between my-4 border-b'>
-            <td className='flex items-center'>
-                <button className='btn btn-error btn-xs text-white font-bold' onClick={() => { dispatch({ type: "REMOVE", index: index }) }}>
-                    {/* <AiFillDelete className="text-xl text-red-500"></AiFillDelete> */}
-                    <small>Delete</small>
-                </button>
-                <img className='ml-4 mr-1' width={40} src={img} alt="product_image" />
-                <div>
-                    <p><small>{name}</small></p>
-                    <div className='flex justify-start items-center'>
-                        <button className='text-blue-500 hover:text-blue-800 border-2' onClick={decrementQuantity}><small><FaMinus /></small></button>
-                        <p className='mx-1 border-2 px-1'><small>{newQuantity}</small></p>
-                        <button className='text-blue-500 hover:text-blue-800 border-2' onClick={incrementQuantity}><small><FaPlus /></small></button>
+        <div className='flex justify-between items-center py-4 border-b'>
+            <div className='flex items-center flex-1'>
+                <p className='mr-2 text-red-600 p-0.5 hover:bg-red-300 hover:cursor-pointer rounded-full' onClick={() => { dispatch({ type: "REMOVE", index: index }) }}>
+                    <MdDelete />
+                </p>
 
-                        {color && <p className='ml-4 px-2 bg-slate-400 font-bold text-white rounded-lg'><small>{color}</small></p>}
+                <img className='mr-2 rounded-xl' width={60} src={img} alt="product_image" />
 
-                        {size && <p className='ml-4 px-2 bg-slate-400 font-bold text-white rounded-lg'><small>{size}</small></p>}
+                <div className='flex flex-col mr-2'>
+                    <p className='font-medium'><small>{truncateName(name)}</small></p>
+                    <div className='flex items-center mt-2'>
+                        <div className='flex items-center'>
+                            <button
+                                className='w-6 h-6 flex items-center justify-center border border-gray-300 bg-gray-50 rounded-l'
+                                onClick={decrementQuantity}
+                            >
+                                <FaMinus className="text-xs text-blue-500" />
+                            </button>
+                            <div className='w-8 h-6 flex items-center justify-center border-t border-b border-gray-300'>
+                                <span className='text-sm'>{newQuantity}</span>
+                            </div>
+                            <button
+                                className='w-6 h-6 flex items-center justify-center border border-gray-300 bg-gray-50 rounded-r'
+                                onClick={incrementQuantity}
+                            >
+                                <FaPlus className="text-xs text-blue-500" />
+                            </button>
+                        </div>
+
+                        <div className='flex ml-4 space-x-2'>
+                            {color?.length > 0 && (
+                                <span className='px-2 py-1 bg-gray-400 text-white text-xs font-bold rounded'>
+                                    {color}
+                                </span>
+                            )}
+                            {size?.length > 0 && (
+                                <span className='px-2 py-1 bg-gray-400 text-white text-xs font-bold rounded'>
+                                    {size}
+                                </span>
+                            )}
+                        </div>
                     </div>
                 </div>
+            </div>
 
-            </td>
-
-            <td className='font-bold'><small>{discount_price * newQuantity}</small></td>
-        </tr>
+            <div className='font-semibold'>
+                <span className='flex items-center'><FaBangladeshiTakaSign className='text-xs' />{(discount_price * newQuantity)}</span>
+            </div>
+        </div>
     );
 };
 

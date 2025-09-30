@@ -8,8 +8,7 @@ import toast from 'react-hot-toast';
 import CartDrawer from '../../Cart/CartDrawer/CartDrawer';
 
 const ProductDescription = ({ product }) => {
-    const { _id, name, price, discount, category, images, description, productColor, subtitle, size, whyBest } = product;
-    const discount_price = price - ((discount * price) / 100);
+    const { _id, name, price, discount,discount_price, category, images, description, productColor, subtitle, size, whyBest } = product;
     const img = images[0]?.url;
 
     // Cart Drawer open and close handling
@@ -122,9 +121,11 @@ const ProductDescription = ({ product }) => {
 
             <h2 className='font-bold'>{subtitle}</h2>
 
-            <div className={whyBest.length == '' ? 'hidden' : ''}>
-                <h3 className='text-xl font-bold my-1'><small>Why our products are the best?</small></h3>
-                <pre>{whyBest}</pre>
+            <div className={whyBest.length === 0 ? 'hidden' : ''}>
+                <h3 className='text-xl font-bold my-1'>
+                    Specification
+                </h3>
+                <div className="whitespace-pre-wrap break-words">{whyBest}</div>
             </div>
 
             <div className='flex'>

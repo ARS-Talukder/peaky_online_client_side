@@ -12,7 +12,7 @@ const OrderTrack = () => {
         e.preventDefault();
         const phone = e.target.phone.value;
 
-        fetch(`https://api.peakyonline.com/order_by_phone/${phone}`, {
+        fetch(`http://localhost:5000/order_by_phone/${phone}`, {
             method: 'GET',
             headers: { 'content-type': 'application/json' }
         })
@@ -97,7 +97,7 @@ const OrderTrack = () => {
                                     <p className="text-gray-700">OrderID: <span className='text-gray-600 font-bold'>{order.orderID}</span></p>
                                 </div>
                                 <div className="text-gray-600 text-lg">
-                                    {expandedOrder === order.orderID ? <FaChevronUp /> : <FaChevronDown />}
+                                    {expandedOrder === order.orderID ? <button className='btn btn-sm btn-info'>hide <FaChevronUp/></button> : <button className='btn btn-sm btn-accent'>view <FaChevronDown/></button>}
                                 </div>
                             </div>
 

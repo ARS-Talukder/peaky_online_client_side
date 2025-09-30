@@ -9,7 +9,7 @@ const AllProducts = () => {
     const { data: products, isLoading, isSuccess, isError, error } = useQuery({
         queryKey: ["products"],
         queryFn: () => {
-            return axios.get("https://api.peakyonline.com/products")
+            return axios.get("http://localhost:5000/products")
         }
     })
     let content;
@@ -24,7 +24,7 @@ const AllProducts = () => {
     console.log(products)
     return (
         <div className='py-12 px-5 lg:px-24 md:px-8'>
-            <div className='grid grid-cols-3 lg:grid-cols-6 md:grid-cols-4 gap-5'>
+            <div className='grid grid-cols-2 lg:grid-cols-6 md:grid-cols-4 gap-5'>
                 {content}
             </div>
 

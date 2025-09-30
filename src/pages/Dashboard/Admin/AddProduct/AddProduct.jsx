@@ -33,7 +33,7 @@ const AddProduct = () => {
     const { data: categories, isLoading, isSuccess, isError } = useQuery({
         queryKey: ["categories"],
         queryFn: () => {
-            return axios.get("https://api.peakyonline.com/categories")
+            return axios.get("http://localhost:5000/categories")
         }
     })
 
@@ -103,11 +103,11 @@ const AddProduct = () => {
         const formData = new FormData();
         formData.append("image", file);
         try {
-            const response = await axios.post("https://api.peakyonline.com/upload", formData, {
+            const response = await axios.post("http://localhost:5000/upload", formData, {
                 headers: { "Content-Type": "multipart/form-data" },
             });
 
-            setImages([...images, { _id: Date.now(), url: `https://api.peakyonline.com/${response.data.filePath}` }]);
+            setImages([...images, { _id: Date.now(), url: `http://localhost:5000/${response.data.filePath}` }]);
             toast.success("Uploaded");
         } catch (err) {
             console.error("Error uploading image:", err);
@@ -116,7 +116,7 @@ const AddProduct = () => {
     };
     const handleDeleteImage = async (id, imageUrl) => {
         try {
-            await axios.delete("https://api.peakyonline.com/delete", {
+            await axios.delete("http://localhost:5000/delete", {
                 data: { imageUrl }
             });
 
@@ -150,7 +150,7 @@ const AddProduct = () => {
             discount = 0;
         }
         else {
-            discount = ((price - discount_price) * 100) / price;
+            discount = Math.floor(((price - discount_price) * 100) / price);
         }
 
         const subtitle = e.target.subtitle.value;
@@ -159,9 +159,9 @@ const AddProduct = () => {
         const description_details = e.target.description_details.value;
         const specificDescription = e.target.specificDescription.value;
         const description = { description_title, description_details, specificDescription };
-        const product = { name, category, shippingCharge, price, discount, subtitle, whyBest, productColor, size, images: images, description };
+        const product = { name, category, shippingCharge, price, discount, discount_price, subtitle, whyBest, productColor, size, images: images, description };
 
-        fetch('https://api.peakyonline.com/products', {
+        fetch('http://localhost:5000/products', {
             method: 'POST',
             headers: {
                 'content-type': 'application/json'
@@ -319,7 +319,7 @@ const AddProduct = () => {
                     <section className='bg-white p-5 rounded-xl my-4'>
                         <div className="form-control w-full">
                             <label className="label">
-                                <span className="label-text text-slate-500 font-bold">Why our products are the best?</span>
+                                <span className="label-text text-slate-500 font-bold">Specification</span>
                             </label>
                             <textarea name="whyBest" className="textarea textarea-bordered textarea-sm w-full h-24 bg-slate-50"></textarea>
 

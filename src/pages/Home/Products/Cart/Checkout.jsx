@@ -1,356 +1,334 @@
 import React, { useEffect, useState } from 'react';
 import toast from 'react-hot-toast';
 import { useCart, useDispatchCart } from '../../../ContextReducer';
-import { Link, useNavigate } from 'react-router-dom';
-import CartProduct from './CartProduct';
-import { FaBangladeshiTakaSign } from "react-icons/fa6";
+import { useNavigate } from 'react-router-dom';
 import CheckoutProduct from './CheckoutProduct';
-
+import { FaBangladeshiTakaSign } from "react-icons/fa6";
+import { MdOutlineSell } from "react-icons/md";
 
 const Checkout = () => {
-    let data = useCart();
-    let dispatch = useDispatchCart();
+    const data = useCart();
+    const dispatch = useDispatchCart();
     const navigate = useNavigate();
 
     const [freeShipping, setFreeShipping] = useState(false);
-
     const [shipping, setShipping] = useState(130);
-
     const [paymentMethod, setPaymentMethod] = useState('');
     const [transactionID, setTransactionID] = useState('');
+    const [couponCode, setCouponCode] = useState('');
 
-    // Handling the free shipping
+    // coupon states
+    const [availableCoupons, setAvailableCoupons] = useState([]);
+    const [appliedCoupon, setAppliedCoupon] = useState(null);
+
+    // Address states
+    const [divisions, setDivisions] = useState([]);
+    const [districts, setDistricts] = useState([]);
+    const [upazilas, setUpazilas] = useState([]);
+
+    const [selectedDistrictId, setSelectedDistrictId] = useState('');
+    const [selectedDistrictName, setSelectedDistrictName] = useState('');
+    const [selectedDivision, setSelectedDivision] = useState('');
+    const [selectedUpazila, setSelectedUpazila] = useState('');
+
+    // Fetch divisions
     useEffect(() => {
-        const allFreeShipping = data.every(product => product.shippingCharge === 'free');
-        if (allFreeShipping) {
-            setShipping(0);
-            setFreeShipping(true)
-        }
+        fetch("https://bdapis.vercel.app/geo/v2.0/divisions")
+            .then(res => res.json())
+            .then(data => setDivisions(data.data || []))
+            .catch(err => console.error("Error fetching divisions:", err));
+    }, []);
 
-    }, [data]);
+    // Fetch coupons
+    useEffect(() => {
+        fetch("http://localhost:5000/coupons")
+            .then(res => res.json())
+            .then(data => setAvailableCoupons(data))
+            .catch(err => console.error("Error fetching coupons:", err));
+    }, []);
+
+    const handleDivisionChange = (e) => {
+        const divisionId = e.target.value;
+        const division = divisions.find(d => d.id === divisionId);
+        setSelectedDivision(division?.name || '');
+        setSelectedUpazila('');
+        setDistricts([]);
+        setUpazilas([]);
+
+        if (divisionId) {
+            fetch(`https://bdapis.vercel.app/geo/v2.0/districts/${divisionId}`)
+                .then(res => res.json())
+                .then(data => setDistricts(data.data || []))
+                .catch(err => console.error("Error fetching districts:", err));
+        }
+    };
+
+    const handleDistrictChange = (e) => {
+        const districtId = e.target.value;
+        const district = districts.find(d => d.id === districtId);
+
+        setSelectedDistrictId(districtId);
+        setSelectedDistrictName(district?.name || '');
+        setSelectedUpazila('');
+        setUpazilas([]);
+
+        if (districtId) {
+            fetch(`https://bdapis.vercel.app/geo/v2.0/upazilas/${districtId}`)
+                .then(res => res.json())
+                .then(data => setUpazilas(data.data || []))
+                .catch(err => console.error("Error fetching upazilas:", err));
+        }
+    };
+
+    const handleFreeShipping = () => {
+        const allFree = data.every(p => p.shippingCharge === 'free');
+        if (allFree) {
+            setShipping(0);
+            setFreeShipping(true);
+        }
+    };
+    useEffect(handleFreeShipping, [data]);
+
+    const handleCouponApply = () => {
+        const found = availableCoupons.find(c => c.coupon_code === couponCode.trim().toUpperCase());
+        if (found) {
+            setAppliedCoupon(found);
+            toast.success(`Coupon "${found.coupon_code}" applied successfully!`);
+        } else {
+            setAppliedCoupon(null);
+            toast.error("Invalid coupon code");
+        }
+    };
+
+    const handleKeyPress = (e) => { if (e.key === 'Enter') handleCouponApply(); };
 
     let subTotal = 0;
+    data.forEach(item => subTotal += item.discount_price * item.quantity);
 
+    let discount = appliedCoupon ? parseFloat(appliedCoupon.coupon_discount) : 0;
+    let total = subTotal + shipping - discount;
 
-    let date = new Date().toLocaleDateString("en-GB", {
-        day: "numeric",
-        month: "long",
-        year: "numeric"
-    });
-    const time = new Date().toLocaleTimeString([], {
-        hour: '2-digit',
-        minute: '2-digit',
-        hour12: true
-    });
+    const date = new Date().toLocaleDateString("en-GB", { day: "numeric", month: "long", year: "numeric" });
+    const time = new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit', hour12: true });
 
-    let content;
-    if (data.length === 0) {
-        return (
-            <div className='h-80 flex justify-center items-center'>
-                <h2 className='text-xl font-bold text-red-600'>No Products Here!!</h2>
-            </div>
-        )
-    }
-    else {
-        content = data.map((product, index) =>
-            <CheckoutProduct index={index} key={product.product_id} product={product}></CheckoutProduct>
-        )
-        //This loop is for counting SubTotal of all cart products
-        for (let i = 0; i < data.length; i++) {
-            const discountPrice = data[i].discount_price;
-            const quantity = data[i].quantity;
-            const multiplication = discountPrice * quantity;
-            subTotal = subTotal + multiplication;
-        }
-
-        // Clear previous ecommerce data before pushing the new product
-        window.dataLayer.push({ ecommerce: null });
-
-        // Pushing Data to the Data Layer for Google data manager(GTM)
-        window.dataLayer.push({
-            event: 'view_cart',
-            gtm: {
-                uniqueEventId: new Date().getTime(), // Ensure unique event ID
-                historyChangeSource: "pushState",
-                oldHistoryState: null, // Reset old history state
-                newHistoryState: { usr: null, key: "new_key", idx: 2 }, // Keep new state
-            },
-            ecommerce: {
-                currency: 'BDT',
-                items: data
-            },
-            pagePath: window.location.pathname,
-        });
-
-
-    }
-    const handleShipping = (e) => {
-        if (freeShipping) {
-            setShipping(0);
-            return
-        }
-        if (e.target.value === 'outside_dhaka') {
-            setShipping(130)
-        }
-        if (e.target.value === 'inside_dhaka') {
-            setShipping(60)
-        }
-    }
+    const handleShipping = (e) => { if (!freeShipping) setShipping(e.target.value === 'inside_dhaka' ? 60 : 130); };
 
     const handleConfirmOrder = (e) => {
         e.preventDefault();
-
-        if (!paymentMethod) {
-            toast.error('Please select a payment method.');
-            return;
-        }
-
+        if (!paymentMethod) return toast.error('Please select a payment method.');
         if (paymentMethod === 'bKash') {
-            if (!transactionID.trim()) {
-                toast.error('Please enter a bKash Transaction ID.');
-                return;
-            }
-            if (transactionID.trim().length < 8) {
-                toast.error('Transaction ID must be at least 8 characters.');
-                return;
-            }
+            if (!transactionID.trim()) return toast.error('Please enter a bKash Transaction ID.');
+            if (transactionID.trim().length < 8) return toast.error('Transaction ID must be at least 8 characters.');
         }
 
         const orderID = Math.floor(10000000 + Math.random() * 90000000);
-
         const customerName = e.target.name.value;
         const street = e.target.street.value;
-        const thana = e.target.thana.value;
-        const district = e.target.district.value;
         const phone = e.target.phone.value;
-        const shipping_cost = shipping;
-        const order = { customerName: customerName, orderID, address: { street, thana, district }, subTotal: subTotal, shipping: shipping_cost, total: subTotal + shipping, phone: phone, products: data, date: date, time: time, paymentMethod, transactionID: paymentMethod === 'bKash' ? transactionID : null, status: 'processing', status_color: 'yellow', orderSteps: [{ time: `${date}\n${time}`, title: 'Order Placed', description: `Your order is successfully placed to PeakyOnline.\nOrder id ${orderID}` }, { time: `${date}\n${time}`, title: 'Processing', description: 'We have received your order. Our team member will check and confirm shortly' }] };
 
-        //Post an order
-        fetch('https://api.peakyonline.com/orders', {
+        const order = {
+            customerName,
+            orderID,
+            address: { street, upazila: selectedUpazila, district: selectedDistrictName, division: selectedDivision },
+            subTotal,
+            shipping,
+            discount,
+            total,
+            phone,
+            products: data,
+            coupon: appliedCoupon ? appliedCoupon.coupon_code : null, // save applied coupon
+            date,
+            time,
+            paymentMethod,
+            transactionID: paymentMethod === 'bKash' ? transactionID : null,
+            status: 'processing',
+            status_color: 'yellow',
+            orderSteps: [
+                { time: `${date}\n${time}`, title: 'Order Placed', description: `Your order is successfully placed. Order id ${orderID}` },
+                { time: `${date}\n${time}`, title: 'Processing', description: 'We have received your order. Our team will confirm shortly' }
+            ]
+        };
+
+        fetch('http://localhost:5000/orders', {
             method: 'POST',
-            headers: {
-                'content-type': 'application/json'
-            },
+            headers: { 'content-type': 'application/json' },
             body: JSON.stringify(order)
         })
             .then(res => res.json())
             .then(data => {
-                if (data.acknowledged === true) {
+                if (data.acknowledged) {
                     toast.success("Congratulations! Your order's completed");
-                    dispatch({ type: "CLEAR" })
-                    navigate('/confirmed', { state: orderID })
-                }
-                else {
-                    toast.error('Sorry! Try again')
-                }
-            })
+                    dispatch({ type: "CLEAR" });
+                    navigate('/confirmed', { state: orderID });
+                } else toast.error('Sorry! Try again');
+            });
 
-        const customer = { name: customerName, email: "No Email", address: { street, thana, district }, phone: phone };
-        //Post a customer
-        fetch(`https://api.peakyonline.com/customers/${phone}`, {
-            method: 'PUT',
-            headers: {
-                'content-type': 'application/json'
-            },
-            body: JSON.stringify(customer)
-        })
+        const customer = { name: customerName, email: "No Email", address: { street, upazila: selectedUpazila, district: selectedDistrictName, division: selectedDivision }, phone };
+        fetch(`http://localhost:5000/customers/${phone}`, { method: 'PUT', headers: { 'content-type': 'application/json' }, body: JSON.stringify(customer) });
+    };
 
-
-        // Clear previous ecommerce data before pushing the new product
-        window.dataLayer.push({ ecommerce: null });
-
-        // Pushing Data to the Data Layer for Google data manager(GTM)
-        window.dataLayer.push({
-            event: 'purchase',
-            orderID: orderID,
-            transactionId: '',
-            gtm: {
-                uniqueEventId: new Date().getTime(), // Ensure unique event ID
-                historyChangeSource: "pushState",
-                oldHistoryState: null, // Reset old history state
-                newHistoryState: { usr: null, key: "new_key", idx: 2 }, // Keep new state
-            },
-            ecommerce: {
-                currency: 'BDT',
-                value: parseFloat(subTotal),
-                shipping: parseFloat(shipping_cost),
-                items: [order]
-            },
-            buttonText: 'Confirm Order',
-            buttonClick: 'Clicked',
-            pagePath: window.location.pathname,
-        });
-    }
     return (
-        <div className='flex flex-col-reverse lg:flex-row md:flex-row justify-center px-6 py-4 lg:px-20 md:px-4 lg:py-10'>
-            {/* ------Form Section------ */}
-            <div className='lg:w-1/3 lg:mr-8 md:w-1/3 md:mr-4 border rounded px-3 py-2'>
-                <h3 className='text-slate-500 text-center mb-4'>Give all the information bellow & then click <span className='text-purple-500 font-bold'>Confirm Order</span> button</h3>
-                <form onSubmit={handleConfirmOrder} action="">
-                    <div className="form-control w-full">
-                        <label className="label">
-                            <span className="label-text text-slate-500 font-bold">Your Name (আপনার নাম)</span>
+        <div className='grid grid-cols-1 lg:grid-cols-5 gap-6 px-4 lg:px-32 py-6'>
+            {/* Customer Form */}
+            <div className='col-span-3 border rounded-lg p-4 shadow-sm bg-white'>
+                <h3 className='text-slate-600 text-center mb-4 text-sm'>
+                    Fill the information below & click <span className='text-purple-500 font-bold'>Confirm Order</span>
+                </h3>
+                <form onSubmit={handleConfirmOrder} className='space-y-3'>
+                    <label className='block'>
+                        <span className='text-sm font-semibold'>Full Name</span>
+                        <input type="text" name="name" placeholder="Enter your first & last name" className='input input-md input-bordered w-full mt-1 rounded-none' required />
+                    </label>
+
+                    <label className='block'>
+                        <span className='text-sm font-semibold'>Phone Number</span>
+                        <input type="number" name="phone" placeholder="Please enter your phone number" className='input input-md input-bordered w-full mt-1 rounded-none' required />
+                    </label>
+
+                    <div className='grid grid-cols-2 gap-4'>
+                        <label className='block'>
+                            <span className='text-sm font-semibold'>Region</span>
+                            <select onChange={handleDivisionChange} required className='select select-bordered select-md w-full mt-1 rounded-none'>
+                                <option value="">Please choose your region</option>
+                                {divisions.map(div => <option key={div.id} value={div.id}>{div.name}</option>)}
+                            </select>
                         </label>
-                        <input type="text" name="name" placeholder="Enter your name" className="input input-sm input-bordered w-full" required />
 
-                    </div>
-                    <div className='grid grid-cols-1 lg:grid-cols-2 md:grid-cols-2 lg:gap-2 md:gap-2'>
-                        <div className="form-control w-full">
-                            <label className="label">
-                                <span className="label-text text-slate-500 font-bold">Street</span>
-                            </label>
-                            <input type="text" name="street" className="input input-bordered input-sm w-full" placeholder='Street' required />
-                        </div>
-                        <div className="form-control w-full">
-                            <label className="label">
-                                <span className="label-text text-slate-500 font-bold">Thana</span>
-                            </label>
-                            <input type="text" name="thana" placeholder='Thana' className="input input-bordered input-sm w-full" />
-                        </div>
-                    </div>
-                    <div className="form-control w-full">
-                        <label className="label">
-                            <span className="label-text text-slate-500 font-bold">District</span>
+                        <label className='block'>
+                            <span className='text-sm font-semibold'>City</span>
+                            <select
+                                onChange={handleDistrictChange}
+                                required
+                                className={`select select-bordered select-md w-full mt-1 rounded-none 
+        ${!selectedDivision ? 'cursor-not-allowed bg-gray-100 text-gray-400' : 'cursor-pointer bg-white text-black'}`}
+                                value={selectedDistrictId}
+                                disabled={false}
+                            >
+                                <option value="" disabled={!selectedDivision}>Please choose your city</option>
+                                {districts.map(dist => (
+                                    <option key={dist.id} value={dist.id}>{dist.name}</option>
+                                ))}
+                            </select>
                         </label>
-                        <input type="text" name="district" placeholder="Enter your address" className="input input-sm input-bordered w-full" required />
-
                     </div>
 
-                    {
-                        freeShipping ?
-                            <div className="form-control w-full mt-2">
-                                <label className="label">
-                                    <span className="label-text text-slate-500 font-bold">Shipping Charge</span>
-                                </label>
-                                <input type="text" className="input input-sm input-bordered w-full disabled:text-green-600 disabled:font-bold" value='Free' disabled />
-                            </div>
-                            :
-                            <div className="form-control w-full mt-2">
-                                <label className="label">
-                                    <span className="label-text text-slate-500 font-bold">Select Your Area (এরিয়া সিলেক্ট করুন)</span>
-                                </label>
-                                <select defaultValue={'outside_dhaka'} onChange={handleShipping} name='area' className="select select-bordered select-sm w-full">
-                                    <option value="outside_dhaka">Outside Dhaka (ঢাকার বাইরে ১৩০ টাকা)</option>
-                                    <option value="inside_dhaka">Inside Dhaka (ঢাকার ভিতরে ৬০ টাকা)</option>
-                                </select>
-                            </div>
-                    }
+                    <label className='block'>
+                        <span className='text-sm font-semibold'>Sub-city/ Upazila</span>
+                        <select
+                            onChange={(e) => setSelectedUpazila(e.target.value)}
+                            value={selectedUpazila}
+                            required
+                            className={`select select-bordered select-md w-full mt-1 rounded-none 
+            ${!selectedDistrictName ? 'cursor-not-allowed bg-gray-100 text-gray-400' : 'cursor-pointer bg-white text-black'}`}
+                            disabled={false}
+                        >
+                            <option value="" disabled={!selectedDistrictName}>Please choose your upazila</option>
+                            {upazilas.map((u, i) => (
+                                <option key={i} value={u.name}>{u.name}</option>
+                            ))}
+                        </select>
+                    </label>
 
-                    <div className="form-control w-full mt-2">
-                        <label className="label">
-                            <span className="label-text text-slate-500 font-bold">Mobile (মোবাইল নাম্বার)</span>
+                    <label className='block'>
+                        <span className='text-sm font-semibold'>Address</span>
+                        <input type="text" name="street" placeholder="For Example: House# 123, Street# 123, ABC Road" className='input input-md input-bordered w-full mt-1 rounded-none' required />
+                    </label>
+
+                    {freeShipping ? (
+                        <label className='block'>
+                            <span className='text-sm font-semibold'>Shipping</span>
+                            <input type="text" value="Free Shipping" disabled className='input input-md input-bordered w-full mt-1 disabled:text-green-600 disabled:font-bold rounded-none' />
                         </label>
-                        <input type="number" name="phone" placeholder="Enter your phone number" className="input input-sm input-bordered w-full" required />
+                    ) : (
+                        <label className='block'>
+                            <span className='text-sm font-semibold'>Shipping Area</span>
+                            <select defaultValue='outside_dhaka' onChange={handleShipping} className='select select-bordered select-md w-full mt-1 rounded-none'>
+                                <option value="outside_dhaka">Outside Dhaka (৳130)</option>
+                                <option value="inside_dhaka">Inside Dhaka (৳60)</option>
+                            </select>
+                        </label>
+                    )}
 
-                    </div>
-
-                    <input className='btn w-full mt-4 text-white bg-blue-500 hover:bg-blue-600' type="submit" value="Confirm Order" />
+                    <button type="submit" className='btn w-full mt-4 text-white bg-blue-500 hover:bg-blue-600'>Confirm Order</button>
                 </form>
             </div>
 
-            {/* ------Amount Section------ */}
-            <div className='w-full lg:w-1/2'>
-                <div className='border py-1 px-8 my-4'>
-                    <div className='flex justify-between my-4'>
-                        <p className='font-bold'><small>PRODUCT</small></p>
-                        <p className='font-bold flex justify-center items-center'>
-                            <span><small>SUBTOTAL</small></span>
-                        </p>
-                    </div>
-                    <hr />
+            {/* Order Summary & Payment */}
+            <div className='col-span-2 space-y-6'>
+                {/* Order Summary */}
+                <div className='border rounded-lg p-4 shadow-sm bg-white'>
+                    <h3 className='font-bold text-blue-800 mb-3'><small>Order Summary</small></h3>
+                    {data.map((product, index) => <CheckoutProduct key={index} index={index} product={product} />)}
 
-                    {content}
-
-                    <div className='flex justify-between my-4'>
-                        <p className='font-bold'><small>Subtotal</small></p>
-                        <p className='font-bold flex justify-center items-center'>
-                            <span className='text-xs'><FaBangladeshiTakaSign /></span>
-                            <span><small>{subTotal}</small></span>
-                        </p>
-                    </div>
-                    <hr />
-                    <div className='flex justify-between my-6 text-slate-500'>
-                        <p className='font-bold'><small>Shipping</small></p>
-                        <p className='flex justify-center items-center'>
-                            <span className='text-xs'><FaBangladeshiTakaSign /></span>
-                            <span><small>{shipping}</small></span>
-                        </p>
-                    </div>
-                    <hr />
-                    <div className='flex justify-between my-4'>
-                        <p className='font-bold text-red-600'><small>Total</small></p>
-                        <p className='font-bold text-red-600 flex justify-center items-center'>
-                            <span className='text-xs'><FaBangladeshiTakaSign /></span>
-                            <span>{subTotal + shipping}</span>
-                        </p>
-
-                    </div>
-
-                    <div className='mt-8'>
-                        <h2 className='text-xl font-bold'>Payment Information</h2>
-
-                        <div>
-                            <div className="flex items-center space-x-2 my-4">
-                                <input
-                                    type="radio"
-                                    id="cod"
-                                    name="paymentMethod"
-                                    value="COD"
-                                    className="radio radio-sm"
-                                    required
-                                    onChange={() => setPaymentMethod('COD')}
-                                />
-                                <label htmlFor="cod" className="text-slate-500 text-sm font-bold">COD (ক্যাশ অন ডেলিভারি)</label>
-                            </div>
-
-                            <div className="flex items-center space-x-2 my-4">
-                                <input
-                                    type="radio"
-                                    id="bkash"
-                                    name="paymentMethod"
-                                    value="bKash"
-                                    className="radio radio-sm"
-                                    onChange={() => setPaymentMethod('bKash')}
-                                />
-                                <label htmlFor="bkash" className="text-slate-500 font-bold text-sm flex items-center">
-                                    bKash (বিকাশ)
-                                    <img src="https://i.ibb.co.com/DPbM1wtB/BKash-Logo-wine.png" alt="bKash" className="h-16 ml-1" />
-                                </label>
-                            </div>
-
-                            {/* Conditional Message Display */}
-                            {paymentMethod === 'COD' && (
-                                <p className="text-xs text-gray-600 my-4 rounded-lg bg-slate-100 border p-2">
-                                    পণ্যের মূল্য, স্টক, অবস্থান বা পরিস্থিতির উপর নির্ভর করে আংশিক অগ্রিম অর্থপ্রদানের প্রয়োজন হতে পারে।
-                                </p>
-                            )}
-
-                            {paymentMethod === 'bKash' && (
-                                <div className="mt-2">
-                                    <p className="text-xs text-gray-600 my-4 rounded-lg bg-slate-100 border p-2">
-                                        বিকাশ এপ থেকে অথবা *247# ডায়াল করে <span className='font-bold text-red-500'>01814728277</span> এই নাম্বারে সেন্ড মানি করে নিচের বক্সে <span className='font-bold text-red-500'>Transaction ID</span> অথবা <span className='font-bold text-red-500'>শেষ ৪ ডিজিট</span> লিখে অর্ডারটি কনফার্ম করুন।
-                                    </p>
-                                    <input
-                                        type="text"
-                                        name="transactionId"
-                                        placeholder="Transaction ID বা শেষ ৪ ডিজিট"
-                                        className={`input input-sm input-bordered w-full mb-1 ${transactionID && transactionID.length < 8 ? 'border-red-500' : ''
-                                            }`}
-                                        value={transactionID}
-                                        onChange={(e) => setTransactionID(e.target.value)}
-                                        required={paymentMethod === 'bKash'}
-                                    />
-                                    {transactionID && transactionID.length < 8 && (
-                                        <p className="text-xs text-red-500">Transaction ID must be at least 8 characters.</p>
-                                    )}
-                                </div>
-                            )}
+                    <div className="my-3">
+                        <h3 className="flex items-center font-bold text-blue-700"><MdOutlineSell className='mr-2' />Have a coupon code?</h3>
+                        <div className="flex gap-2 my-3">
+                            <input type="text" value={couponCode} onChange={(e) => setCouponCode(e.target.value)} onKeyPress={handleKeyPress} placeholder="Enter coupon code" className="flex-1 px-4 py-2 input-sm border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent" />
+                            <button onClick={handleCouponApply} className="px-6 py-2 bg-blue-600 text-white btn-sm font-medium rounded-md hover:bg-blue-700">Apply</button>
                         </div>
+                    </div>
+
+                    <hr />
+                    <div className='flex justify-between my-3 text-sm'>
+                        <span>Subtotal</span>
+                        <span className='flex items-center font-bold text-red-600'>
+                            <FaBangladeshiTakaSign className='text-xs' />{subTotal}
+                        </span>
+                    </div>
+
+                    <div className='flex justify-between my-3 text-sm'>
+                        <span>Shipping (+)</span>
+                        <span className='flex items-center font-bold text-red-600'>
+                            <FaBangladeshiTakaSign className='text-xs' />{shipping}
+                        </span>
+                    </div>
+
+                    {appliedCoupon && (
+                        <div className='flex justify-between my-3 text-sm text-green-600'>
+                            <span>Coupon (-) <b>{appliedCoupon.coupon_code}</b></span>
+                            <span className='flex items-center font-bold'>
+                                <FaBangladeshiTakaSign className='text-xs' />{discount}
+                            </span>
+                        </div>
+                    )}
+
+                    <hr className='my-2' />
+
+                    <div className='flex justify-between font-bold my-4'>
+                        <span>Total</span>
+                        <span className='flex items-center text-red-600'>
+                            <FaBangladeshiTakaSign className='text-xs' />{total}
+                        </span>
+                    </div>
+                </div>
+
+                {/* Payment Section */}
+                <div className='border rounded-lg p-4 shadow-sm bg-white'>
+                    <h2 className='text-lg font-semibold text-gray-700 mb-3'>Payment Information</h2>
+                    <div className='space-y-3'>
+                        <label className='flex items-center space-x-2'>
+                            <input type='radio' name='paymentMethod' value='COD' className='radio radio-sm' onChange={() => setPaymentMethod('COD')} required />
+                            <span className='text-sm font-bold text-slate-600'>COD (Cash on Delivery)</span>
+                        </label>
+                        <label className='flex items-center space-x-2'>
+                            <input type='radio' name='paymentMethod' value='bKash' className='radio radio-sm' onChange={() => setPaymentMethod('bKash')} />
+                            <span className='text-sm font-bold text-slate-600 flex items-center'>
+                                bKash <img src="https://i.ibb.co.com/DPbM1wtB/BKash-Logo-wine.png" alt="bKash" className='h-6 ml-1' />
+                            </span>
+                        </label>
+
+                        {paymentMethod === 'COD' && <p className='text-xs text-gray-600 my-2 rounded bg-slate-100 border p-2'>Partial advance may be required depending on product or location.</p>}
+
+                        {paymentMethod === 'bKash' && (
+                            <div>
+                                <p className='text-xs text-gray-600 my-2 rounded bg-slate-100 border p-2'>Send money to <span className='font-bold text-red-500'>01814728277</span> and enter your Transaction ID.</p>
+                                <input type='text' name='transactionId' placeholder='Transaction ID or last 4 digits' value={transactionID} onChange={(e) => setTransactionID(e.target.value)} className={`input input-sm input-bordered w-full ${transactionID && transactionID.length < 8 ? 'border-red-500' : ''}`} required={paymentMethod === 'bKash'} />
+                                {transactionID && transactionID.length < 8 && <p className='text-xs text-red-500'>Transaction ID must be at least 8 characters.</p>}
+                            </div>
+                        )}
                     </div>
                 </div>
             </div>
-
         </div>
     );
 };

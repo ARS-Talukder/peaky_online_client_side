@@ -12,12 +12,12 @@ const AllOrders = () => {
     const { data: orders, isLoading, isSuccess, isError, error, refetch } = useQuery({
         queryKey: ["orders"],
         queryFn: () => {
-            return axios.get("https://api.peakyonline.com/orders")
+            return axios.get("http://localhost:5000/orders")
         }
     })
 
     const handleSearch = () => {
-        fetch(`https://api.peakyonline.com/order_by_phone/${searchText}`)
+        fetch(`http://localhost:5000/order_by_phone/${searchText}`)
             .then(res => res.json())
             .then(data => setSearchResults(data))
     };
@@ -33,13 +33,23 @@ const AllOrders = () => {
     }
 
     if (isSuccess) {
-        if (searchResults.length > 0) {
-            content = searchResults.map((order, index) => <Order index={index} key={order._id} order={order}></Order>)
+        if (searchText) { // user has typed something in search
+            if (searchResults.length > 0) {
+                content = [...searchResults].reverse().map((order, index) => (
+                    <Order index={index} key={order._id} order={order} />
+                ));
+            } else {
+                content = (
+                    <div className="text-center text-red-600 py-4">
+                        <p>This phone number has no order</p>
+                    </div>
+                );
+            }
+        } else { // no search performed, show all orders
+            content = [...orders.data].reverse().map((order, index) => (
+                <Order index={index} key={order._id} order={order} refetch={refetch} />
+            ));
         }
-        else {
-            content = orders.data.map((order, index) => <Order index={index} key={order._id} order={order} refetch={refetch}></Order>)
-        }
-
     }
 
     return (
@@ -53,9 +63,12 @@ const AllOrders = () => {
                 <div className="flex gap-2">
                     <input
                         type="text"
-                        placeholder="Search by Phone"
+                        placeholder="Search by Phone Number"
                         value={searchText}
                         onChange={(e) => setSearchText(e.target.value)}
+                        onKeyDown={(e) => {
+                            if (e.key === 'Enter') handleSearch();
+                        }}
                         className="input input-bordered w-64"
                     />
                     <button onClick={handleSearch} className="btn btn-primary">Search</button>

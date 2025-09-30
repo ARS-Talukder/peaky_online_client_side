@@ -7,13 +7,15 @@ import SpecialProducts from './SpecialProducts/SpecialProducts';
 const Home = () => {
 
     return (
-        <div className='px-5 lg:px-24 md:px-8'>
-            <div className='mt-1'>
+        <div>
+            <div className='px-0 lg:px-24 md:px-8'>
                 <Slider></Slider>
             </div>
-            <Categories></Categories>
-            <Products></Products>
-            <SpecialProducts></SpecialProducts>
+            <div className='px-5 lg:px-24 md:px-8'>
+                <Categories></Categories>
+                <SpecialProducts></SpecialProducts>
+                <Products></Products>
+            </div>
         </div>
     );
 };

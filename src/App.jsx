@@ -35,6 +35,7 @@ import SpecialCategoriesList from './pages/Dashboard/Admin/SpecialCategoriesList
 import AddSpecialCategory from './pages/Dashboard/Admin/AddSpecialCategory/AddSpecialCategory'
 import SpecialCategory from './pages/Dashboard/Admin/SpecialCategoriesList/SpecialCategory'
 import AllProducts from './pages/Home/Products/AllProducts'
+import Coupon from './pages/Dashboard/Admin/Coupon/Coupon'
 
 function App() {
 
@@ -69,6 +70,7 @@ function App() {
             <Route path='/dashboard/special_categories_list' element={<RequireAdmin><SpecialCategoriesList></SpecialCategoriesList></RequireAdmin>}></Route>
             <Route path='/dashboard/special_categories_list/:id' element={<RequireAdmin><SpecialCategory></SpecialCategory></RequireAdmin>}></Route>
             <Route path='/dashboard/add_special_category' element={<RequireAdmin><AddSpecialCategory></AddSpecialCategory></RequireAdmin>}></Route>
+            <Route path='/dashboard/coupon' element={<RequireAdmin><Coupon></Coupon></RequireAdmin>}></Route>
             <Route path='/dashboard/banner' element={<RequireAdmin><Banner></Banner></RequireAdmin>}></Route>
             <Route path='/dashboard/add_category' element={<RequireAdmin><AddCategory></AddCategory></RequireAdmin>}></Route>
             <Route path='/dashboard/edit_category/:id' element={<RequireAdmin><EditCategory></EditCategory></RequireAdmin>}></Route>

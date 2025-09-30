@@ -43,10 +43,6 @@ const ProductDetails = () => {
             <section className='my-6 bg-gray-50'>
                 <ProductOthers product={product}></ProductOthers>
             </section>
-            {/* 
-            <section className='my-6 bg-gray-50'>
-                <MoreProducts></MoreProducts>
-            </section> */}
 
         </div>
     );

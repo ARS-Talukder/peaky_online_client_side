@@ -14,12 +14,12 @@ const EditProduct = () => {
     const id = param.id;
     const [product, setProduct] = useState({});
     useEffect(() => {
-        fetch(`https://api.peakyonline.com/product/${id}`)
+        fetch(`http://localhost:5000/product/${id}`)
             .then(res => res.json())
             .then(data => setProduct(data))
 
     }, [id])
-    const { name, category, images, price, discount, shippingCharge, subtitle, description, whyBest } = product;
+    const { name, category, images, price, discount, discount_price, shippingCharge, subtitle, description, whyBest } = product;
 
     // handling loading at the time of add product
     const [loading, setLoading] = useState(false);
@@ -27,7 +27,7 @@ const EditProduct = () => {
     // Handling images upload state
     const [editImages, setEditImages] = useState([]);
     useEffect(() => {
-        fetch(`https://api.peakyonline.com/product/${id}`)
+        fetch(`http://localhost:5000/product/${id}`)
             .then(res => res.json())
             .then(data => setEditImages(data?.images))
     }, [id])
@@ -38,7 +38,7 @@ const EditProduct = () => {
     const { data: categories, isLoading, isSuccess, isError } = useQuery({
         queryKey: ["categories"],
         queryFn: () => {
-            return axios.get("https://api.peakyonline.com/categories")
+            return axios.get("http://localhost:5000/categories")
         }
     })
 
@@ -51,8 +51,6 @@ const EditProduct = () => {
     if (loading || isLoading) {
         return <Loading></Loading>
     }
-
-    const discount_price = price - ((discount * price) / 100);
 
     const handleShippingCharge = (event) => {
         if (event.target.value === 'Default') {
@@ -84,11 +82,11 @@ const EditProduct = () => {
         const formData = new FormData();
         formData.append("image", file);
         try {
-            const response = await axios.post("https://api.peakyonline.com/upload", formData, {
+            const response = await axios.post("http://localhost:5000/upload", formData, {
                 headers: { "Content-Type": "multipart/form-data" },
             });
 
-            const imageUrl = `https://api.peakyonline.com/${response.data.filePath}`;
+            const imageUrl = `http://localhost:5000/${response.data.filePath}`;
             const newImage = { _id: Date.now(), url: imageUrl };
 
             // Add new image to the local state
@@ -97,7 +95,7 @@ const EditProduct = () => {
             toast.success("Uploaded");
 
             //Add image to the database
-            fetch(`https://api.peakyonline.com/product_image/${id}`, {
+            fetch(`http://localhost:5000/product_image/${id}`, {
                 method: 'PATCH',
                 headers: {
                     'content-type': 'application/json'
@@ -111,7 +109,7 @@ const EditProduct = () => {
     };
     const handleDeleteImage = async (imageId, imageUrl) => {
         try {
-            await axios.delete("https://api.peakyonline.com/delete", {
+            await axios.delete("http://localhost:5000/delete", {
                 data: { imageUrl }
             });
 
@@ -123,7 +121,7 @@ const EditProduct = () => {
             toast.success("Deleted!");
 
             //Remove image from the database
-            fetch(`https://api.peakyonline.com/product_image/${id}`, {
+            fetch(`http://localhost:5000/product_image/${id}`, {
                 method: 'PATCH',
                 headers: {
                     'content-type': 'application/json'
@@ -153,7 +151,7 @@ const EditProduct = () => {
             discount = product.discount;
         } else {
             const discount_price = parseFloat(discount_price_input);
-            discount = ((price - discount_price) * 100) / price;
+            discount = Math.floor(((price - discount_price) * 100) / price); // percentage without fractions
         }
 
         // Shipping charge handling
@@ -176,13 +174,14 @@ const EditProduct = () => {
             category,
             price,
             discount,
+            discount_price: discount_price_input,
             shippingCharge,
             subtitle,
             whyBest,
             images: editImages,
             description
         };
-        fetch(`https://api.peakyonline.com/edit_product/${id}`, {
+        fetch(`http://localhost:5000/edit_product/${id}`, {
             method: 'PATCH',
             headers: {
                 'content-type': 'application/json'
@@ -229,7 +228,7 @@ const EditProduct = () => {
                                 <label className="label">
                                     <span className="label-text text-slate-500 font-bold">DISCOUNT (price)</span>
                                 </label>
-                                <input type="number" name="discount_price" placeholder={discount_price} className="input input-bordered input-sm w-full h-14 bg-slate-50" />
+                                <input type="number" name="discount_price" placeholder={discount_price == "" ? price - ((discount * price) / 100) : discount_price} className="input input-bordered input-sm w-full h-14 bg-slate-50" />
                             </div>
                             <div className="form-control w-full my-2">
                                 <label className="label">
@@ -264,7 +263,7 @@ const EditProduct = () => {
                         </div>
                     </section>
 
-                    Product Color
+                    {/* Product Color */}
                     {/* <section className='bg-white p-5 rounded-xl my-4'>
                         <h2 className='text-slate-500 font-bold mb-2'>Product Color</h2>
                         <ul>
@@ -333,7 +332,7 @@ const EditProduct = () => {
                     <section className='bg-white p-5 rounded-xl my-4'>
                         <div className="form-control w-full">
                             <label className="label">
-                                <span className="label-text text-slate-500 font-bold">Why our products are the best?</span>
+                                <span className="label-text text-slate-500 font-bold">Specification</span>
                             </label>
                             <textarea name="whyBest" placeholder={whyBest} className="textarea textarea-bordered textarea-sm w-full h-24 bg-slate-50"></textarea>
 

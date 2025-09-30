@@ -9,8 +9,7 @@ import { useNavigate } from 'react-router-dom';
 
 
 const ProductTable = ({ index, product, refetch }) => {
-    const { _id, name, category, images, price, discount, shippingCharge } = product;
-    const discount_price = price - ((discount * price) / 100);
+    const { _id, name, category, images, price, discount, discount_price, shippingCharge } = product;
     const img = images[0]?.url;
 
     const navigate = useNavigate();
@@ -18,7 +17,7 @@ const ProductTable = ({ index, product, refetch }) => {
     const handleDelete = (id) => {
         const proceed = window.confirm('Do You Want to delete this product?');
         if (proceed) {
-            fetch(`https://api.peakyonline.com/product-delete/${id}`, {
+            fetch(`http://localhost:5000/product-delete/${id}`, {
                 method: 'DELETE'
             })
                 .then(res => res.json())
@@ -54,7 +53,7 @@ const ProductTable = ({ index, product, refetch }) => {
                     </p>
                     <p className='flex items-center text-blue-700'>
                         <span className='text-xs'><small><FaBangladeshiTakaSign /></small></span>
-                        <span className='block'>{discount_price}</span>
+                        <span className='block'>{discount_price == "" ? price - ((discount * price) / 100) : discount_price}</span>
                     </p>
                 </div>
             </td>

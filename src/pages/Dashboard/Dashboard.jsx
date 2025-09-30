@@ -13,6 +13,7 @@ import { FaPeopleGroup } from "react-icons/fa6";
 import { ImProfile } from "react-icons/im";
 import { MdFolderSpecial } from "react-icons/md";
 import { BsBorderStyle } from "react-icons/bs";
+import { RiCoupon5Fill } from "react-icons/ri";
 import { useAuthState } from 'react-firebase-hooks/auth';
 import useAdmin from '../hooks/useAdmin';
 import auth from '../../firebase.init';
@@ -210,6 +211,19 @@ const Dashboard = () => {
                                         </li>
                                     </ul>
                                 </details>
+                            </li>
+                        }
+
+                        {/* Coupon button */}
+                        {
+                            admin &&
+                            <li>
+                                <Link
+                                    to="/dashboard/coupon"
+                                    className={`w-full btn mb-3 border-0 flex justify-start text-slate-600 ${location.pathname === "/dashboard/coupon" ? "bg-gray-200" : "bg-white"}`}>
+                                    <span className='text-xl text-red-600'><RiCoupon5Fill /></span>
+                                    <span>Coupon</span>
+                                </Link>
                             </li>
                         }
 

@@ -54,7 +54,7 @@ const Order = ({ order, index, refetch }) => {
             steps: steps
         };
 
-        fetch(`https://api.peakyonline.com/order_state/${_id}`, {
+        fetch(`http://localhost:5000/order_state/${_id}`, {
             method: 'PATCH',
             headers: {
                 'content-type': 'application/json'
@@ -90,7 +90,7 @@ const Order = ({ order, index, refetch }) => {
     const handleDelete = (id) => {
         const proceed = window.confirm('Do You Want to remove this order information from database?');
         if (proceed) {
-            fetch(`https://api.peakyonline.com/order-delete/${id}`, {
+            fetch(`http://localhost:5000/order-delete/${id}`, {
                 method: 'DELETE'
             })
                 .then(res => res.json())
@@ -109,11 +109,15 @@ const Order = ({ order, index, refetch }) => {
             <th className='border'>{index + 1}</th>
             <th className='border'>{orderID}</th>
             <td className='border'>
-                {products.map(p => <p key={p.product_id}>
-                    <p>{p.name}</p>
-                    {p.size && <p className='mt-1'><span className='border border-blue-500 px-2'>{p.size}</span></p>
+                {products.map((p, index) => <p key={p.product_id}>
+                    <p className='w-full truncate' title={p.name}>
+                        <small>
+                            <span className='text-black'>{index + 1}. </span>{p.name.length > 30 ? p.name.slice(0, 35) + '..' : p.name}
+                        </small>
+                    </p>
+                    {p.size && <p className='mt-1'><small><span className='border border-blue-500 px-2'>{p.size}</span></small></p>
                     }
-                    {p.color && <p className='mt-1'><span className='border border-blue-500 px-2'>{p.color}</span></p>}
+                    {p.color && <p className='mt-1'><small><span className='border border-blue-500 px-2'>{p.color}</span></small></p>}
 
                 </p>)}
             </td>
@@ -139,7 +143,31 @@ const Order = ({ order, index, refetch }) => {
                 <p className='text-blue-600'>{customerName}</p>
                 <p>{email}</p>
                 <p className='text-red-600'>{phone}</p>
-                <p>{address.street}, {address.thana}, {address.district}</p>
+                <div>
+                    <p>
+                        <small>
+                            <span className='text-black'>{address.street}</span>
+                        </small>
+                    </p>
+                    <p>
+                        <small>
+                            <span>Upazilla: </span>
+                            <span className='text-black'>{address.upazila}</span>
+                        </small>
+                    </p>
+                    <p>
+                        <small>
+                            <span>District: </span>
+                            <span className='text-black'>{address.district}</span>
+                        </small>
+                    </p>
+                    <p>
+                        <small>
+                            <span>Division: </span>
+                            <span className='text-black'>{address.division}</span>
+                        </small>
+                    </p>
+                </div>
             </td>
             <td className='border'>
                 <p>{paymentMethod}</p>

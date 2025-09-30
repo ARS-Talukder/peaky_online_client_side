@@ -2,22 +2,29 @@ import React, { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
 import { FaBangladeshiTakaSign } from "react-icons/fa6";
 import DashboardButton from '../../DashboardButton';
+import CountdownTimer from '../../../Shared/CountdownTimer';
 
 const SpecialCategory = () => {
     const { id } = useParams();
     const [specialCategory, setSpecialCategory] = useState({});
     const [allProducts, setAllProducts] = useState([]);
+    const [startTime, setStartTime] = useState("");
+    const [endTime, setEndTime] = useState("");
 
     // Fetch the special category
     useEffect(() => {
-        fetch(`https://api.peakyonline.com/special_category/${id}`)
+        fetch(`http://localhost:5000/special_category/${id}`)
             .then(res => res.json())
-            .then(data => setSpecialCategory(data));
+            .then(data => {
+                setSpecialCategory(data);
+                setStartTime(data.startTime || "");
+                setEndTime(data.endTime || "");
+            });
     }, [id]);
 
     // Fetch all products
     useEffect(() => {
-        fetch("https://api.peakyonline.com/products")
+        fetch("http://localhost:5000/products")
             .then(res => res.json())
             .then(data => setAllProducts(data));
     }, []);
@@ -31,7 +38,7 @@ const SpecialCategory = () => {
 
     // Add product to special category
     const handleAddProduct = (product) => {
-        fetch(`https://api.peakyonline.com/special_category/${id}/add-product`, {
+        fetch(`http://localhost:5000/special_category/${id}/add-product`, {
             method: "PATCH",
             headers: { "Content-Type": "application/json" },
             body: JSON.stringify(product)
@@ -47,7 +54,7 @@ const SpecialCategory = () => {
 
     // Remove product from special category
     const handleRemoveProduct = (product) => {
-        fetch(`https://api.peakyonline.com/special_category/${id}/remove-product`, {
+        fetch(`http://localhost:5000/special_category/${id}/remove-product`, {
             method: "PATCH",
             headers: { "Content-Type": "application/json" },
             body: JSON.stringify({ _id: product._id })
@@ -61,13 +68,77 @@ const SpecialCategory = () => {
             });
     };
 
+    // Update Timer
+    const handleUpdateTimer = (e) => {
+        e.preventDefault();
+        fetch(`http://localhost:5000/special_category/${id}/update-timer`, {
+            method: "PATCH",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ startTime, endTime })
+        })
+            .then(res => res.json())
+            .then(() => {
+                setSpecialCategory(prev => ({
+                    ...prev,
+                    startTime,
+                    endTime
+                }));
+                alert("Timer updated successfully!");
+            });
+    };
+
     return (
         <div>
             {/* ---------------Dashboard Button------------- */}
-            <DashboardButton></DashboardButton>
-            <div className='bg-white p-5 my-4 rounded-xl shadow-xl'>
-                <h2 className='text-xl font-bold text-slate-600'>{specialCategory?.name} – Special Category</h2>
+            <DashboardButton />
+
+            {/* Category Header */}
+            <div className='bg-white p-5 my-4 rounded-xl shadow-xl flex justify-between items-center'>
+                <h2 className='text-xl font-bold text-slate-600'>
+                    {specialCategory?.name} – Special Category
+                </h2>
+
+                {/* Countdown Timer */}
+                {specialCategory?.startTime && specialCategory?.endTime && (
+                    <CountdownTimer
+                        startTime={specialCategory.startTime}
+                        endTime={specialCategory.endTime}
+                    />
+                )}
             </div>
+
+            {/* Timer Edit Form */}
+            <form
+                onSubmit={handleUpdateTimer}
+                className="bg-white p-4 rounded-xl shadow-md my-4 flex gap-4 items-end"
+            >
+                <div>
+                    <label className="block font-semibold text-slate-600 mb-1">Start Time</label>
+                    <input
+                        type="datetime-local"
+                        value={startTime}
+                        onChange={(e) => setStartTime(e.target.value)}
+                        className="border px-2 py-1 rounded w-full"
+                        required
+                    />
+                </div>
+                <div>
+                    <label className="block font-semibold text-slate-600 mb-1">End Time</label>
+                    <input
+                        type="datetime-local"
+                        value={endTime}
+                        onChange={(e) => setEndTime(e.target.value)}
+                        className="border px-2 py-1 rounded w-full"
+                        required
+                    />
+                </div>
+                <button
+                    type="submit"
+                    className="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded"
+                >
+                    Update Timer
+                </button>
+            </form>
 
             {/* Selected Products */}
             <div className="mb-6">
@@ -89,7 +160,9 @@ const SpecialCategory = () => {
                                 <h4 className="mt-2 font-bold"><small>{p.name}</small></h4>
                                 <div className='flex items-center'>
                                     <p className="line-through text-gray-500 mr-4 font-bold">৳{p.price}</p>
-                                    <p className="text-red-500 font-bold">৳{p.price - ((p.discount * p.price) / 100)}</p>
+                                    <p className="text-red-500 font-bold">
+                                        ৳{p.price - ((p.discount * p.price) / 100)}
+                                    </p>
                                 </div>
 
                                 <button
@@ -131,11 +204,13 @@ const SpecialCategory = () => {
                                     <tr key={product._id} className='text-slate-600 font-bold'>
                                         <td className='border'>
                                             <div className='flex items-center'>
-                                                <span className='mr-4'><img
-                                                    src={product.images[0]?.url}
-                                                    alt="product_image"
-                                                    className="h-12 w-12 object-cover rounded"
-                                                /></span>
+                                                <span className='mr-4'>
+                                                    <img
+                                                        src={product.images[0]?.url}
+                                                        alt="product_image"
+                                                        className="h-12 w-12 object-cover rounded"
+                                                    />
+                                                </span>
                                                 <span>{product.name} </span>
                                             </div>
                                         </td>
@@ -148,7 +223,9 @@ const SpecialCategory = () => {
                                                 </p>
                                                 <p className='flex items-center text-blue-700'>
                                                     <span className='text-xs'><small><FaBangladeshiTakaSign /></small></span>
-                                                    <span className='block'>{product.price - ((product.discount * product.price) / 100)}</span>
+                                                    <span className='block'>
+                                                        {product.price - ((product.discount * product.price) / 100)}
+                                                    </span>
                                                 </p>
                                             </div>
                                         </td>
@@ -158,8 +235,9 @@ const SpecialCategory = () => {
                                             </div>
                                         </td>
                                         <td className='border'>
-                                            <div className={product.shippingCharge == 'free' ? 'flex items-center text-red-600 font-bold' : 'flex items-center text-blue-600'
-                                            }>
+                                            <div className={product.shippingCharge === 'free'
+                                                ? 'flex items-center text-red-600 font-bold'
+                                                : 'flex items-center text-blue-600'}>
                                                 <span>{product.shippingCharge}</span>
                                             </div>
                                         </td>

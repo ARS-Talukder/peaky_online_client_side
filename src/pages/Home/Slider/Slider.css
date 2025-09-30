@@ -22,3 +22,16 @@
     height: 100%;
     object-fit: cover;
 }
+
+/* Increase height slightly only for mobile */
+@media screen and (max-width: 768px) {
+    .swiper-slide {
+        height: 250px;
+        /* Adjust as needed */
+    }
+
+    .swiper-slide img {
+        height: 250px;
+        /* Match the swiper-slide height */
+    }
+}

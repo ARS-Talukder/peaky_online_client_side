@@ -3,8 +3,7 @@ import { useDispatchCart } from '../../../../ContextReducer';
 import { FaMinus, FaPlus } from "react-icons/fa6";
 
 const CartDrawerSingle = ({ product, index }) => {
-    const { product_id, name, price, img, discount, quantity, color, size } = product;
-    const discount_price = price - ((discount * price) / 100);
+    const { product_id, name, price, img, discount,discount_price, quantity, color, size } = product;
     const [newQuantity, setNewQuantity] = useState(quantity);
     let dispatch = useDispatchCart();
 
