@@ -17,7 +17,7 @@ const ProductTable = ({ index, product, refetch }) => {
     const handleDelete = (id) => {
         const proceed = window.confirm('Do You Want to delete this product?');
         if (proceed) {
-            fetch(`http://localhost:5000/product-delete/${id}`, {
+            fetch(`https://api.peakyonline.com/product-delete/${id}`, {
                 method: 'DELETE'
             })
                 .then(res => res.json())
