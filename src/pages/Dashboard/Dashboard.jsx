@@ -14,6 +14,7 @@ import { ImProfile } from "react-icons/im";
 import { MdFolderSpecial } from "react-icons/md";
 import { BsBorderStyle } from "react-icons/bs";
 import { RiCoupon5Fill } from "react-icons/ri";
+import { SiNiconico } from "react-icons/si";
 import { useAuthState } from 'react-firebase-hooks/auth';
 import useAdmin from '../hooks/useAdmin';
 import auth from '../../firebase.init';
@@ -45,7 +46,7 @@ const Dashboard = () => {
                 </div>
                 <div className="drawer-side">
                     <label htmlFor="dashboard-side-drawer" className="drawer-overlay"></label>
-                    <ul className="menu pb-4 pt-40 lg:pt-4 md:pt-24 px-2 overflow-y-auto w-1/2 lg:w-60 md:w-1/3 h-full bg-white">
+                    <ul className="menu pb-4 pt-40 lg:pt-4 md:pt-24 px-2 overflow-y-auto w-1/2 lg:w-60 md:w-1/3 h-auto bg-white">
                         {/* Sidebar content */}
                         {/* Dashboard index button */}
                         <li>
@@ -213,6 +214,20 @@ const Dashboard = () => {
                                 </details>
                             </li>
                         }
+
+                        {/* Iconic Categories button */}
+                        {
+                            admin &&
+                            <li>
+                                <Link
+                                    to="/dashboard/iconic_categories"
+                                    className={`w-full btn mb-3 border-0 flex justify-start text-slate-600 ${location.pathname === "/dashboard/iconic_categories" ? "bg-gray-200" : "bg-white"}`}>
+                                    <span className='text-xl text-green-600'><SiNiconico /></span>
+                                    <span>Iconic Categories</span>
+                                </Link>
+                            </li>
+                        }
+
 
                         {/* Coupon button */}
                         {

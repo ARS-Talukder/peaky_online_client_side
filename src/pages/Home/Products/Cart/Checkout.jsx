@@ -308,7 +308,7 @@ const Checkout = () => {
                     <div className='space-y-3'>
                         <label className='flex items-center space-x-2'>
                             <input type='radio' name='paymentMethod' value='COD' className='radio radio-sm' onChange={() => setPaymentMethod('COD')} required />
-                            <span className='text-sm font-bold text-slate-600'>COD (Cash on Delivery)</span>
+                            <span className='text-sm font-bold text-slate-600'>Cash on Delivery</span>
                         </label>
                         <label className='flex items-center space-x-2'>
                             <input type='radio' name='paymentMethod' value='bKash' className='radio radio-sm' onChange={() => setPaymentMethod('bKash')} />

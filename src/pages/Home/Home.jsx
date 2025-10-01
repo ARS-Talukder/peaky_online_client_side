@@ -3,6 +3,7 @@ import Categories from './Categories/Categories';
 import Slider from './Slider/Slider';
 import Products from './Products/Products';
 import SpecialProducts from './SpecialProducts/SpecialProducts';
+import IconicProducts from './IconicProducts/IconicProducts';
 
 const Home = () => {
 
@@ -14,6 +15,7 @@ const Home = () => {
             <div className='px-5 lg:px-24 md:px-8'>
                 <Categories></Categories>
                 <SpecialProducts></SpecialProducts>
+                <IconicProducts></IconicProducts>
                 <Products></Products>
             </div>
         </div>

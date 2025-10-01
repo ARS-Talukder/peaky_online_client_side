@@ -36,6 +36,8 @@ import AddSpecialCategory from './pages/Dashboard/Admin/AddSpecialCategory/AddSp
 import SpecialCategory from './pages/Dashboard/Admin/SpecialCategoriesList/SpecialCategory'
 import AllProducts from './pages/Home/Products/AllProducts'
 import Coupon from './pages/Dashboard/Admin/Coupon/Coupon'
+import IconicCategories from './pages/Dashboard/Admin/IconicCategories/IconicCategories'
+import IconicCategory from './pages/Dashboard/Admin/IconicCategories/IconicCategory'
 
 function App() {
 
@@ -63,18 +65,30 @@ function App() {
             <Route path='/dashboard/order_track' element={<OrderTrack></OrderTrack>}></Route>
             <Route path='/dashboard/sales' element={<SalesChart></SalesChart>}></Route>
             <Route path='/dashboard/my_profile' element={<MyProfile></MyProfile>}></Route>
+
             <Route path='/dashboard/products_list' element={<RequireAdmin><ProductsList></ProductsList></RequireAdmin>}></Route>
             <Route path='/dashboard/add_product' element={<RequireAdmin><AddProduct></AddProduct></RequireAdmin>}></Route>
             <Route path='/dashboard/edit_product/:id' element={<RequireAdmin><EditProduct></EditProduct></RequireAdmin>}></Route>
+
             <Route path='/dashboard/categories_list' element={<RequireAdmin><CategoriesList></CategoriesList></RequireAdmin>}></Route>
+            <Route path='/dashboard/add_category' element={<RequireAdmin><AddCategory></AddCategory></RequireAdmin>}></Route>
+            <Route path='/dashboard/edit_category/:id' element={<RequireAdmin><EditCategory></EditCategory></RequireAdmin>}></Route>
+
+
             <Route path='/dashboard/special_categories_list' element={<RequireAdmin><SpecialCategoriesList></SpecialCategoriesList></RequireAdmin>}></Route>
             <Route path='/dashboard/special_categories_list/:id' element={<RequireAdmin><SpecialCategory></SpecialCategory></RequireAdmin>}></Route>
             <Route path='/dashboard/add_special_category' element={<RequireAdmin><AddSpecialCategory></AddSpecialCategory></RequireAdmin>}></Route>
+
+            <Route path='/dashboard/iconic_categories' element={<RequireAdmin><IconicCategories></IconicCategories></RequireAdmin>}></Route>
+            <Route path='/dashboard/iconic_categories/:id' element={<RequireAdmin><IconicCategory></IconicCategory></RequireAdmin>}></Route>
+
             <Route path='/dashboard/coupon' element={<RequireAdmin><Coupon></Coupon></RequireAdmin>}></Route>
+
+
             <Route path='/dashboard/banner' element={<RequireAdmin><Banner></Banner></RequireAdmin>}></Route>
-            <Route path='/dashboard/add_category' element={<RequireAdmin><AddCategory></AddCategory></RequireAdmin>}></Route>
-            <Route path='/dashboard/edit_category/:id' element={<RequireAdmin><EditCategory></EditCategory></RequireAdmin>}></Route>
+
             <Route path='/dashboard/all_orders' element={<RequireAdmin><AllOrders></AllOrders></RequireAdmin>}></Route>
+
             <Route path='/dashboard/all_customers' element={<RequireAdmin><AllCustomers></AllCustomers></RequireAdmin>}></Route>
           </Route>
         </Routes>
