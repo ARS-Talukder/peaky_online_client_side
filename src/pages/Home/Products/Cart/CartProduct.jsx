@@ -32,14 +32,22 @@ const CartProduct = ({ product, index }) => {
                 <img className='ml-4 mr-1' width={55} src={img} alt="product_image" />
                 <div>
                     <p>{name}</p>
-                    <div className='flex justify-start items-center'>
-                        <button className='text-blue-500 hover:text-blue-800 border-2' onClick={decrementQuantity}><FaMinus /></button>
-                        <p className='mx-1 border-2 px-1'>{newQuantity}</p>
-                        <button className='text-blue-500 hover:text-blue-800 border-2' onClick={incrementQuantity}><FaPlus /></button>
-
-                        {color && <p className='ml-4 px-2 py-1 bg-slate-400 font-bold text-white rounded-lg'>{color}</p>}
-
-                        {size && <p className='ml-4 px-2 py-1 bg-slate-400 font-bold text-white rounded-lg'>{size}</p>}
+                    <div className='flex items-center'>
+                        <button
+                            className='w-6 h-6 flex items-center justify-center border border-gray-300 bg-gray-50 rounded-l'
+                            onClick={decrementQuantity}
+                        >
+                            <FaMinus className="text-xs text-blue-500" />
+                        </button>
+                        <div className='w-8 h-6 flex items-center justify-center border-t border-b border-gray-300'>
+                            <span className='text-sm'>{newQuantity}</span>
+                        </div>
+                        <button
+                            className='w-6 h-6 flex items-center justify-center border border-gray-300 bg-gray-50 rounded-r'
+                            onClick={incrementQuantity}
+                        >
+                            <FaPlus className="text-xs text-blue-500" />
+                        </button>
                     </div>
                 </div>
 

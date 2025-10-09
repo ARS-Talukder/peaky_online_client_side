@@ -4,6 +4,7 @@ import Slider from './Slider/Slider';
 import Products from './Products/Products';
 import SpecialProducts from './SpecialProducts/SpecialProducts';
 import IconicProducts from './IconicProducts/IconicProducts';
+import BottomNav from './BottomNav/BottomNav';
 
 const Home = () => {
 
@@ -13,10 +14,13 @@ const Home = () => {
                 <Slider></Slider>
             </div>
             <div className='px-5 lg:px-24 md:px-8'>
-                <Categories></Categories>
+                {/* <Categories></Categories> */}
                 <SpecialProducts></SpecialProducts>
                 <IconicProducts></IconicProducts>
                 <Products></Products>
+            </div>
+            <div className='lg:hidden'>
+                <BottomNav></BottomNav>
             </div>
         </div>
     );

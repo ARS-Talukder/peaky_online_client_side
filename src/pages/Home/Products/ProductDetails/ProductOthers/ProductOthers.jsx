@@ -11,7 +11,7 @@ const ProductOthers = ({ product }) => {
 
             <h4 className={specificDescription.length == '' ? 'hidden' : 'font-bold'}>Specification:</h4>
             <div className='text-slate-600 px-3 my-4'>
-                <pre><small>{specificDescription}</small></pre>
+                <pre className="whitespace-pre-wrap break-words"><small>{specificDescription}</small></pre>
             </div>
             <div className='my-8'>
                 {

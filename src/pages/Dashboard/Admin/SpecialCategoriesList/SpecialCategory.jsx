@@ -161,7 +161,7 @@ const SpecialCategory = () => {
                                 <div className='flex items-center'>
                                     <p className="line-through text-gray-500 mr-4 font-bold">৳{p.price}</p>
                                     <p className="text-red-500 font-bold">
-                                        ৳{p.price - ((p.discount * p.price) / 100)}
+                                        ৳{p.discount_price}
                                     </p>
                                 </div>
 
@@ -224,7 +224,7 @@ const SpecialCategory = () => {
                                                 <p className='flex items-center text-blue-700'>
                                                     <span className='text-xs'><small><FaBangladeshiTakaSign /></small></span>
                                                     <span className='block'>
-                                                        {product.price - ((product.discount * product.price) / 100)}
+                                                        {product.discount_price}
                                                     </span>
                                                 </p>
                                             </div>

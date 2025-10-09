@@ -8,8 +8,9 @@ import toast from 'react-hot-toast';
 import CartDrawer from '../../Cart/CartDrawer/CartDrawer';
 
 const ProductDescription = ({ product }) => {
-    const { _id, name, price, discount,discount_price, category, images, description, productColor, subtitle, size, whyBest } = product;
+    const { _id, name, price, discount, discount_price, category, images, description, productColor, subtitle, size, whyBest } = product;
     const img = images[0]?.url;
+    console.log(discount_price)
 
     // Cart Drawer open and close handling
     const [isDrawerOpen, setIsDrawerOpen] = useState(false);
@@ -99,7 +100,7 @@ const ProductDescription = ({ product }) => {
 
 
     return (
-        <div className='lg:w-1/2 md:w-1/2'>
+        <div>
             {/* Overlay. It creates darker the page when drawer opens */}
             {isDrawerOpen && (
                 <div
@@ -152,7 +153,7 @@ const ProductDescription = ({ product }) => {
                 }
             </div>
 
-            <div className='flex mt-6 font-bold'>
+            <div className='hidden lg:flex mt-6 font-bold'>
                 {
                     productAdded === false ?
                         <button onClick={handleAddToCart} className='flex justify-center items-center w-full h-9 bg-red-500 hover:bg-red-600 text-white rounded'><span>Add To Cart</span></button>
@@ -160,6 +161,19 @@ const ProductDescription = ({ product }) => {
                         <button className='flex justify-center items-center w-full h-9 bg-red-200 text-white rounded' disabled><span>Added</span></button>
                 }
                 <button onClick={handleOrderNow} className='flex justify-center items-center w-full h-9 bg-blue-500 hover:bg-blue-600 text-white ml-4 rounded'><span>ORDER NOW</span></button>
+            </div>
+
+            {/* Mobile Bottom Action Bar */}
+            <div className='fixed bottom-0 left-0 w-full bg-white shadow-md border-t z-30 lg:hidden'>
+                <div className='flex mt-6 font-bold'>
+                    {
+                        productAdded === false ?
+                            <button onClick={handleAddToCart} className='flex justify-center items-center w-full h-9 bg-red-500 hover:bg-red-600 text-white rounded'><span>Add To Cart</span></button>
+                            :
+                            <button className='flex justify-center items-center w-full h-9 bg-red-200 text-white rounded' disabled><span>Added</span></button>
+                    }
+                    <button onClick={handleOrderNow} className='flex justify-center items-center w-full h-9 bg-blue-500 hover:bg-blue-600 text-white ml-4 rounded'><span>ORDER NOW</span></button>
+                </div>
             </div>
 
             <div className='w-full h-0.5 bg-slate-200 my-6'></div>
