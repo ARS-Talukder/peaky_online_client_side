@@ -12,20 +12,20 @@ const SpecialProducts = () => {
         queryFn: () => axios.get("https://api.peakyonline.com/special_categories")
     });
 
-    // Google Tag Manager data layer push
-    useEffect(() => {
-        if (isSuccess && specialCategories?.data) {
-            window.dataLayer.push({ ecommerce: null });
-            window.dataLayer.push({
-                event: "view_item_list",
-                ecommerce: {
-                    currency: 'BDT',
-                    items: specialCategories.data
-                },
-                pagePath: window.location.pathname,
-            });
-        }
-    }, [isSuccess, specialCategories]);
+    // // Google Tag Manager data layer push
+    // useEffect(() => {
+    //     if (isSuccess && specialCategories?.data) {
+    //         window.dataLayer.push({ ecommerce: null });
+    //         window.dataLayer.push({
+    //             event: "view_item_list",
+    //             ecommerce: {
+    //                 currency: 'BDT',
+    //                 items: specialCategories.data
+    //             },
+    //             pagePath: window.location.pathname,
+    //         });
+    //     }
+    // }, [isSuccess, specialCategories]);
 
     if (isLoading) return <Loading />;
 

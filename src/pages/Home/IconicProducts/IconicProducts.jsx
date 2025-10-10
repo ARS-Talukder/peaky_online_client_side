@@ -11,19 +11,19 @@ const IconicProducts = () => {
     });
 
     // Google Tag Manager data layer push
-    useEffect(() => {
-        if (isSuccess && iconicCategories?.data) {
-            window.dataLayer.push({ ecommerce: null });
-            window.dataLayer.push({
-                event: "view_item_list",
-                ecommerce: {
-                    currency: 'BDT',
-                    items: iconicCategories.data
-                },
-                pagePath: window.location.pathname,
-            });
-        }
-    }, [isSuccess, iconicCategories]);
+    // useEffect(() => {
+    //     if (isSuccess && iconicCategories?.data) {
+    //         window.dataLayer.push({ ecommerce: null });
+    //         window.dataLayer.push({
+    //             event: "view_item_list",
+    //             ecommerce: {
+    //                 currency: 'BDT',
+    //                 items: iconicCategories.data
+    //             },
+    //             pagePath: window.location.pathname,
+    //         });
+    //     }
+    // }, [isSuccess, iconicCategories]);
 
     if (isLoading) return <Loading />;
     return (
